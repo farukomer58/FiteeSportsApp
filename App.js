@@ -1,6 +1,7 @@
 import React from "react";
 import {
   Text,
+  Box,
   Link,
   HStack,
   Center,
@@ -13,44 +14,39 @@ import {
   Code,
 } from "native-base";
 import NativeBaseIcon from "./components/NativeBaseIcon";
+import LoginScreen from "./screens/UnAuthenticated/LoginScreen";
+
+import { View, StyleSheet } from 'react-native'
 
 // Define the config
-const config = {
-  useSystemColorMode: false,
-  initialColorMode: "dark",
+const newColorTheme = {
+  brand: {
+    900: '#8287af',
+    800: '#7c83db',
+    700: '#b3bef6',
+  },
 };
-
-// extend the theme
-export const theme = extendTheme({ config });
+const theme = extendTheme({ colors: newColorTheme });
 
 export default function App() {
   return (
-    <NativeBaseProvider>
-      <Center
-        _dark={{ bg: "blueGray.900" }}
-        _light={{ bg: "blueGray.50" }}
-        px={4}
-        flex={1}
-      >
-        <VStack space={5} alignItems="center">
-          <NativeBaseIcon />
-          <Heading size="lg">Welcome to NativeBase</Heading>
-          <HStack space={2} alignItems="center">
-            <Text>Edit</Text>
-            <Code>App.js</Code>
-            <Text>and save to reload.</Text>
-          </HStack>
-          <Link href="https://docs.nativebase.io" isExternal>
-            <Text color="primary.500" underline fontSize={"xl"}>
-              Learn NativeBase
-            </Text>
-          </Link>
-          <ToggleDarkMode />
-        </VStack>
-      </Center>
+    <NativeBaseProvider >
+      <View style={styles.screen}>
+        <LoginScreen />
+
+      </View>
     </NativeBaseProvider>
   );
 }
+
+const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+    // alignItems:"center",
+    justifyContent:"center"
+
+  }
+})
 
 // Color Switch Component
 function ToggleDarkMode() {
