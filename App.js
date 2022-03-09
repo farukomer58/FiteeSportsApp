@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Text,
   Box,
@@ -14,9 +14,14 @@ import {
   Code,
 } from "native-base";
 import NativeBaseIcon from "./components/NativeBaseIcon";
-import LoginScreen from "./screens/UnAuthenticated/LoginScreen";
-
 import { View, StyleSheet } from 'react-native'
+
+import LoginScreen from "./screens/UnAuthenticated/LoginScreen";
+import RegisterScreen from "./screens/UnAuthenticated/RegisterScreen";
+
+import {LogBox} from 'react-native';
+
+LogBox.ignoreLogs(['NativeBase:']);
 
 // Define the config
 const newColorTheme = {
@@ -29,11 +34,24 @@ const newColorTheme = {
 const theme = extendTheme({ colors: newColorTheme });
 
 export default function App() {
-  return (
-    <NativeBaseProvider >
-      <View style={styles.screen}>
-        <LoginScreen />
 
+  const [currentPage, setCurrentPage] = useState("login")
+
+  const changePage = (page) => {
+    setCurrentPage(page)
+  }
+
+  let content;
+  if (currentPage === 'register') {
+    content = <RegisterScreen onChangePage={changePage} />
+  } else {
+    content = <LoginScreen onChangePage={changePage} />
+  }
+
+  return (
+    <NativeBaseProvider theme={theme}>
+      <View style={styles.screen}>
+        {content}
       </View>
     </NativeBaseProvider>
   );
@@ -43,25 +61,9 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     // alignItems:"center",
-    justifyContent:"center"
+    justifyContent: "center"
+  },
 
-  }
+
+
 })
-
-// Color Switch Component
-function ToggleDarkMode() {
-  const { colorMode, toggleColorMode } = useColorMode();
-  return (
-    <HStack space={2} alignItems="center">
-      <Text>Dark</Text>
-      <Switch
-        isChecked={colorMode === "light"}
-        onToggle={toggleColorMode}
-        aria-label={
-          colorMode === "light" ? "switch to dark mode" : "switch to light mode"
-        }
-      />
-      <Text>Light</Text>
-    </HStack>
-  );
-}
