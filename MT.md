@@ -6,8 +6,8 @@
 
 |               | CODE    |TEST   |DEVOPS  | User stories worked on                           |
 |---------------|---------|-------|--------|---------------------------------------------------|
-| Name Student1  |  2  |  1   |   1     |- [As a A I want to B so that C](link-to-relevant-commit) <br> - [As a A I want to B so that C](link-to-relevant-commit) |
-| Name Student2  |  2  |  2   |   2     | - [As a A I want to B so that C](link-to-relevant-commit) <br> - [As a A I want to B so that C](link-to-relevant-commit) | 
+| Omer Citik  |  1  |  0   |   1     |- [As a customer I want to be able to register to the platform so I can view and join activities]     [link-to-relevant-commit](https://gitlab.fdmci.hva.nl/project-se/2122/ivse1/IVSE1-FITEE/fiteesportsapp/-/commit/690b280536d08fcb7ef05f73b71f230fecf62c43) <br> - [As a freelancer I want to be able to register to the platform so I provide activities for users][link-to-relevant-commit](https://gitlab.fdmci.hva.nl/project-se/2122/ivse1/IVSE1-FITEE/fiteesportsapp/-/commit/690b280536d08fcb7ef05f73b71f230fecf62c43) |
+
 
 ### MT-Coach Feedback
 
