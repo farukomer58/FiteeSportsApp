@@ -4,7 +4,8 @@ export default {
     fontPrimaryBold: "balsamiq-bold",
 
     // Color Constants
-    primaryColor: "#fe2",
+    primaryColor: "#b2de0d",
+    primaryColorDark: "#739108",
     secondaryColor: "#ae2",
 
 }
