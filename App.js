@@ -18,8 +18,9 @@ import { View, StyleSheet } from 'react-native'
 
 import LoginScreen from "./screens/UnAuthenticated/LoginScreen";
 import RegisterScreen from "./screens/UnAuthenticated/RegisterScreen";
+import HomeScreen from "./screens/Authenticated/HomeScreen";
 
-import {LogBox} from 'react-native';
+import { LogBox } from 'react-native';
 
 LogBox.ignoreLogs(['NativeBase:']);
 
@@ -44,8 +45,10 @@ export default function App() {
   let content;
   if (currentPage === 'register') {
     content = <RegisterScreen onChangePage={changePage} />
-  } else {
+  } else if (currentPage === 'login') {
     content = <LoginScreen onChangePage={changePage} />
+  }else if(currentPage==='home'){
+    content = <HomeScreen onChangePage={changePage} />
   }
 
   return (

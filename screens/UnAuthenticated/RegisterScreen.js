@@ -33,9 +33,7 @@ export default function RegisterScreen(props) {
     const [selectedUserType, setSelectedUserType] = useState("customer")
     const [isNextStep, setIsNextStep] = useState(false)
 
-
     const handleClick = () => setShow(!show);
-
 
     // Customer Register
     let content;
@@ -138,7 +136,7 @@ export default function RegisterScreen(props) {
                             md: "25%"
                         }} InputLeftElement={<Fontisto name="date" size={32} color="white" style={{ padding: 10 }} />} placeholder="Date Of Birth (MM-dd-yyyy)" />
 
-                    <DatePicker
+                    {/* <DatePicker
                         style={styles.datePickerStyle}
                         date={date}
                         mode="date"
@@ -175,7 +173,7 @@ export default function RegisterScreen(props) {
                         }}
                         onDateChange={(date) => {
                             setDate(date);
-                        }} />
+                        }} /> */}
                     <Input
                         style={styles.input}
                         color="white"
@@ -239,7 +237,7 @@ export default function RegisterScreen(props) {
                         md: "25%"
                     }} InputLeftElement={<Fontisto name="date" size={32} color="white" style={{ padding: 10 }} />} placeholder="Date Of Birth (MM-dd-yyyy)" />
 
-                <DatePicker
+                {/* <DatePicker
                     style={styles.datePickerStyle}
                     date={date}
                     mode="date"
@@ -276,7 +274,7 @@ export default function RegisterScreen(props) {
                     }}
                     onDateChange={(date) => {
                         setDate(date);
-                    }} />
+                    }} /> */}
                 <Input
                     style={styles.input}
                     color="white"
@@ -310,7 +308,7 @@ export default function RegisterScreen(props) {
                             Terms of Service
 
                     </Checkbox> */}
-                <Button onPress={() => console.log("hello world")}>Register</Button>
+                <Button onPress={() => props.onChangePage("home")}>Register</Button>
                 <Text color="#b3b3ff" underline style={{ textAlign: "left" }}>Already an account? Login now</Text>
 
             </Stack>
