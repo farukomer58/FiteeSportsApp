@@ -22,9 +22,9 @@ export default function PressableCard(props) {
 
     return (
         <>
-            <Box alignItems="center">
+            <Box  alignItems="center" style={{margin:20, width:250}}>
                 <TouchableOpacity activeOpacity={0.8}>
-                    <Box maxW="96" borderWidth="1" borderColor="coolGray.300" shadow="3" bg={"coolGray.100"} p="5" rounded="8">
+                    <Box   borderWidth="1" borderColor="coolGray.300" shadow="3" bg={"coolGray.100"} p="5" rounded="8">
                         <HStack alignItems="center">
                             <Badge colorScheme="darkBlue" >
                                 <Text>Business</Text>

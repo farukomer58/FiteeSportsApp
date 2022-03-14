@@ -9,13 +9,13 @@ import {
     Item as FormItem,
     Input,
     Label,
-    Title,
-    Icon,
-    Box,
+
+    Center,
     Heading,
+    HStack,
 } from 'native-base';
 
-import { View, Image, StyleSheet, ImageBackground } from 'react-native'
+import { View, Image, StyleSheet, ImageBackground, ScrollView } from 'react-native'
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 
 import Header from '../../components/Header';
@@ -32,6 +32,23 @@ export default function HomeScreen(props) {
             <Heading size="md" ml="-1" color="white" p={2}>
                 Populair
             </Heading>
+
+
+            <ScrollView px={90} horizontal={true} _contentContainerStyle={{
+                bg: "lime.300",
+                px: "44px",
+                w: "100%"
+            }} // style={{ backgroundColor: 'blue' }}
+                height={200}>
+                <HStack>
+                    {["one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven"].map(val => (
+                        <PressableCard />
+                        )
+                    )}
+                </HStack>
+            </ScrollView>
+
+
             <View>
                 {/* <PressableCard /> */}
                 <Card />
