@@ -54,11 +54,11 @@ export default function LoginScreen(props) {
 
                         <Text color="#b3b3ff" underline style={{ textAlign: "left" }}>Forget Password?</Text>
 
-                        <Button colorScheme="green" style={styles.customButton} onPress={() => props.onChangePage("home")}>Login</Button>
+                        <Button colorScheme="green" style={styles.customButton} onPress={() => props.navigation.navigate('Home')}>Login</Button>
 
                         <Text color="#b3b3ff" italic underline style={{}}>No account yet? Sign Up Now</Text>
 
-                        <Button style={{ width: "30%" }} onPress={() => props.onChangePage("register")}>Register</Button>
+                        <Button style={{ width: "30%" }} onPress={() => props.navigation.navigate('Register')}>Register</Button>
 
 
                     </Stack>
