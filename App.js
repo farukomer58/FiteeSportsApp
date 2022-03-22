@@ -22,6 +22,8 @@ import HomeScreen from "./screens/Authenticated/HomeScreen";
 
 import { LogBox } from 'react-native';
 
+import AppNavigator from './navigation/AppNavigator'
+
 LogBox.ignoreLogs(['NativeBase:']);
 
 // Define the config
@@ -47,15 +49,13 @@ export default function App() {
     content = <RegisterScreen onChangePage={changePage} />
   } else if (currentPage === 'login') {
     content = <LoginScreen onChangePage={changePage} />
-  }else if(currentPage==='home'){
+  } else if (currentPage === 'home') {
     content = <HomeScreen onChangePage={changePage} />
   }
 
   return (
     <NativeBaseProvider theme={theme}>
-      <View style={styles.screen}>
-        {content}
-      </View>
+      <AppNavigator />
     </NativeBaseProvider>
   );
 }

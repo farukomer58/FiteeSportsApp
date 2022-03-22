@@ -104,7 +104,7 @@ export default function RegisterScreen(props) {
 
                         </Text>
                     </Checkbox> */}
-                    <Button colorScheme="green" onPress={() => setIsNextStep(true)}>Register</Button>
+                    <Button colorScheme="green" onPress={() => props.onChangePage("home")}>Register</Button>
 
                 </Stack>
             )

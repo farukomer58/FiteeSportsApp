@@ -51,7 +51,7 @@ export default function HomeScreen(props) {
 
             <View>
                 {/* <PressableCard /> */}
-                <Card />
+                {/* <Card /> */}
             </View>
             <Footer />
         </View>
