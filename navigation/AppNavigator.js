@@ -12,10 +12,14 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from '../screens/UnAuthenticated/LoginScreen'
 import RegisterScreen from '../screens/UnAuthenticated/RegisterScreen';
 import HomeScreen from '../screens/Authenticated/HomeScreen';
+import CalendarScreen from '../screens/Authenticated/CalendarScreen';
 
 // Constants
 import Values from '../constants/Values'
+import ChatRoomScreen from '../screens/Authenticated/ChatRoomScreen';
+import ChatScreen from '../screens/Authenticated/Chat';
 
+// DEFAULT navigation options
 const options = {
     headerShown: false,
     headerStyle: {
@@ -34,11 +38,13 @@ export default AppNavigator = () => {
                 <Stack.Screen name="Login" component={LoginScreen}  options={{ title: 'Overview' }}/>
                 <Stack.Screen name="Register" component={RegisterScreen} />
                 <Stack.Screen name="Home" component={HomeScreen}/>
+                <Stack.Screen name="ChatRoom" component={ChatRoomScreen}/>
+                <Stack.Screen name="Chat" component={ChatScreen}/>
+                <Stack.Screen name="Calendar" component={CalendarScreen}/>
             </Stack.Navigator>
         </NavigationContainer>
     )
 }
-
 
 
 // createStackNavigator({

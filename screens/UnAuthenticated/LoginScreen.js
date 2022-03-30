@@ -10,19 +10,19 @@ import {
     Item as FormItem,
     Input,
     Label,
-    Title,
     Icon,
+    IconButton,
     Box,
     Stack,
 } from 'native-base';
 
 import { View, Image, StyleSheet, ImageBackground } from 'react-native'
-import { Ionicons, MaterialIcons } from '@expo/vector-icons';
+import { Ionicons, MaterialIcons, AntDesign } from '@expo/vector-icons';
 
 export default function LoginScreen(props) {
 
+    // Show password or not
     const [show, setShow] = React.useState(false);
-
     const handleClick = () => setShow(!show);
 
     return (
@@ -39,7 +39,7 @@ export default function LoginScreen(props) {
                             w={{
                                 base: "75%",
                                 md: "25%"
-                            }} InputLeftElement={<MaterialIcons name="account-circle" size={32} color="white" style={{ padding: 10 }} />} placeholder="Name" />
+                            }} InputLeftElement={<MaterialIcons name="account-circle" size={32} color="white" style={{ padding: 10 }} />} placeholder="Email" />
                         <Input
                             style={styles.input}
                             color="white"
@@ -47,10 +47,19 @@ export default function LoginScreen(props) {
                             w={{
                                 base: "75%",
                                 md: "25%"
-                            }} InputLeftElement={<Ionicons name="key-outline" size={32} color="white" style={{ padding: 10 }} />} placeholder="Password"
-                            type={show ? "text" : "password"} InputRightElement={<Button size="xs" rounded="none" w="1/6" h="full" onPress={handleClick}>
-                                {show ? "Hide" : "Show"}
-                            </Button>} />
+                            }} 
+                            InputLeftElement={<Ionicons name="key-outline" size={32} color="white" 
+                            style={{ padding: 10 }} />} placeholder="Password"
+                            type={show ? "text" : "password"} 
+                            InputRightElement={
+                                <IconButton color="white" key={"solid"}  
+                                _icon={{as: Ionicons, name:show?"eye-off-outline":"eye-outline", color:"white"}}
+                                onPress={handleClick} 
+                                />
+                            // <Button size="xs" rounded="none" w="1/6" h="full" onPress={handleClick}>
+                            //     {show ? "Hide" : "Show"}
+                            // </Button>
+                            } />
 
                         <Text color="#b3b3ff" underline style={{ textAlign: "left" }}>Forget Password?</Text>
 

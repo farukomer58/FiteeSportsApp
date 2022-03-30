@@ -104,7 +104,7 @@ export default function RegisterScreen(props) {
 
                         </Text>
                     </Checkbox> */}
-                    <Button colorScheme="green" onPress={() => props.onChangePage("home")}>Register</Button>
+                    <Button colorScheme="green" onPress={() => props.navigation.navigate('Home')}>Register</Button>
 
                 </Stack>
             )
@@ -308,7 +308,7 @@ export default function RegisterScreen(props) {
                             Terms of Service
 
                     </Checkbox> */}
-                <Button onPress={() => props.onChangePage("home")}>Register</Button>
+                <Button onPress={() => props.navigation.navigate('Home')}>Register</Button>
                 <Text color="#b3b3ff" underline style={{ textAlign: "left" }}>Already an account? Login now</Text>
 
             </Stack>

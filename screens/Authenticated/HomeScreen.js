@@ -43,12 +43,17 @@ export default function HomeScreen(props) {
                 <HStack>
                     {["one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven"].map(val => (
                         <PressableCard />
-                        )
+                    )
                     )}
                 </HStack>
             </ScrollView>
 
+            
 
+            <Button title="Show Chat Rooms" onPress={() => { props.navigation.navigate("ChatRoom") }} >Show Chat Rooms</Button>
+            <Button title="Show Chat" onPress={() => { props.navigation.navigate("Chat") }} >Show Chat </Button>
+            <Button title="Show Calendar" onPress={() => { props.navigation.navigate("Calendar") }} >Show Calendar</Button>
+            <Button title="Show Calendar" onPress={() => { props.navigation.navigate("Calendar") }} >Show Calendar</Button>
             <View>
                 {/* <PressableCard /> */}
                 {/* <Card /> */}
