@@ -12,7 +12,7 @@ import {
     HStack,
     Item as FormItem,
     Input,
-    Label,
+    Link,
     Title,
     Icon,
     Box,
@@ -24,16 +24,65 @@ import { View, Image, StyleSheet, ImageBackground, TouchableOpacity } from 'reac
 import DatePicker from 'react-native-datepicker';
 import { Ionicons, MaterialIcons, AntDesign, Fontisto } from '@expo/vector-icons';
 
+import Values from '../../constants/Values';
+
 export default function RegisterScreen(props) {
 
+    // Show password or not
     const [show, setShow] = useState(false);
+    const handleClick = () => setShow(!show);
 
     const [date, setDate] = useState('09-10-2021');
 
     const [selectedUserType, setSelectedUserType] = useState("customer")
     const [isNextStep, setIsNextStep] = useState(false)
 
-    const handleClick = () => setShow(!show);
+    const [formData, setFormData] = React.useState({
+        fullName: "",
+        email: "",
+        birthDate: "",
+        phone: "",
+        password: "",
+        fullNameValid: true,
+        emailValid: true,
+        passwordValid: true,
+    });
+
+    const inputChange = (key, value) => {
+        if (key === 'email') {
+            const regexEmail = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+            if (regexEmail.test(value)) {
+                setFormData({ ...formData, [key]: value, emailValid: true })
+            } else {
+                setFormData({ ...formData, [key]: value, emailValid: false })
+            }
+        }
+
+        if (key === 'fullName') {
+            if (value.length >= 3) {
+                setFormData({ ...formData, [key]: value, fullNameValid: true })
+            } else {
+                setFormData({ ...formData, [key]: value, fullNameValid: false })
+            }
+        }
+
+        if (key === 'password') {
+            if (value.length >= 6) {
+                setFormData({ ...formData, [key]: value, passwordValid: true })
+            } else {
+                setFormData({ ...formData, [key]: value, passwordValid: false })
+            }
+        }
+    }
+
+    const registerUser = () => {
+        if (formData.emailValid && formData.passwordValid) {
+            props.navigation.navigate('Home')
+            console.log('Registered')
+        } else {
+            console.log('Validation Failed');
+        }
+    }
 
     // Customer Register
     let content;
@@ -227,7 +276,12 @@ export default function RegisterScreen(props) {
                     w={{
                         base: "75%",
                         md: "25%"
-                    }} InputLeftElement={<MaterialIcons name="account-circle" size={32} color="white" style={{ padding: 10 }} />} placeholder="Name" />
+                    }} InputLeftElement={<MaterialIcons name="account-circle" size={32} color="white" style={{ padding: 10 }} />} placeholder="Full Name"
+                    onChangeText={value => inputChange("fullName", value)}
+
+                />
+                {!formData.fullNameValid ? <Text fontSize="sm" style={styles.error} >Full Name must be at least 3 characters</Text> : null}
+
                 <Input
                     style={styles.input}
                     color="white"
@@ -282,7 +336,12 @@ export default function RegisterScreen(props) {
                     w={{
                         base: "75%",
                         md: "25%"
-                    }} InputLeftElement={<AntDesign name="mail" size={32} color="white" style={{ padding: 10 }} />} placeholder="Enter Email" />
+                    }} InputLeftElement={<AntDesign name="mail" size={32} color="white" style={{ padding: 10 }} />} placeholder="Enter Email"
+                    onChangeText={value => inputChange("email", value)}
+
+                />
+                {!formData.emailValid ? <Text fontSize="sm" style={styles.error} >Enter a valid Email</Text> : null}
+
                 <Input
                     style={styles.input}
                     color="white"
@@ -301,15 +360,22 @@ export default function RegisterScreen(props) {
                     }} InputLeftElement={<Ionicons name="key-outline" size={32} color="white" style={{ padding: 10 }} />} placeholder="Enter Password"
                     type={show ? "text" : "password"} InputRightElement={<Button size="xs" rounded="none" w="1/6" h="full" onPress={handleClick}>
                         {show ? "Hide" : "Show"}
-                    </Button>} />
+                    </Button>}
+                    onChangeText={value => inputChange("password", value)}
+                />
+                {!formData.passwordValid ? <Text fontSize="sm" style={styles.error} >Password must be at least 6 characters</Text> : null}
 
-                    {/* <Checkbox value="one" my={2} color="white">
+
+                {/* <Checkbox value="one" my={2} color="white">
                             Yes, I understand and agree to the Fitee
                             Terms of Service
 
                     </Checkbox> */}
-                <Button onPress={() => props.navigation.navigate('Home')}>Register</Button>
-                <Text color="#b3b3ff" underline style={{ textAlign: "left" }}>Already an account? Login now</Text>
+                <Button onPress={() => registerUser()}>Register</Button>
+                {/* <Text color="#b3b3ff" underline style={{ textAlign: "left" }}>Already an account? Login now</Text> */}
+                <Link onPress={() => { props.navigation.navigate('Login') }} isUnderlined={true} _text={{ color: Values.textColor }}>
+                    Already an account? Login now
+                </Link>
 
             </Stack>
         )
@@ -353,5 +419,10 @@ const styles = StyleSheet.create({
 
     datePickerStyle: {
         width: "75%",
+    },
+
+    error: {
+        color: "#ff0000",
+        marginTop: -12,
     },
 })

@@ -7,10 +7,10 @@ import {
     Body,
     Form,
     Item as FormItem,
-    Input,
+    Link,
     Label,
 
-    Center,
+    Spacer,
     Heading,
     HStack,
 } from 'native-base';
@@ -24,42 +24,70 @@ import Footer from '../../components/Footer';
 import PressableCard from '../../components/PressableCard';
 import Card from '../../components/Card';
 
+import Values from '../../constants/Values';
+
 export default function HomeScreen(props) {
 
     return (
-        <View style={styles.background}>
-            <Header />
-            <Heading size="md" ml="-1" color="white" p={2}>
-                Populair
-            </Heading>
+        <ScrollView contentContainerStyle={{ flexGrow: 1 }} >
+            <View style={styles.background}>
 
+                <Header />
 
-            <ScrollView px={90} horizontal={true} _contentContainerStyle={{
-                bg: "lime.300",
-                px: "44px",
-                w: "100%"
-            }} // style={{ backgroundColor: 'blue' }}
-                height={200}>
-                <HStack>
-                    {["one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven"].map(val => (
-                        <PressableCard />
-                    )
-                    )}
+                <HStack alignItems="center">
+                    <Heading size="md" ml="-1" color="white" p={2}>
+                        Recent Activities
+                    </Heading>
+                    <Spacer />
+                    <Link onPress={() => { props.navigation.navigate('Activities') }} isUnderlined={true} _text={{ color: Values.secondaryColor }} style={{ paddingRight: 10 }}>
+                        View All
+                    </Link>
                 </HStack>
-            </ScrollView>
 
-            
+                <ScrollView horizontal={true} height={280} >
+                    {/* style={{ backgroundColor: 'blue' }} */}
+                    <HStack>
+                        {["one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven"].map(val => (
+                            <PressableCard key={val} navigation={props.navigation} />
+                        )
+                        )}
+                    </HStack>
+                </ScrollView>
 
-            <Button title="Show Chat Rooms" onPress={() => { props.navigation.navigate("ChatRoom") }} >Show Chat Rooms</Button>
-            <Button title="Show Chat" onPress={() => { props.navigation.navigate("Chat") }} >Show Chat </Button>
-            <Button title="Show Calendar" onPress={() => { props.navigation.navigate("Calendar") }} >Show Calendar</Button>
-            <Button title="Show Calendar" onPress={() => { props.navigation.navigate("Calendar") }} >Show Calendar</Button>
-            <View>
-                {/* <PressableCard /> */}
-                {/* <Card /> */}
+                <HStack alignItems="center">
+                    <Heading size="md" ml="-1" color="white" p={2}>
+                        Populair
+                    </Heading>
+                    <Spacer />
+                    <Link onPress={() => { props.navigation.navigate('Activities') }} isUnderlined={true} _text={{ color: Values.secondaryColor }} style={{ paddingRight: 10 }}>
+                        View All
+                    </Link>
+                </HStack>
+
+                <ScrollView horizontal={true} height={280}>
+                    {/* style={{ backgroundColor: 'blue' }} */}
+                    <HStack>
+                        {["one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven"].map(val => (
+                            <PressableCard key={val} navigation={props.navigation} />
+                        )
+                        )}
+                    </HStack>
+                </ScrollView>
+
+
+
+                <Button title="Show Chat Rooms" onPress={() => { props.navigation.navigate("ChatRoom") }}  style={{marginVertical:5}}>Show Chat Rooms</Button>
+                <Button title="Show Chat" onPress={() => { props.navigation.navigate("Chat") }}  style={{marginVertical:5}}>Show Chat </Button>
+                <Button title="Show Calendar" onPress={() => { props.navigation.navigate("Calendar") }}  style={{marginVertical:5}}>Show Calendar</Button>
+                <Button title="Show Calendar" onPress={() => { props.navigation.navigate("Calendar") }} style={{marginVertical:5}}>Show Calendar</Button>
+                <View>
+                    {/* <PressableCard /> */}
+                    {/* <Card /> */}
+                </View>
+                <Footer />
             </View>
-            <Footer />
-        </View>
+        </ScrollView>
+
     )
 }
 
@@ -68,6 +96,7 @@ const styles = StyleSheet.create({
     background: {
         flex: 1,
         width: "100%",
+        height: "100%",
         backgroundColor: "#313131"
     },
 

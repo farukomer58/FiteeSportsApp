@@ -13,6 +13,8 @@ import LoginScreen from '../screens/UnAuthenticated/LoginScreen'
 import RegisterScreen from '../screens/UnAuthenticated/RegisterScreen';
 import HomeScreen from '../screens/Authenticated/HomeScreen';
 import CalendarScreen from '../screens/Authenticated/CalendarScreen';
+import ActivityDetail from '../screens/Authenticated/ActivityDetail';
+import Activities from '../screens/Authenticated/Activities';
 
 // Constants
 import Values from '../constants/Values'
@@ -37,7 +39,10 @@ export default AppNavigator = () => {
             <Stack.Navigator initialRouteName='Login' screenOptions={options}>
                 <Stack.Screen name="Login" component={LoginScreen}  options={{ title: 'Overview' }}/>
                 <Stack.Screen name="Register" component={RegisterScreen} />
+                <Stack.Screen name="ForgetPassword" component={RegisterScreen} />
                 <Stack.Screen name="Home" component={HomeScreen}/>
+                <Stack.Screen name="Activities" component={Activities}/>
+                <Stack.Screen name="ActivityDetail" component={ActivityDetail}/>
                 <Stack.Screen name="ChatRoom" component={ChatRoomScreen}/>
                 <Stack.Screen name="Chat" component={ChatScreen}/>
                 <Stack.Screen name="Calendar" component={CalendarScreen}/>

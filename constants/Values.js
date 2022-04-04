@@ -8,4 +8,6 @@ export default {
     primaryColorDark: "#739108",
     secondaryColor: "#ae2",
 
+    textColor:"#fff",
+
 }

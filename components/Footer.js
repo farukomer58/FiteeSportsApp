@@ -19,7 +19,7 @@ import { Ionicons, MaterialIcons, MaterialCommunityIcons } from '@expo/vector-ic
 import Values from '../constants/Values';
 
 export default function Footer(props) {
-    const [selected, setSelected] = React.useState(1);
+    const [selected, setSelected] = React.useState(0);
 
     return (
         <>
