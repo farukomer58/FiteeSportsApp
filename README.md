@@ -96,8 +96,8 @@ Frontend          |  ..... | SUPPLIER ACCOUNT: <br/> email: myUsername2@gmail.co
 
 ## Screens
 
-<img src="https://fiteesports.com/wp-content/uploads/2021/11/Horizontal-Design-transparent.png" alt="FiteeSports Logo" width="300"/>
-<img src="https://fiteesports.com/wp-content/uploads/2021/11/Horizontal-Design-transparent.png" alt="FiteeSports Logo" width="300"/>
+<img src="https://i.imgur.com/kSUo2GW.jpg" alt="FiteeSports Login Screen" width="300"/>
+<img src="https://i.imgur.com/wxsgbEl.jpg" alt="FiteeSports Register Screen" width="300"/>
   
 
 <!-- CONTRIBUTING -->
