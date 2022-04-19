@@ -15,14 +15,16 @@ import {
     Stack,
 } from 'native-base';
 
-import { View, Image, StyleSheet, ImageBackground } from 'react-native'
+import { View, Image, StyleSheet, ImageBackground, ScrollView, KeyboardAvoidingView } from 'react-native'
 import { Ionicons, MaterialIcons, AntDesign } from '@expo/vector-icons';
 import Axios from "axios";
+
+import { useDispatch } from 'react-redux';
+import * as authActions from '../../store/actions/authActions'
 
 // Custom Components
 import CustomText from '../../components/native/CustomText';
 import Values from '../../constants/Values';
-
 
 const formReducer = (state, action) => {
     if (action.type === "UPDATE") {
@@ -41,6 +43,8 @@ const formReducer = (state, action) => {
 
 export default function LoginScreen(props) {
 
+    const dispatch = useDispatch();
+
     // Show password or not
     const [show, setShow] = useState(false);
     const handleClick = () => setShow(!show);
@@ -53,7 +57,7 @@ export default function LoginScreen(props) {
     });
     const [errors, setErrors] = useState({});
 
-    const [formState, dispatch] = useReducer(formReducer, {
+    const [formState, dispatchForm] = useReducer(formReducer, {
         inputValues: {
             email: "",
             password: "",
@@ -103,7 +107,7 @@ export default function LoginScreen(props) {
 
     // Login user func, first validate
     const loginUser = async () => {
-        if (formData.emailValid && formData.passwordValid) {
+        if (formState.inputValidities.email && formState.inputValidities.password) {
             // await Axios.post(`http://localhost:8081/api/v1/user/login`)
             //     .then(async (response) => {
             //         if (response.status === 201) {
@@ -114,8 +118,10 @@ export default function LoginScreen(props) {
             //             console.log('Falsee')
             //         }
             //     })
-            props.navigation.navigate('Home')
+            // props.navigation.navigate('Home')
             console.log('Submitted')
+            console.log(formState)
+            dispatch(authActions.signUp(formState.inputValues.email,formState.inputValues.password))
         } else {
             // props.navigation.navigate('Home')
             // console.log('Submitted')
@@ -125,7 +131,9 @@ export default function LoginScreen(props) {
 
     return (
         <ImageBackground style={styles.background} source={require("../../assets/images/loginBg.png")} resizeMode="cover">
-            <View style={{ marginTop: 200 }}>
+            {/* <KeyboardAvoidingView behavior='padding'> */}
+            <ScrollView style={{ marginTop: 300 }}>
+
                 <Box alignItems="center">
                     <Image style={styles.image} source={require("../../assets/images/logo.png")} />
                     <CustomText color="white" style={{ marginTop: -20, marginBottom: 10 }} fontSize="lg">Login to your Account</CustomText>
@@ -133,7 +141,7 @@ export default function LoginScreen(props) {
                     <VStack space={1}>
                         <Input
                             style={styles.input}
-                            borderColor={!formState.inputValidities.email && "red.300"}
+                            // borderColor={!formState.inputValidities.email && "red.300"}
                             color="white"
                             variant="rounded"
                             size={"md"}
@@ -142,7 +150,7 @@ export default function LoginScreen(props) {
                             placeholder="Email"
                             value={formState.inputValues.email}
                             // onChangeText={value => inputChange("email", value)}
-                            onChangeText={value => dispatch({ type: "UPDATE", value: value, isValid: emailValid(value), input: "email" })}
+                            onChangeText={value => dispatchForm({ type: "UPDATE", value: value, isValid: emailValid(value), input: "email" })}
                         />
                         {!formState.inputValidities.email ? <Text fontSize="sm" style={styles.error} >Enter a valid Email</Text> : null}
 
@@ -150,7 +158,7 @@ export default function LoginScreen(props) {
                         <Input
                             style={styles.input}
                             color="white"
-                            borderColor={!formState.inputValidities.password && "red.300"}
+                            // borderColor={!formState.inputValidities.password && "red.300"}
                             variant="rounded"
                             w={"75%"}
                             InputLeftElement={<Ionicons name="key-outline" size={32} color="white"
@@ -163,7 +171,7 @@ export default function LoginScreen(props) {
                                 />
                             }
                             // onChangeText={value => inputChange("password", value)}
-                            onChangeText={value => dispatch({ type: "UPDATE", value: value, isValid: passwordValid(value), input: "password" })}
+                            onChangeText={value => dispatchForm({ type: "UPDATE", value: value, isValid: passwordValid(value), input: "password" })}
 
                         />
                         {!formState.inputValidities.password ? <Text fontSize="sm" style={styles.error} >Password must be at least 6 characters</Text> : null}
@@ -175,13 +183,14 @@ export default function LoginScreen(props) {
                         <Link onPress={() => { props.navigation.navigate('ForgetPassword') }} isUnderlined={true} _text={{ color: Values.textColor }}>
                             Forget Password?
                         </Link>
-                        <Button colorScheme="green" style={styles.customButton} onPress={loginUser} disabled={formData.email.length <= 0}>Login</Button>
+                        <Button colorScheme="green" style={styles.customButton} onPress={loginUser}>Login</Button>
 
                         <CustomText color="#b3b3ff" italic style={{}}>No account yet? Sign Up Now</CustomText>
                         <Button style={{ width: "30%" }} onPress={() => props.navigation.navigate('Register')}>Register</Button>
                     </Stack>
                 </Box>
-            </View>
+            </ScrollView>
+            {/* </KeyboardAvoidingView> */}
         </ImageBackground>
     )
 }

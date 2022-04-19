@@ -2,8 +2,8 @@ import { ADD_TO_CART } from "../actions/mainActions";
 // import CartItem from "../../models/cart-item";
 
 const initialState = {
-    items: {},              // Items in Cart
-    totalAmount: 0,         // Total Price
+    token: '',              // Logged in User Token   
+    isAuthenticated: false, // Is User logged in or not
 };
 
 export default (state = initialState, action) => {

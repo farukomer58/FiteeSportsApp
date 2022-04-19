@@ -26,7 +26,7 @@ import mainContext from "./store/reducers/mainContext";
 const rootReducer = combineReducers({
   main: mainContext
 });
-const store = createStore(rootReducer);
+const store = createStore(rootReducer, applyMiddleware(ReduxThunk)); // Enable to send request in redux actions
 
 // TEMP: Removes Warnings
 LogBox.ignoreLogs(['NativeBase:']);
@@ -44,11 +44,7 @@ const theme = extendTheme({ colors: newColorTheme });
 // LOAD FONTS
 const fetchFonts = () => {
   return Font.loadAsync({
-    "nunito-regular": require("./assets/fonts/Nunito_Sans/NunitoSans-Regular.ttf"),
-    // "open-sans": require("./assets/fonts/OpenSans-Regular.ttf"),
-    // "open-sans-bold": require("./assets/fonts/OpenSans-Bold.ttf"),
-    // "roboto-regular": require("./assets/fonts/Roboto/Roboto-Regular.ttf"),
-    // "helvetica": require("./assets/fonts/Helvetica/Helvetica.ttf")
+    "nunito-regular": require("./assets/fonts/Nunito_Sans/NunitoSans-Regular.ttf")
   })
 }
 
