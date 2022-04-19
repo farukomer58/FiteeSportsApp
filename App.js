@@ -44,8 +44,11 @@ const theme = extendTheme({ colors: newColorTheme });
 // LOAD FONTS
 const fetchFonts = () => {
   return Font.loadAsync({
-    "open-sans": require("./assets/fonts/OpenSans-Regular.ttf"),
-    "open-sans-bold": require("./assets/fonts/OpenSans-Bold.ttf")
+    "nunito-regular": require("./assets/fonts/Nunito_Sans/NunitoSans-Regular.ttf"),
+    // "open-sans": require("./assets/fonts/OpenSans-Regular.ttf"),
+    // "open-sans-bold": require("./assets/fonts/OpenSans-Bold.ttf"),
+    // "roboto-regular": require("./assets/fonts/Roboto/Roboto-Regular.ttf"),
+    // "helvetica": require("./assets/fonts/Helvetica/Helvetica.ttf")
   })
 }
 

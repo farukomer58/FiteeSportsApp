@@ -10,8 +10,7 @@ export default function CustomText(props) {
 
 const styles = StyleSheet.create({
   body: {
-      // fontFamily: "open-sans",
+      fontFamily: "nunito-regular",
       color:"white",
-      // textAlign:"center"
   }
 })
