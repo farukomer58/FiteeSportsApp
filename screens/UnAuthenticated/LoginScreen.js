@@ -1,4 +1,4 @@
-import React, { useState, useReducer } from 'react';
+import React, { useState, useEffect, useReducer } from 'react';
 import { Constants } from 'expo'
 import {
     Container,
@@ -15,7 +15,16 @@ import {
     Stack,
 } from 'native-base';
 
-import { View, Image, StyleSheet, ImageBackground, ScrollView, KeyboardAvoidingView } from 'react-native'
+import {
+    View,
+    Image,
+    StyleSheet,
+    ImageBackground,
+    ScrollView,
+    KeyboardAvoidingView,
+    ActivityIndicator,
+    Alert
+} from 'react-native'
 import { Ionicons, MaterialIcons, AntDesign } from '@expo/vector-icons';
 import Axios from "axios";
 
@@ -44,6 +53,9 @@ const formReducer = (state, action) => {
 export default function LoginScreen(props) {
 
     const dispatch = useDispatch();
+
+    const [isLoading, setIsLoading] = useState(false)
+    const [error, setError] = useState()
 
     // Show password or not
     const [show, setShow] = useState(false);
@@ -121,7 +133,16 @@ export default function LoginScreen(props) {
             // props.navigation.navigate('Home')
             console.log('Submitted')
             console.log(formState)
-            dispatch(authActions.signUp(formState.inputValues.email,formState.inputValues.password))
+            // dispatch(authActions.signUp(formState.inputValues.email,formState.inputValues.password))
+            setError(null)
+            setIsLoading(true)
+            try {
+                const respone = await dispatch(authActions.login(formState.inputValues.email, formState.inputValues.password))
+            } catch (err) {
+                setError(err.message)
+                Alert.alert("An error occured", err.message, [{text:"Okay"}])
+            }
+            setIsLoading(false)
         } else {
             // props.navigation.navigate('Home')
             // console.log('Submitted')
@@ -183,8 +204,10 @@ export default function LoginScreen(props) {
                         <Link onPress={() => { props.navigation.navigate('ForgetPassword') }} isUnderlined={true} _text={{ color: Values.textColor }}>
                             Forget Password?
                         </Link>
-                        <Button colorScheme="green" style={styles.customButton} onPress={loginUser}>Login</Button>
+                        {isLoading ? <ActivityIndicator size={"large"} color={Values.fontPrimary} /> :
 
+                            <Button colorScheme="green" style={styles.customButton} onPress={loginUser}>Login</Button>
+                        }
                         <CustomText color="#b3b3ff" italic style={{}}>No account yet? Sign Up Now</CustomText>
                         <Button style={{ width: "30%" }} onPress={() => props.navigation.navigate('Register')}>Register</Button>
                     </Stack>

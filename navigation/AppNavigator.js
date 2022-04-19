@@ -36,6 +36,8 @@ const options = {
 const Stack = createNativeStackNavigator();
 
 export default AppNavigator = () => {
+    
+    
     return (
         <NavigationContainer>
             <Stack.Navigator initialRouteName='Login' screenOptions={options}>
