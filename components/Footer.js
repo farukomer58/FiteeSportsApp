@@ -23,8 +23,7 @@ export default function Footer(props) {
 
     return (
         <>
-            <Center flex={1}></Center>
-            <HStack bg={Values.primaryColorDark} alignItems="center" safeAreaBottom shadow={6}>
+            <HStack bg={Values.primaryColorDark} alignItems="center" safeAreaBottom shadow={6} style={styles.footer}>
                 <Pressable opacity={selected === 0 ? 1 : 0.5} py="3" flex={1} onPress={() => setSelected(0)}>
                     <Center>
                         <Icon mb="1" as={<MaterialCommunityIcons name={selected === 0 ? "home" : "home-outline"} />} color="white" size="sm" />
@@ -63,5 +62,8 @@ export default function Footer(props) {
 }
 
 const styles = StyleSheet.create({
-
+    footer: {
+        // flex: 1,
+        justifyContent: 'flex-end',
+    },
 })
