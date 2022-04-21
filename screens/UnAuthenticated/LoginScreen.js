@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer } from 'react';
+import React, { useState, useEffect, useReducer, useCallback } from 'react';
 import { Constants } from 'expo'
 import {
     Container,
@@ -10,7 +10,6 @@ import {
     Input,
     Link,
     VStack,
-    IconButton,
     Box,
     Stack,
 } from 'native-base';
@@ -23,7 +22,9 @@ import {
     ScrollView,
     KeyboardAvoidingView,
     ActivityIndicator,
-    Alert
+    Alert,
+    Platform,
+
 } from 'react-native'
 import { Ionicons, MaterialIcons, AntDesign } from '@expo/vector-icons';
 import axios from "axios";
@@ -34,6 +35,9 @@ import * as authActions from '../../store/actions/authActions'
 // Custom Components
 import CustomText from '../../components/native/CustomText';
 import Values from '../../constants/Values';
+import CustomInput from '../../components/UI/CustomInput';
+
+import IconButton from '../../components/IconButton/IconButton';
 
 const formReducer = (state, action) => {
     if (action.type === "UPDATE") {
@@ -61,13 +65,6 @@ export default function LoginScreen(props) {
     const [show, setShow] = useState(false);
     const handleClick = () => setShow(!show);
 
-    const [formData, setFormData] = useState({
-        email: "",
-        password: "",
-        emailValid: true,
-        passwordValid: true,
-    });
-
     const [formState, dispatchForm] = useReducer(formReducer, {
         inputValues: {
             email: "",
@@ -80,44 +77,14 @@ export default function LoginScreen(props) {
         formIsValid: false,
     })
 
-    const emailValid = (value) => {
-        const regexEmail = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-        if (regexEmail.test(value)) {
-            return true
-        } else {
-            return false
-        }
-    }
-    const passwordValid = (value) => {
-        if (value.length >= 6) {
-            return true
-        } else {
-            return false
-        }
-    }
-
-    // Handle any key change
-    const inputChange = (key, value) => {
-        if (key === 'email') {
-            const regexEmail = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-            if (regexEmail.test(value)) {
-                setFormData({ ...formData, [key]: value, emailValid: true })
-            } else {
-                setFormData({ ...formData, [key]: value, emailValid: false })
-            }
-        }
-
-        if (key === 'password') {
-            if (value.length >= 6) {
-                setFormData({ ...formData, [key]: value, passwordValid: true })
-            } else {
-                setFormData({ ...formData, [key]: value, passwordValid: false })
-            }
-        }
-    }
+    const inputChangeHandler = useCallback((inputIdentifier, inputValue, inputIsValid) => {
+        dispatchForm({ type: "UPDATE", value: inputValue, isValid: inputIsValid, input: inputIdentifier })
+    }, [dispatchForm])
 
     // Login user func, first validate
     const loginUser = () => {
+
+        // console.log(formState, "Custom form and input")
 
         axios.get("http://localhost:8080/").then(value => {
             console.log(value)
@@ -161,54 +128,37 @@ export default function LoginScreen(props) {
 
     return (
         <ImageBackground style={styles.background} source={require("../../assets/images/loginBg.png")} resizeMode="cover">
-            {/* <KeyboardAvoidingView behavior='padding'> */}
-            <ScrollView style={{ marginTop: 300 }}>
+            <ScrollView>
+                <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} keyboardVerticalOffset={-150} style={{ marginTop: 300 }}>
 
-                <Box alignItems="center">
-                    <Image style={styles.image} source={require("../../assets/images/logo.png")} />
-                    <CustomText color="white" style={{ marginTop: -20, marginBottom: 10 }} fontSize="lg">Login to your Account</CustomText>
+                    <Box alignItems="center" style={{ width: "100%" }}>
 
-                    <VStack space={1}>
-                        <Input
-                            style={styles.input}
-                            // borderColor={!formState.inputValidities.email && "red.300"}
-                            color="white"
-                            variant="rounded"
-                            size={"md"}
-                            w={"75%"}
-                            InputLeftElement={<MaterialIcons name="account-circle" size={32} color="white" style={{ padding: 10 }} />}
+                        <Image style={styles.image} source={require("../../assets/images/logo.png")} />
+                        <CustomText color="white" style={{ marginTop: -20, marginBottom: 10 }} fontSize="lg">Login to your Account</CustomText>
+
+                        <CustomInput
+                            errorText="Please Enter a valid Email"
                             placeholder="Email"
-                            value={formState.inputValues.email}
-                            // onChangeText={value => inputChange("email", value)}
-                            onChangeText={value => dispatchForm({ type: "UPDATE", value: value, isValid: emailValid(value), input: "email" })}
+                            onInputChange={inputChangeHandler.bind(this, "email")}
+                            leftElement={<MaterialIcons name="account-circle" size={32} color="white" style={styles.inputIcon} />}
+                            email
+                            required
                         />
-                        {!formState.inputValidities.email ? <Text fontSize="sm" style={styles.error} >Enter a valid Email</Text> : null}
-
-
-                        <Input
-                            style={styles.input}
-                            color="white"
-                            // borderColor={!formState.inputValidities.password && "red.300"}
-                            variant="rounded"
-                            w={"75%"}
-                            InputLeftElement={<Ionicons name="key-outline" size={32} color="white"
-                                style={{ padding: 10 }} />} placeholder="Password"
-                            type={show ? "customtext" : "password"}
-                            InputRightElement={
-                                <IconButton color="white" key={"solid"}
-                                    _icon={{ as: Ionicons, name: show ? "eye-off-outline" : "eye-outline", color: "white" }}
-                                    onPress={handleClick}
-                                />
-                            }
-                            // onChangeText={value => inputChange("password", value)}
-                            onChangeText={value => dispatchForm({ type: "UPDATE", value: value, isValid: passwordValid(value), input: "password" })}
-
+                        <CustomInput
+                            leftElement={<Ionicons name="key-outline" size={32} color="white" style={styles.inputIcon} />}
+                            placeholder="Password"
+                            errorText="Please Enter a valid Password"
+                            onInputChange={inputChangeHandler.bind(this, "password")}
+                            rightElement={<IconButton onPress={handleClick} >
+                                <Ionicons name={show ? "eye-off-outline" : "eye-outline"} size={32} color="white" style={styles.inputIconRight} />
+                            </IconButton>}
+                            required
+                            minLength={6}
+                            secureTextEntry={!show}
                         />
-                        {!formState.inputValidities.password ? <Text fontSize="sm" style={styles.error} >Password must be at least 6 characters</Text> : null}
+                    </Box>
 
-                    </VStack>
-
-                    <Stack space={2} w="100%" alignItems="center">
+                    <Stack space={1} w="100%" alignItems="center">
 
                         <Link onPress={() => { props.navigation.navigate('ForgetPassword') }} isUnderlined={true} _text={{ color: Values.textColor }}>
                             Forget Password?
@@ -220,9 +170,8 @@ export default function LoginScreen(props) {
                         <CustomText color="#b3b3ff" italic style={{}}>No account yet? Sign Up Now</CustomText>
                         <Button style={{ width: "30%" }} onPress={() => props.navigation.navigate('Register')}>Register</Button>
                     </Stack>
-                </Box>
+                </KeyboardAvoidingView>
             </ScrollView>
-            {/* </KeyboardAvoidingView> */}
         </ImageBackground>
     )
 }
@@ -248,6 +197,21 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         marginBottom: 50
+    },
+
+    inputIcon: {
+        paddingTop: 15,
+        paddingLeft: 10,
+        paddingBottom: 15,
+        paddingRight: 0,
+        // color:"red"
+    },
+    inputIconRight: {
+        paddingTop: 15,
+        paddingLeft: 0,
+        paddingBottom: 15,
+        paddingRight: 10,
+        borderRadius: 100,
     },
 
     // Styles for Error text under input

@@ -7,8 +7,9 @@ export default {
     primaryColor: "#b2de0d",
     primaryColorDark: "#739108",
     secondaryColor: "#ae2",
+    focusColor: "#7FFFD4",
 
-    textColor:"#fff",
+    textColor: "#fff",
 
     // Server Config
     apiUrl: "http://localhost:8080/api/v1"
