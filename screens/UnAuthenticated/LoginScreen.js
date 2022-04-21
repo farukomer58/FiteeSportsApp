@@ -26,7 +26,7 @@ import {
     Alert
 } from 'react-native'
 import { Ionicons, MaterialIcons, AntDesign } from '@expo/vector-icons';
-import Axios from "axios";
+import axios from "axios";
 
 import { useDispatch } from 'react-redux';
 import * as authActions from '../../store/actions/authActions'
@@ -55,7 +55,7 @@ export default function LoginScreen(props) {
     const dispatch = useDispatch();
 
     const [isLoading, setIsLoading] = useState(false)
-    const [error, setError] = useState()
+    const [error, setError] = useState(null)
 
     // Show password or not
     const [show, setShow] = useState(false);
@@ -67,7 +67,6 @@ export default function LoginScreen(props) {
         emailValid: true,
         passwordValid: true,
     });
-    const [errors, setErrors] = useState({});
 
     const [formState, dispatchForm] = useReducer(formReducer, {
         inputValues: {
@@ -118,7 +117,18 @@ export default function LoginScreen(props) {
     }
 
     // Login user func, first validate
-    const loginUser = async () => {
+    const loginUser = () => {
+
+        axios.get("http://localhost:8080/").then(value => {
+            console.log(value)
+        }).catch(err => {
+            console.log("REQUEST FAILED")
+            console.log(err)
+        })
+
+
+        // const response = await dispatch(authActions.signUp(formState.inputValues.email, formState.inputValues.password))
+
         if (formState.inputValidities.email && formState.inputValidities.password) {
             // await Axios.post(`http://localhost:8081/api/v1/user/login`)
             //     .then(async (response) => {
@@ -137,15 +147,14 @@ export default function LoginScreen(props) {
             setError(null)
             setIsLoading(true)
             try {
-                const respone = await dispatch(authActions.login(formState.inputValues.email, formState.inputValues.password))
+                // const response = await dispatch(authActions.login(formState.inputValues.email, formState.inputValues.password))
+                props.navigation.navigate('Home')
             } catch (err) {
+                Alert.alert("An error occured", err.message, [{ text: "Okay" }])
                 setError(err.message)
-                Alert.alert("An error occured", err.message, [{text:"Okay"}])
             }
             setIsLoading(false)
         } else {
-            // props.navigation.navigate('Home')
-            // console.log('Submitted')
             console.log('Validation Failed');
         }
     }

@@ -21,10 +21,12 @@ import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import ReduxThunk from 'redux-thunk'
 import mainContext from "./store/reducers/mainContext";
+import authReducer from "./store/reducers/authReducer";
 
 // Config Redux with reducers
 const rootReducer = combineReducers({
-  main: mainContext
+  main: mainContext,
+  auth: authReducer,
 });
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk)); // Enable to send request in redux actions
 
