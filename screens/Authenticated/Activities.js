@@ -53,7 +53,6 @@ export default function Activities(props) {
 
              
                
-                <Footer />
             </View>
         </ScrollView>
 
