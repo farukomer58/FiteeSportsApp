@@ -4,12 +4,8 @@ import {
     Container,
     Header,
     Button,
-    Text,
-    FormControl,
     Item as FormItem,
-    Input,
     Link,
-    VStack,
     Box,
     Stack,
 } from 'native-base';
@@ -24,20 +20,19 @@ import {
     ActivityIndicator,
     Alert,
     Platform,
-
 } from 'react-native'
 import { Ionicons, MaterialIcons, AntDesign } from '@expo/vector-icons';
-import axios from "axios";
 
+import axios from "axios";
 import { useDispatch } from 'react-redux';
 import * as authActions from '../../store/actions/authActions'
 
 // Custom Components
 import CustomText from '../../components/native/CustomText';
-import Values from '../../constants/Values';
 import CustomInput from '../../components/UI/CustomInput';
-
 import IconButton from '../../components/IconButton/IconButton';
+
+import Values from '../../constants/Values';
 
 const formReducer = (state, action) => {
     if (action.type === "UPDATE") {
@@ -83,6 +78,7 @@ export default function LoginScreen(props) {
 
     // Login user func, first validate
     const loginUser = () => {
+        setIsLoading(true)
 
         // console.log(formState, "Custom form and input")
 
@@ -129,18 +125,18 @@ export default function LoginScreen(props) {
     return (
         <ImageBackground style={styles.background} source={require("../../assets/images/loginBg.png")} resizeMode="cover">
             <ScrollView>
-                <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} keyboardVerticalOffset={-150} style={{ marginTop: 300 }}>
+                <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} keyboardVerticalOffset={-150} style={{ marginTop: 275 }}>
 
-                    <Box alignItems="center" style={{ width: "100%" }}>
+                    <Stack space={3} w="100%" alignItems="center">
 
                         <Image style={styles.image} source={require("../../assets/images/logo.png")} />
                         <CustomText color="white" style={{ marginTop: -20, marginBottom: 10 }} fontSize="lg">Login to your Account</CustomText>
 
                         <CustomInput
+                            leftElement={<MaterialIcons name="account-circle" size={32} color="white" style={styles.inputIcon} />}
                             errorText="Please Enter a valid Email"
                             placeholder="Email"
                             onInputChange={inputChangeHandler.bind(this, "email")}
-                            leftElement={<MaterialIcons name="account-circle" size={32} color="white" style={styles.inputIcon} />}
                             email
                             required
                         />
@@ -153,12 +149,11 @@ export default function LoginScreen(props) {
                                 <Ionicons name={show ? "eye-off-outline" : "eye-outline"} size={32} color="white" style={styles.inputIconRight} />
                             </IconButton>}
                             required
-                            minLength={6}
+                            // minLength={6}
                             secureTextEntry={!show}
                         />
-                    </Box>
-
-                    <Stack space={1} w="100%" alignItems="center">
+                    </Stack>
+                    <Stack space={1} w="100%" alignItems="center" style={{marginTop:15}}>
 
                         <Link onPress={() => { props.navigation.navigate('ForgetPassword') }} isUnderlined={true} _text={{ color: Values.textColor }}>
                             Forget Password?
@@ -199,6 +194,7 @@ const styles = StyleSheet.create({
         marginBottom: 50
     },
 
+
     inputIcon: {
         paddingTop: 15,
         paddingLeft: 10,
@@ -210,15 +206,7 @@ const styles = StyleSheet.create({
         paddingTop: 15,
         paddingLeft: 0,
         paddingBottom: 15,
-        paddingRight: 10,
-        borderRadius: 100,
-    },
-
-    // Styles for Error text under input
-    error: {
-        color: "#ff0000",
-        marginTop: -5,
-        marginBottom: 10,
-        marginLeft: 15,
+        paddingRight: 20,
+        // borderRadius: 100,
     },
 })

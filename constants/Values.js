@@ -7,6 +7,10 @@ export default {
     primaryColor: "#b2de0d",
     primaryColorDark: "#739108",
     secondaryColor: "#ae2",
+
+    successColor:"#82DD55",
+    warningColor:"#EDB95E",
+    errorColor:"#E23636",
     focusColor: "#7FFFD4",
 
     textColor: "#fff",

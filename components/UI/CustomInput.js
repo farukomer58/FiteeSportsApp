@@ -4,7 +4,7 @@ import { Text } from 'native-base';
 import Values from '../../constants/Values';
 
 import { Ionicons, MaterialIcons, AntDesign } from '@expo/vector-icons';
-
+import CustomText from '../native/CustomText';
 
 const UPDATE_INPUT = "UPDATE_INPUT"
 const INPUT_FOCUS = "INPUT_FOCUS"
@@ -31,6 +31,8 @@ export default function CustomInput(props) {
     })
     const [isTouched, setIsTouched] = useState(false) // Check validity after input is pressed once
 
+    const [errorMessage, setErrorMessage] = useState(props.errorText)
+
     // Check Validity on every key strok and dispatch to reducer to update input values
     const inputChangeHandler = value => {
         const regexEmail = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
@@ -40,7 +42,9 @@ export default function CustomInput(props) {
         if (props.email && !regexEmail.test(value.toLowerCase())) { isValid = false }
         if (props.min != null && +value < props.min) { isValid = false }
         if (props.max != null && +value > props.max) { isValid = false }
-        if (props.minLength != null && value.length < props.minLength) { isValid = false }
+        if (props.minLength != null && value.length < props.minLength) { isValid = false 
+            // setErrorMessage(props.errorText2 ? props.errorText2 : props.errorText) 
+        }
 
         dispatchInput({ type: UPDATE_INPUT, value: value, isValid: isValid })
 
@@ -76,7 +80,7 @@ export default function CustomInput(props) {
                 <TextInput
                     {...props}
                     style={styles.input}
-                    placeholderTextColor="#fff"
+                    placeholderTextColor="#C6C6C6"
                     onBlur={handleInputBlur}
                     onFocus={handleInputFocus}
                     value={inputState.value}
@@ -84,7 +88,7 @@ export default function CustomInput(props) {
                 />
                 {props.rightElement && props.rightElement}
             </View>
-            {!inputState.isValid && isTouched ? <Text fontSize="sm" style={styles.error} >{props.errorText}</Text> : null}
+            {!inputState.isValid && isTouched ? <CustomText fontSize="sm" style={styles.error} >{errorMessage}</CustomText> : null}
         </View>
 
     )
@@ -99,17 +103,20 @@ const styles = StyleSheet.create({
 
     inputContainer: {
         flexDirection: "row",
-        borderWidth: 2,
+        borderWidth: 1,
         borderColor: "white",
         borderRadius: 50,
         width: 300,
-        marginBottom: 20,
+        // backgroundColor:"red",
+        marginBottom: 5,
     },
 
     input: {
-        width: 210,
+        width: "73%",
         color: "#fff",
         padding: 15,
+        // backgroundColor:"blue",
+
     },
     inputRounded: {
         borderWidth: 2,
@@ -120,7 +127,7 @@ const styles = StyleSheet.create({
         color: "red"
     },
     inputFilled: {
-        borderWidth: 2,
+        borderWidth: 1,
         borderColor: "white",
         borderRadius: 50,
         width: 300,
@@ -134,9 +141,10 @@ const styles = StyleSheet.create({
 
     // Styles for Error text under input
     error: {
-        color: "#ff0000",
-        marginTop: -10,
-        marginBottom: 10,
+        color: Values.errorColor,
+        fontSize: 14,
+        marginTop: -8,
+        // marginBottom: 5,
         marginLeft: 15,
     },
 })
