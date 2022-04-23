@@ -22,7 +22,7 @@ import {
     // Alert,
 } from 'native-base';
 
-import { View, Image, StyleSheet, ImageBackground, TouchableOpacity, ScrollView, KeyboardAvoidingView, ActivityIndicator, Alert} from 'react-native'
+import { View, Image, StyleSheet, ImageBackground, TouchableOpacity, ScrollView, KeyboardAvoidingView, ActivityIndicator, Alert } from 'react-native'
 import DatePicker from 'react-native-datepicker';
 import { Ionicons, MaterialIcons, AntDesign, Fontisto } from '@expo/vector-icons';
 
@@ -68,7 +68,7 @@ export default function RegisterScreen(props) {
     const [selectedUserType, setSelectedUserType] = useState("customer")
     const [isNextStep, setIsNextStep] = useState(false)
 
-
+    const [agreed, setAgreed] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
 
     const [formState, dispatchForm] = useReducer(formReducer, {
@@ -95,7 +95,7 @@ export default function RegisterScreen(props) {
 
 
     const registerUser = () => {
-        if (formState.formIsValid) {
+        if (formState.formIsValid && agreed) {
             props.navigation.navigate('Home')
             console.log('Registered')
 
@@ -103,11 +103,12 @@ export default function RegisterScreen(props) {
             // show succes or failure alert
         } else {
             console.log('Validation Failed');
+            // console.log(agreed)
         }
     }
 
     const goNextStep = () => {
-        if (formState.formIsValid) {
+        if (formState.formIsValid && agreed) {
             setIsNextStep(true)
         } else {
             setIsNextStep(true)
@@ -240,13 +241,12 @@ export default function RegisterScreen(props) {
                     secureTextEntry={!show}
                 />
 
-                <Checkbox value="one" color="white" style={{ margin: 10 }} >
+                <Checkbox value="one" color="white" style={{ margin: 10 }} onChange={(state) => setAgreed(oldState => !oldState)}>
                     <CustomText>
                         Yes, I understand and agree to the Fitee
                         <Link onPress={() => { setModalVisible(!modalVisible); }} isUnderlined={true} _text={{ color: Values.textColor }} r>
                             Terms of Service
                         </Link>
-
                     </CustomText>
                 </Checkbox>
 
@@ -303,15 +303,15 @@ export default function RegisterScreen(props) {
                             </Modal.Body>
                             <Modal.Footer>
                                 <Button.Group space={2}>
-                                    <Button variant="ghost" colorScheme="blueGray" onPress={() => {
+                                    {/* <Button variant="ghost" colorScheme="blueGray" onPress={() => {
                                         setModalVisible(false);
                                     }}>
                                         Cancel
-                                    </Button>
+                                    </Button> */}
                                     <Button onPress={() => {
                                         setModalVisible(false);
                                     }}>
-                                        Save
+                                        Ok
                                     </Button>
                                 </Button.Group>
                             </Modal.Footer>
