@@ -16,6 +16,7 @@ import {
 
 import { View, Image, StyleSheet, ImageBackground, ScrollView } from 'react-native'
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
@@ -70,9 +71,21 @@ export default function HomeScreen(props) {
                 <Button title="Show sadasd" onPress={() => { props.navigation.navigate("Calendar") }} style={{ marginVertical: 5 }}>Show Calendar</Button>
 
             </View>
-            <Footer />
         </ScrollView>
     )
+}
+
+export const screenOptions = navData => {
+    return {
+        headerTitle: "Home Ulan",
+        title: 'Home',
+        tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons name="home" color={color} size={26} />
+        ),
+        headerLeft: (props) => (
+            <Text>Hello</Text>
+        )
+    }
 }
 
 const styles = StyleSheet.create({

@@ -28,7 +28,6 @@ export default function ChatRoomScreen(props) {
     return (
         <View style={styles.background}>
             <Header />
-            <Footer />
         </View>
     )
 }

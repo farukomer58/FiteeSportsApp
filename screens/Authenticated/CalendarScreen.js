@@ -29,7 +29,6 @@ export default function CalendarScreen(props) {
         <View style={styles.background}>
             <Header />
            
-            <Footer />
         </View>
     )
 }

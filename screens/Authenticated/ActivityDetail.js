@@ -141,7 +141,6 @@ export default function ActivityDetail(props) {
                 </Box>
 
 
-                <Footer />
             </View>
         </ScrollView>
     )

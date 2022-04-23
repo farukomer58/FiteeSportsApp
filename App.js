@@ -1,13 +1,19 @@
 import React, { useState } from "react";
 import {
-  LogBox
+  LogBox,
+  AppRegistry 
 } from 'react-native';
 
-// Native Base Imports
+// (Native Base) React Native Paper Imports 
 import {
   NativeBaseProvider,
   extendTheme,
 } from "native-base";
+
+// import {
+//   Provider as PaperProvider,
+//   Text
+// } from 'react-native-paper';
 
 // App Navigator
 import AppNavigator from './navigation/AppNavigator'
