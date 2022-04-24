@@ -1,70 +1,64 @@
-import ACTIVITIES from '../../data/dummy-data';
+import { ACTIVITIES } from '../../data/dummy-data';
 import {
-  DELETE_PRODUCT,
-  CREATE_PRODUCT,
-  UPDATE_PRODUCT,
-  SET_PRODUCTS
+  DELETE_ACTIVITY,
+  CREATE_ACTIVITY,
+  UPDATE_ACTIVITY
 } from '../actions/activityActions';
 import Activity from '../../models/activity';
 
 const initialState = {
-  availableProducts: [],
-  userProducts: []
+  availableActivities: ACTIVITIES,
+  userActivities: ACTIVITIES.filter(prod => prod.ownerId === 'u1')
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case SET_PRODUCTS:
-      return {
-        availableProducts: action.products,
-        userProducts: action.userProducts
-      };
-    case CREATE_PRODUCT:
-      const newProduct = new Product(
-        action.productData.id,
-        action.productData.ownerId,
-        action.productData.title,
-        action.productData.imageUrl,
-        action.productData.description,
-        action.productData.price
+    case CREATE_ACTIVITY:
+      const newActivity = new Activity(
+        new Date().toString(),
+        'u1',
+        action.activityData.title,
+        action.activityData.imageUrl,
+        action.activityData.description,
+        action.activityData.price
       );
       return {
         ...state,
-        availableProducts: state.availableProducts.concat(newProduct),
-        userProducts: state.userProducts.concat(newProduct)
+        availableActivities: state.availableActivities.concat(newActivity),
+        userActivities: state.userActivities.concat(newActivity)
       };
-    case UPDATE_PRODUCT:
-      const productIndex = state.userProducts.findIndex(
-        prod => prod.id === action.pid
+    case UPDATE_ACTIVITY:
+      const activityIndex = state.userActivities.findIndex(
+        activity => activity.id === action.pid
       );
-      const updatedProduct = new Product(
+      const updatedActivity = new Activity(
         action.pid,
-        state.userProducts[productIndex].ownerId,
-        action.productData.title,
-        action.productData.imageUrl,
-        action.productData.description,
-        state.userProducts[productIndex].price
+        state.userActivities[productIndex].ownerId,
+        action.activityData.title,
+        action.activityData.imageUrl,
+        action.activityData.description,
+        state.userActivities[activityIndex].price
       );
-      const updatedUserProducts = [...state.userProducts];
-      updatedUserProducts[productIndex] = updatedProduct;
-      const availableProductIndex = state.availableProducts.findIndex(
-        prod => prod.id === action.pid
+      const updatedUserActivities = [...state.userActivities];
+      updatedUserActivities[productIndex] = updatedActivity;
+      const availableActivityIndex = state.availableActivities.findIndex(
+        activity => activity.id === action.pid
       );
-      const updatedAvailableProducts = [...state.availableProducts];
-      updatedAvailableProducts[availableProductIndex] = updatedProduct;
+      const updatedAvailableActivities = [...state.availableActivities];
+      updatedAvailableActivities[availableActivityIndex] = updatedActivity;
       return {
         ...state,
-        availableProducts: updatedAvailableProducts,
-        userProducts: updatedUserProducts
+        availableActivities: updatedAvailableActivities,
+        userActivities: updatedUserActivities
       };
-    case DELETE_PRODUCT:
+    case DELETE_ACTIVITY:
       return {
         ...state,
-        userProducts: state.userProducts.filter(
-          product => product.id !== action.pid
+        userActivities: state.userActivities.filter(
+          activity => activity.id !== action.pid
         ),
-        availableProducts: state.availableProducts.filter(
-          product => product.id !== action.pid
+        availableActivities: state.availableProducts.filter(
+          activity => activity.id !== action.pid
         )
       };
   }

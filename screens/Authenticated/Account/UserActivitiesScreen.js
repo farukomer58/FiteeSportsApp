@@ -1,19 +1,19 @@
 import React from 'react';
-import { View, Text, FlatList, Button, Platform, Alert } from 'react-native';
+import { View, Text, FlatList, Button, Platform, Alert,StyleSheet } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
-import { HeaderButtons, Item } from 'react-navigation-header-buttons';
+// import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 
-import HeaderButton from '../../components/UI/HeaderButton';
-import ProductItem from '../../components/shop/ProductItem';
-import Colors from '../../constants/Colors';
-import * as productsActions from '../../store/actions/products';
+// import HeaderButton from '../../components/UI/HeaderButton';
+import ActivityItem from '../../../components/activities/ActivityItem';
+import Values from '../../../constants/Values';
+import * as activityActions from '../../../store/actions/activityActions';
 
-const UserProductsScreen = props => {
-  const userProducts = useSelector(state => state.products.userProducts);
+export default UserActivitiesScreen = props => {
+  const userActivities = useSelector(state => state.activities.userActivities);
   const dispatch = useDispatch();
 
-  const editProductHandler = id => {
-    props.navigation.navigate('EditProduct', { productId: id });
+  const editActivityHandler = id => {
+    props.navigation.navigate('ManageActivity', { productId: id });
   };
 
   const deleteHandler = id => {
@@ -23,26 +23,27 @@ const UserProductsScreen = props => {
         text: 'Yes',
         style: 'destructive',
         onPress: () => {
-          dispatch(productsActions.deleteProduct(id));
+          dispatch(activityActions.deleteActivity(id));
         }
       }
     ]);
   };
 
-  if (userProducts.length === 0) {
+  if (userActivities.length === 0) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>No products found, maybe start creating some?</Text>
+        <Text>No activities found, maybe start creating some?</Text>
       </View>
     );
   }
 
   return (
     <FlatList
-      data={userProducts}
+      data={userActivities}
       keyExtractor={item => item.id}
+      style={styles.background}
       renderItem={itemData => (
-        <ProductItem
+        <ActivityItem
           image={itemData.item.imageUrl}
           title={itemData.item.title}
           price={itemData.item.price}
@@ -51,18 +52,18 @@ const UserProductsScreen = props => {
           }}
         >
           <Button
-            color={Colors.primary}
+            color={Values.primaryColorDark}
             title="Edit"
             onPress={() => {
               editProductHandler(itemData.item.id);
             }}
           />
           <Button
-            color={Colors.primary}
+            color={Values.primaryColorDark}
             title="Delete"
             onPress={deleteHandler.bind(this, itemData.item.id)}
           />
-        </ProductItem>
+        </ActivityItem>
       )}
     />
   );
@@ -70,30 +71,26 @@ const UserProductsScreen = props => {
 
 export const screenOptions = navData => {
   return {
-    headerTitle: 'Your Products',
-    headerLeft: () => (
-      <HeaderButtons HeaderButtonComponent={HeaderButton}>
-        <Item
-          title="Menu"
-          iconName={Platform.OS === 'android' ? 'md-menu' : 'ios-menu'}
-          onPress={() => {
-            navData.navigation.toggleDrawer();
-          }}
-        />
-      </HeaderButtons>
-    ),
-    headerRight: () => (
-      <HeaderButtons HeaderButtonComponent={HeaderButton}>
-        <Item
-          title="Add"
-          iconName={Platform.OS === 'android' ? 'md-create' : 'ios-create'}
-          onPress={() => {
-            navData.navigation.navigate('EditProduct');
-          }}
-        />
-      </HeaderButtons>
-    )
+    headerTitle: 'Your Activities',
+
+    // headerRight: () => (
+    //   <HeaderButtons HeaderButtonComponent={HeaderButton}>
+    //     <Item
+    //       title="Add"
+    //       iconName={Platform.OS === 'android' ? 'md-create' : 'ios-create'}
+    //       onPress={() => {
+    //         navData.navigation.navigate('ManageActivity'); // create and edit same screen, differantiate with params
+    //       }}
+    //     />
+    //   </HeaderButtons>
+    // )
   };
 };
 
-export default UserProductsScreen;
+const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+    width: "100%",
+    backgroundColor: "#313131"
+},
+})

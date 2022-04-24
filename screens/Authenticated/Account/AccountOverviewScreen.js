@@ -40,7 +40,7 @@ export default function AccountOverviewScreen(props) {
                 />
                 <View style={{ backgroundColor: "black", height: 1, margin: 5 }} />
                 <ListItem
-                    onPress={() => { props.navigation.navigate("Activities") }}
+                    onPress={() => { props.navigation.navigate("UserActivities") }}
                     listItem="Own Activities"
                     listItemIcon={<MaterialIcons name="list" size={40} color="white" style={styles.inputIcon} />}
                 />

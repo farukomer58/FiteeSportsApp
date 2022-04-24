@@ -11,13 +11,12 @@ import {
 
 import Card from '../UI/Card';
 
-const ActivityItem = props => {
+export default ActivityItem = props => {
   let TouchableCmp = TouchableOpacity;
 
   if (Platform.OS === 'android' && Platform.Version >= 21) {
     TouchableCmp = TouchableNativeFeedback;
   }
-
   return (
     <Card style={styles.product}>
       <View style={styles.touchable}>
@@ -66,12 +65,12 @@ const styles = StyleSheet.create({
     padding: 10
   },
   title: {
-    fontFamily: 'open-sans-bold',
+    fontFamily: 'nunito-regular-bold',
     fontSize: 18,
     marginVertical: 2
   },
   price: {
-    fontFamily: 'open-sans',
+    fontFamily: 'nunito-regular',
     fontSize: 14,
     color: '#888'
   },
@@ -84,4 +83,3 @@ const styles = StyleSheet.create({
   }
 });
 
-export default ProductItem;
