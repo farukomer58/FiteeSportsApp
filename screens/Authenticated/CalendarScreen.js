@@ -1,36 +1,29 @@
 import React, { Component } from 'react';
-import { Constants } from 'expo'
-import {
-    Container,
-    Button,
-    Text,
-    Body,
-    Form,
-    Item as FormItem,
-    Input,
-    Label,
-
-    Center,
-    Heading,
-    HStack,
-} from 'native-base';
 
 import { View, Image, StyleSheet, ImageBackground, ScrollView } from 'react-native'
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import Header from '../../components/Header';
-import Footer from '../../components/Footer';
-
-import PressableCard from '../../components/PressableCard';
-import Card from '../../components/Card';
 
 export default function CalendarScreen(props) {
     return (
         <View style={styles.background}>
-            <Header />
            
         </View>
     )
+}
+
+export const screenOptions = navData => {
+    return {
+        headerTitle: "Calendar",
+        title: 'Calendar',
+        tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons name="chat" color={color} size={26} />
+        ),
+        // headerLeft: (props) => (
+        //     <Text>Hello</Text>
+        // )
+    }
 }
 
 const styles = StyleSheet.create({

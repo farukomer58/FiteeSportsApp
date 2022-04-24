@@ -39,6 +39,5 @@ const styles = StyleSheet.create({
     listItem: {
         // backgroundColor: "white",
         margin:10,
-        color: "black"
     },
 })

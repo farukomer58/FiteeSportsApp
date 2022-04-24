@@ -17,6 +17,7 @@ import {
 
 import { View, Image, StyleSheet, ImageBackground, ScrollView } from 'react-native'
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import Header from '../../../components/Header';
 
@@ -25,7 +26,7 @@ import Card from '../../../components/Card';
 
 import Values from '../../../constants/Values';
 
-export default function Activities(props) {
+export default function ActivitiesScreen(props) {
 
     return (
         <ScrollView contentContainerStyle={{ flexGrow: 1 }} >
@@ -58,14 +59,14 @@ export default function Activities(props) {
 
 export const screenOptions = navData => {
     return {
-        headerTitle: "Home Ulan",
-        title: 'Home',
+        headerTitle: "Activities",
+        title: 'Discover',
         tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="home" color={color} size={26} />
+            <MaterialCommunityIcons name="magnify" color={color} size={26} />
         ),
-        headerLeft: (props) => (
-            <Text>Hello</Text>
-        )
+        // headerLeft: (props) => (
+        //     <Text>Hello</Text>
+        // )
     }
 }
 

@@ -18,9 +18,6 @@ import { View, Image, StyleSheet, ImageBackground, ScrollView } from 'react-nati
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import Header from '../../../components/Header';
-import Footer from '../../../components/Footer';
-
 import PressableCard from '../../../components/PressableCard';
 import Card from '../../../components/Card';
 
@@ -30,10 +27,8 @@ export default function HomeScreen(props) {
 
     return (
         <ScrollView contentContainerStyle={{ flexGrow: 1 }} stickyHeaderIndices={[0]}>
-            <Header />
 
             <View style={styles.background}>
-
 
                 <HStack alignItems="center">
                     <Heading size="md" ml="-1" color="white" p={2}>
@@ -64,13 +59,16 @@ export const screenOptions = navData => {
     return {
         headerTitle: "Home Ulan",
         title: 'Home',
-        // tabBarBadge: 3,
+        tabBarBadge: 3,
         tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="home" color={color} size={26} />
         ),
-        headerLeft: (props) => (
-            <Text>Hello</Text>
-        )
+        // headerLeft: (props) => (
+        //     <Text>Hello</Text>
+        // ),
+        // headerRight: (props) => (
+        //     <Text>Hello</Text>
+        // )
     }
 }
 

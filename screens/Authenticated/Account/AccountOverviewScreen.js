@@ -1,53 +1,27 @@
 import React, { Component } from 'react';
-import { Constants } from 'expo'
-import {
-    Container,
-    Button,
-    Text,
-    Body,
-    Form,
-    Item as FormItem,
-    Link,
-    Label,
-
-    Spacer,
-    Heading,
-    HStack,
-} from 'native-base';
 
 import { View, Image, StyleSheet, ImageBackground, ScrollView, TouchableOpacity } from 'react-native'
 import { Ionicons, MaterialIcons, AntDesign, Fontisto } from '@expo/vector-icons';
-
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 //Custom
-
-import Header from '../../../components/Header';
-import PressableCard from '../../../components/PressableCard';
-import Card from '../../../components/Card';
-
 import CustomText from '../../../components/native/CustomText'
 import Values from '../../../constants/Values';
 import ListItem from '../../../components/UI/ListItem';
 
-import style from 'react-native-datepicker/style';
-
-export default function AccountOverview(props) {
+export default function AccountOverviewScreen(props) {
 
     return (
         <ScrollView contentContainerStyle={{ flexGrow: 1 }} >
             <View style={styles.background}>
 
-                <Header />
-
-
                 <View style={styles.head}>
-                    <View style={{alignItems:"center"}}>
+                    <View style={{ alignItems: "center" }}>
                         <MaterialIcons name="account-circle" size={75} color="white" style={styles.inputIcon} />
                         <CustomText title style={styles.userName}>User Full Name</CustomText>
                     </View>
 
                 </View>
-
 
                 <ListItem
                     onPress={() => { props.navigation.navigate("Activities") }}
@@ -77,11 +51,12 @@ export default function AccountOverview(props) {
 
 export const screenOptions = navData => {
     return {
+        headerShown: false,
         headerTitle: "Account",
-        // title: 'Home',
-        // tabBarIcon: ({ color }) => (
-        //     <MaterialCommunityIcons name="home" color={color} size={26} />
-        // ),
+        title: 'Account',
+        tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons name="account" color={color} size={26} />
+        ),
         // headerLeft: (props) => (
         //     <Text>Hello</Text>
         // )
