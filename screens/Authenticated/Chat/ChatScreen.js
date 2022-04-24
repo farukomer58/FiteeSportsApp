@@ -18,12 +18,6 @@ import {
 import { View, Image, StyleSheet, ImageBackground, ScrollView } from 'react-native'
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 
-import Header from '../../components/Header';
-import Footer from '../../components/Footer';
-
-import PressableCard from '../../components/PressableCard';
-import Card from '../../components/Card';
-
 export default function ChatScreen(props) {
     return (
         <View style={styles.background}>
@@ -39,6 +33,11 @@ export default function ChatScreen(props) {
             </HStack>
         </View>
     )
+}
+
+export const screenOptions = navData => {
+    return {
+    }
 }
 
 const styles = StyleSheet.create({

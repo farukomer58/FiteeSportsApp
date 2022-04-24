@@ -21,7 +21,7 @@ import Card from '../../../components/Card';
 import Values from '../../../constants/Values';
 import CustomText from '../../../components/native/CustomText';
 
-export default function ActivityDetail(props) {
+export default function ActivityDetailScreen(props) {
     return (
         <ScrollView contentContainerStyle={{ flexGrow: 1 }} >
             <View style={styles.background}>

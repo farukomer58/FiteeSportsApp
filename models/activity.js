@@ -1,4 +1,4 @@
-export default class Product {
+export default class Activity {
     constructor(id, ownerId, title, imageUrl, description, price) {
         this.id = id;
         this.ownerId = ownerId;

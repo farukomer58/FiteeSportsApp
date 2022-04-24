@@ -18,7 +18,7 @@ export const screenOptions = navData => {
         headerTitle: "Calendar",
         title: 'Calendar',
         tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="chat" color={color} size={26} />
+            <MaterialCommunityIcons name="calendar" color={color} size={26} />
         ),
         // headerLeft: (props) => (
         //     <Text>Hello</Text>

@@ -6,12 +6,14 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 // Screens / Pages
 import HomeScreen, { screenOptions as homeScreenOptions } from '../screens/Authenticated/Home/HomeScreen';
-import ActivityDetail, { screenOptions as activityDetailScreenOptions } from '../screens/Authenticated/Activity/ActivityDetail';
+import ActivityDetailScreen, { screenOptions as activityDetailScreenOptions } from '../screens/Authenticated/Activity/ActivityDetailScreen';
 import ActivitiesScreen, { screenOptions as activitiesScreenOptions } from '../screens/Authenticated/Activity/ActivitiesScreen';
-import ChatRoomScreen, { screenOptions as chatRoomScreenOptions } from '../screens/Authenticated/ChatRoomScreen';
+
+import ChatRoomScreen, { screenOptions as chatRoomScreenOptions } from '../screens/Authenticated/Chat/ChatRoomScreen';
+import ChatScreen from '../screens/Authenticated/Chat/ChatScreen';
+
 import CalendarScreen, { screenOptions as calendarScreenOptions } from '../screens/Authenticated/CalendarScreen';
 import AccountOverviewScreen, { screenOptions as accountOverviewScreenOptions } from '../screens/Authenticated/Account/AccountOverviewScreen'
-import ChatScreen from '../screens/Authenticated/Chat';
 
 import { defaultNavOptions } from './navigationConfig';
 import Values from '../constants/Values';
@@ -21,7 +23,7 @@ const AccountStackNavigator = createStackNavigator();
 export const AccountNavigator = () => {
     return (
         <AccountStackNavigator.Navigator screenOptions={defaultNavOptions}>
-            <AccountStackNavigator.Screen name="AccountOverviewList" component={MainNavigator} options={{ headerTitle: "Account" }} />
+            <AccountStackNavigator.Screen name="AccountOverviewList" component={AccountOverviewScreen} options={{ headerTitle: "Account" }} />
         </AccountStackNavigator.Navigator>
     );
 };
@@ -30,13 +32,22 @@ export const AccountNavigator = () => {
 const ActivityStackNavigator = createStackNavigator();
 export const ActivityNavigator = () => {
     return (
-        <AccountStackNavigator.Navigator screenOptions={defaultNavOptions}>
-            <AccountStackNavigator.Screen name="ActivitiesDiscover" component={ActivitiesScreen} options={{ headerTitle: "Activities" }} />
-            <AccountStackNavigator.Screen name="ActivityDetail" component={ActivityDetail} options={{ headerTitle: "ActivityDetail Title" }} />
-        </AccountStackNavigator.Navigator>
+        <ActivityStackNavigator.Navigator screenOptions={defaultNavOptions}>
+            <ActivityStackNavigator.Screen name="ActivitiesDiscover" component={ActivitiesScreen} options={{ headerTitle: "Activities" }} />
+            <ActivityStackNavigator.Screen name="ActivityDetail" component={ActivityDetailScreen} options={{ headerTitle: "ActivityDetail Title" }} />
+        </ActivityStackNavigator.Navigator>
     );
+};
 
-    
+// Chat Navigation
+const ChatStackNavigator = createStackNavigator();
+export const ChatNavigator = () => {
+    return (
+        <ChatStackNavigator.Navigator screenOptions={defaultNavOptions}>
+            <ChatStackNavigator.Screen name="ChatRooms" component={ChatRoomScreen} options={{ headerTitle: "Chat" }} />
+            <ChatStackNavigator.Screen name="ChatConversation" component={ChatScreen} options={{ headerShown: false }} />
+        </ChatStackNavigator.Navigator>
+    );
 };
 
 // createMaterialBottomTabNavigator or createBottomTabNavigator
@@ -53,7 +64,7 @@ export const MainNavigator = () => {
         >
             <MainTabNavigator.Screen name="Home" component={HomeScreen} options={homeScreenOptions} />
             <MainTabNavigator.Screen name="Activities" component={ActivityNavigator} options={activitiesScreenOptions} />
-            <MainTabNavigator.Screen name="ChatRoom" component={ChatRoomScreen} options={chatRoomScreenOptions} />
+            <MainTabNavigator.Screen name="Chat" component={ChatNavigator} options={chatRoomScreenOptions} />
             <MainTabNavigator.Screen name="Calendar" component={CalendarScreen} options={calendarScreenOptions} />
             <MainTabNavigator.Screen name="Account" component={AccountNavigator} options={accountOverviewScreenOptions} />
         </MainTabNavigator.Navigator>

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import {
   LogBox,
-  AppRegistry 
+  AppRegistry
 } from 'react-native';
 
 // (Native Base) React Native Paper Imports 
@@ -28,11 +28,13 @@ import { Provider } from 'react-redux';
 import ReduxThunk from 'redux-thunk'
 import mainContext from "./store/reducers/mainContext";
 import authReducer from "./store/reducers/authReducer";
+import activityReducer from './store/reducers/activityReducer';
 
 // Config Redux with reducers
 const rootReducer = combineReducers({
   main: mainContext,
   auth: authReducer,
+  activities: activityReducer,
 });
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk)); // Enable to send request in redux actions
 

@@ -1,5 +1,13 @@
 import React, { Component } from 'react';
-
+import {
+    Container,
+    Header,
+    Button,
+    Item as FormItem,
+    Link,
+    Box,
+    Stack,
+} from 'native-base';
 import { View, Image, StyleSheet, ImageBackground, ScrollView } from 'react-native'
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -8,12 +16,16 @@ export default function ChatRoomScreen(props) {
     return (
         <View style={styles.background}>
             {/* <Header /> */}
+
+            <Button title="Show Chat" onPress={() => { props.navigation.navigate("ChatConversation") }} style={{ marginVertical: 5 }}>Show Chat </Button>
+
         </View>
     )
 }
 
 export const screenOptions = navData => {
     return {
+        headerShown:false,
         headerTitle: "Chat",
         title: 'Chat',
         tabBarIcon: ({ color }) => (

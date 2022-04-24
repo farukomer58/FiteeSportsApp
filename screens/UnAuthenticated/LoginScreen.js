@@ -82,17 +82,36 @@ export default function LoginScreen(props) {
 
         // console.log(formState, "Custom form and input")
 
-        axios.get("http://localhost:8080/").then(value => {
-            console.log(value)
-        }).catch(err => {
-            console.log("REQUEST FAILED")
-            console.log(err)
-        })
+        // axios.get("http://localhost:8080/").then(value => {
+        //     console.log(value)
+        // }).catch(err => {
+        //     console.log("REQUEST FAILED")
+        //     console.log(err)
+        // })
 
+        fetch('http://localhost:8082/', {
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            mode: 'cors', // no-cors, *cors, same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'same-origin', // include, *same-origin, omit
+            headers: {
+                'Content-Type': 'application/json'
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            redirect: 'follow', // manual, *follow, error
+            referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+            // body: JSON.stringify(data) // body data type must match "Content-Type" header
+        })
+            .then(response => response.json())
+            .then(data => console.log(data))
+            .catch(err => {
+                console.log("Jooo")
+                console.log(err)
+            })
 
         // const response = await dispatch(authActions.signUp(formState.inputValues.email, formState.inputValues.password))
 
-        if (formState.inputValidities.email && formState.inputValidities.password) {
+        if (formState.formIsValid) {
             // await Axios.post(`http://localhost:8081/api/v1/user/login`)
             //     .then(async (response) => {
             //         if (response.status === 201) {
@@ -153,7 +172,7 @@ export default function LoginScreen(props) {
                             secureTextEntry={!show}
                         />
                     </Stack>
-                    <Stack space={1} w="100%" alignItems="center" style={{marginTop:15}}>
+                    <Stack space={1} w="100%" alignItems="center" style={{ marginTop: 15 }}>
 
                         <Link onPress={() => { props.navigation.navigate('ForgetPassword') }} isUnderlined={true} _text={{ color: Values.textColor }}>
                             Forget Password?
