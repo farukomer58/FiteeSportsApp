@@ -19,8 +19,8 @@ import { View, Image, StyleSheet, ImageBackground, ScrollView } from 'react-nati
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import Header from '../../../components/Header';
 
+// Custom
 import PressableCard from '../../../components/PressableCard';
 import Card from '../../../components/Card';
 
@@ -31,10 +31,6 @@ export default function ActivitiesScreen(props) {
     return (
         <ScrollView contentContainerStyle={{ flexGrow: 1 }} >
             <View style={styles.background}>
-
-                <Header />
-
-
                 <HStack alignItems="center">
                     <Heading size="md" ml="-1" color="white" p={2}>
                         All Activities
