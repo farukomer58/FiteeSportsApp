@@ -13,14 +13,13 @@ import {
 import { View, Image, StyleSheet, ImageBackground, ScrollView, Button, FlatList, TouchableOpacity } from 'react-native'
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 
-import Header from '../../components/Header';
-import Footer from '../../components/Footer';
+import Header from '../../../components/Header';
 
-import PressableCard from '../../components/PressableCard';
-import DatesCard from '../../components/DatesCard';
-import Card from '../../components/Card';
-import Values from '../../constants/Values';
-import CustomText from '../../components/native/CustomText';
+import PressableCard from '../../../components/PressableCard';
+import DatesCard from '../../../components/DatesCard';
+import Card from '../../../components/Card';
+import Values from '../../../constants/Values';
+import CustomText from '../../../components/native/CustomText';
 
 export default function ActivityDetail(props) {
     return (

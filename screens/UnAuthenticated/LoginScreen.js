@@ -171,6 +171,19 @@ export default function LoginScreen(props) {
     )
 }
 
+export const screenOptions = navData => {
+    return {
+        headerTitle: "Login",
+        // title: 'Home',
+        // tabBarIcon: ({ color }) => (
+        //     <MaterialCommunityIcons name="home" color={color} size={26} />
+        // ),
+        // headerLeft: (props) => (
+        //     <Text>Hello</Text>
+        // )
+    }
+}
+
 const styles = StyleSheet.create({
 
     background: {

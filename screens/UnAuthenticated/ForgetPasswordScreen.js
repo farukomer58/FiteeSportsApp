@@ -89,6 +89,20 @@ export default function ForgetPasswordScreen(props) {
     )
 }
 
+
+export const screenOptions = navData => {
+    return {
+        headerTitle: "Forget Password",
+        // title: 'Home',
+        // tabBarIcon: ({ color }) => (
+        //     <MaterialCommunityIcons name="home" color={color} size={26} />
+        // ),
+        // headerLeft: (props) => (
+        //     <Text>Hello</Text>
+        // )
+    }
+}
+
 const styles = StyleSheet.create({
 
     background: {

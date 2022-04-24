@@ -52,6 +52,7 @@ const theme = extendTheme({ colors: newColorTheme });
 // LOAD FONTS
 const fetchFonts = () => {
   return Font.loadAsync({
+    "nunito-regular-bold": require("./assets/fonts/Nunito_Sans/NunitoSans-Bold.ttf"),
     "nunito-regular": require("./assets/fonts/Nunito_Sans/NunitoSans-Regular.ttf")
   })
 }

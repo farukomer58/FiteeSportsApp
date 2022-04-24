@@ -14,6 +14,7 @@ export default {
     focusColor: "#7FFFD4",
 
     textColor: "#fff",
+    textColorBlack:"1F292E",
 
     // Server Config
     apiUrl: "http://localhost:8080/api/v1"

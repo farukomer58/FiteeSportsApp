@@ -18,13 +18,13 @@ import { View, Image, StyleSheet, ImageBackground, ScrollView } from 'react-nati
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import Header from '../../components/Header';
-import Footer from '../../components/Footer';
+import Header from '../../../components/Header';
+import Footer from '../../../components/Footer';
 
-import PressableCard from '../../components/PressableCard';
-import Card from '../../components/Card';
+import PressableCard from '../../../components/PressableCard';
+import Card from '../../../components/Card';
 
-import Values from '../../constants/Values';
+import Values from '../../../constants/Values';
 
 export default function HomeScreen(props) {
 
@@ -54,21 +54,6 @@ export default function HomeScreen(props) {
                         )}
                     </HStack>
                 </ScrollView>
-
-
-                <Button title="Show Chat Rooms" onPress={() => { props.navigation.navigate("ChatRoom") }} style={{ marginVertical: 5 }}>Show Chat Rooms</Button>
-                <Button title="Show Chat" onPress={() => { props.navigation.navigate("Chat") }} style={{ marginVertical: 5 }}>Show Chat </Button>
-                <Button title="Show Calendar" onPress={() => { props.navigation.navigate("Calendar") }} style={{ marginVertical: 5 }}>Show Calendar</Button>
-                <Button title="Show Calendar" onPress={() => { props.navigation.navigate("Calendar") }} style={{ marginVertical: 5 }}>Show Calendar</Button>
-                <Button title="Show Calendar" onPress={() => { props.navigation.navigate("Calendar") }} style={{ marginVertical: 5 }}>Show Calendar</Button>
-                <Button title="Show Calendar" onPress={() => { props.navigation.navigate("Calendar") }} style={{ marginVertical: 5 }}>Show Calendar</Button>
-                <Button title="Show Calendar" onPress={() => { props.navigation.navigate("Calendar") }} style={{ marginVertical: 5 }}>Show Calendar</Button>
-                <Button title="Show Calendar" onPress={() => { props.navigation.navigate("Calendar") }} style={{ marginVertical: 5 }}>Show Calendar</Button>
-                <Button title="Show Calendar" onPress={() => { props.navigation.navigate("Calendar") }} style={{ marginVertical: 5 }}>Show Calendar</Button>
-                <Button title="Show Calendar" onPress={() => { props.navigation.navigate("Calendar") }} style={{ marginVertical: 5 }}>Show Calendar</Button>
-                <Button title="Show Calendar" onPress={() => { props.navigation.navigate("Calendar") }} style={{ marginVertical: 5 }}>Show Calendar</Button>
-                <Button title="Show Calendar" onPress={() => { props.navigation.navigate("Calendar") }} style={{ marginVertical: 5 }}>Show Calendar</Button>
-                <Button title="Show sadasd" onPress={() => { props.navigation.navigate("Calendar") }} style={{ marginVertical: 5 }}>Show Calendar</Button>
 
             </View>
         </ScrollView>

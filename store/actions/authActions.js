@@ -7,7 +7,6 @@ export const LOGIN = "LOGIN"
 
 const API_KEY = "AIzaSyC-l7NsOPS8BtT-NKnT3lapHmZzBj7RaJ4"
 
-
 const headers = {
     "Content-Type": "application/json",
 };

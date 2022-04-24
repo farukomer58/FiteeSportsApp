@@ -3,6 +3,7 @@ import { SIGNUP, LOGIN } from "../actions/authActions";
 const initialState = {
     userId: '',             // Logged in User ID   
     token: '',              // Logged in User Token   
+    didTryAutoLogin: false  // Did try auto log in
     // isAuthenticated: false, // Is User logged in or not
 };
 

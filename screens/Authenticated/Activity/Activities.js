@@ -18,13 +18,12 @@ import {
 import { View, Image, StyleSheet, ImageBackground, ScrollView } from 'react-native'
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 
-import Header from '../../components/Header';
-import Footer from '../../components/Footer';
+import Header from '../../../components/Header';
 
-import PressableCard from '../../components/PressableCard';
-import Card from '../../components/Card';
+import PressableCard from '../../../components/PressableCard';
+import Card from '../../../components/Card';
 
-import Values from '../../constants/Values';
+import Values from '../../../constants/Values';
 
 export default function Activities(props) {
 
@@ -51,12 +50,23 @@ export default function Activities(props) {
                     </HStack>
                 </ScrollView>
 
-             
-               
             </View>
         </ScrollView>
 
     )
+}
+
+export const screenOptions = navData => {
+    return {
+        headerTitle: "Home Ulan",
+        title: 'Home',
+        tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons name="home" color={color} size={26} />
+        ),
+        headerLeft: (props) => (
+            <Text>Hello</Text>
+        )
+    }
 }
 
 const styles = StyleSheet.create({
