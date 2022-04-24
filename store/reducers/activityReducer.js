@@ -57,7 +57,7 @@ export default (state = initialState, action) => {
         userActivities: state.userActivities.filter(
           activity => activity.id !== action.pid
         ),
-        availableActivities: state.availableProducts.filter(
+        availableActivities: state.availableActivities.filter(
           activity => activity.id !== action.pid
         )
       };

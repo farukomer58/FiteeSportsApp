@@ -13,7 +13,7 @@ export default UserActivitiesScreen = props => {
   const dispatch = useDispatch();
 
   const editActivityHandler = id => {
-    props.navigation.navigate('ManageActivity', { productId: id });
+    props.navigation.navigate('ManageActivity', { activityId: id });
   };
 
   const deleteHandler = id => {
@@ -48,14 +48,14 @@ export default UserActivitiesScreen = props => {
           title={itemData.item.title}
           price={itemData.item.price}
           onSelect={() => {
-            editProductHandler(itemData.item.id);
+            editActivityHandler(itemData.item.id);
           }}
         >
           <Button
             color={Values.primaryColorDark}
             title="Edit"
             onPress={() => {
-              editProductHandler(itemData.item.id);
+              editActivityHandler(itemData.item.id);
             }}
           />
           <Button

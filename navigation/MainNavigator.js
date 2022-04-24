@@ -15,6 +15,7 @@ import ChatScreen from '../screens/Authenticated/Chat/ChatScreen';
 import CalendarScreen, { screenOptions as calendarScreenOptions } from '../screens/Authenticated/CalendarScreen';
 import AccountOverviewScreen, { screenOptions as accountOverviewScreenOptions } from '../screens/Authenticated/Account/AccountOverviewScreen'
 import UserActivitiesScreen, { screenOptions as userActivitiesScreenOptions } from '../screens/Authenticated/Account/UserActivitiesScreen';
+import ManageActivityScreen, { screenOptions as manageActivityScreenOptions } from '../screens/Authenticated/Account/ManageActivityScreen';
 
 import { defaultNavOptions } from './navigationConfig';
 import Values from '../constants/Values';
@@ -26,6 +27,7 @@ export const AccountNavigator = () => {
         <AccountStackNavigator.Navigator screenOptions={defaultNavOptions}>
             <AccountStackNavigator.Screen name="AccountOverviewList" component={AccountOverviewScreen} options={{ headerTitle: "Account" }} />
             <AccountStackNavigator.Screen name="UserActivities" component={UserActivitiesScreen} options={userActivitiesScreenOptions} />
+            <AccountStackNavigator.Screen name="ManageActivity" component={ManageActivityScreen} options={manageActivityScreenOptions} />
         </AccountStackNavigator.Navigator>
     );
 };
