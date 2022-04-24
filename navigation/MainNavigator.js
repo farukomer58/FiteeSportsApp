@@ -26,21 +26,40 @@ export const AccountNavigator = () => {
                 component={AccountOverview}
                 options={accountOverviewScreenOptions}
             />
+            {/* <AccountStackNavigator.Screen
+                name="EditProduct"
+                component={EditProductScreen}
+                options={editProductScreenOptions}
+            /> */}
         </AccountStackNavigator.Navigator>
     );
 };
 
+const HomeStackNavigator = createStackNavigator()
+export const HomeNavigator = () => {
+    return (
+        <HomeStackNavigator.Navigator screenOptions={defaultNavOptions}>
+            <HomeStackNavigator.Screen
+                name="Home"
+                component={HomeScreen}
+                options={homeScreenOptions}
+            />
+        </HomeStackNavigator.Navigator>
+    )
+}
+
 // MainNavigation and Bottom Tab
-const MainTabNavigator = createBottomTabNavigator();
+const MainTabNavigator = createMaterialBottomTabNavigator();
 export const MainNavigator = () => {
     return <>
         <MainTabNavigator.Navigator
-            initialRouteName="Home"
+            initialRouteName="HomeNav"
             screenOptions={defaultNavOptions}
             barStyle={{ backgroundColor: Values.primaryColorDark }}
+            shifting={false}
         //activeColor="#e91e63"
         >
-            <MainTabNavigator.Screen name="Home" component={HomeScreen} options={homeScreenOptions} />
+            <MainTabNavigator.Screen name="HomeNav" component={HomeNavigator} />
             <MainTabNavigator.Screen name="Activities" component={Activities} options={{
                 tabBarLabel: 'Discover',
                 tabBarIcon: ({ color }) => (

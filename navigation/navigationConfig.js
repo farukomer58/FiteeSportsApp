@@ -19,7 +19,6 @@ export const defaultNavOptions = {
         fontFamily: 'nunito-regular'
     },
     headerTintColor: Platform.OS === 'android' ? 'white' : Values.primaryColor,
-    
     tabBarStyle: {
         backgroundColor: Values.primaryColor,
         // height: 55,  

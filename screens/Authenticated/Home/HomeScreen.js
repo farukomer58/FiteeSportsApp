@@ -64,6 +64,7 @@ export const screenOptions = navData => {
     return {
         headerTitle: "Home Ulan",
         title: 'Home',
+        // tabBarBadge: 3,
         tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="home" color={color} size={26} />
         ),
