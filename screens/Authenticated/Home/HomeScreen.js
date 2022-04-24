@@ -57,7 +57,7 @@ export default function HomeScreen(props) {
 
 export const screenOptions = navData => {
     return {
-        headerTitle: "Home Ulan",
+        headerTitle: "Home",
         title: 'Home',
         tabBarBadge: 3,
         tabBarIcon: ({ color }) => (

@@ -6,7 +6,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 // Screens / Pages
 import HomeScreen, { screenOptions as homeScreenOptions } from '../screens/Authenticated/Home/HomeScreen';
-import ActivityDetail from '../screens/Authenticated/Activity/ActivityDetail';
+import ActivityDetail, { screenOptions as activityDetailScreenOptions } from '../screens/Authenticated/Activity/ActivityDetail';
 import ActivitiesScreen, { screenOptions as activitiesScreenOptions } from '../screens/Authenticated/Activity/ActivitiesScreen';
 import ChatRoomScreen, { screenOptions as chatRoomScreenOptions } from '../screens/Authenticated/ChatRoomScreen';
 import CalendarScreen, { screenOptions as calendarScreenOptions } from '../screens/Authenticated/CalendarScreen';
@@ -21,9 +21,22 @@ const AccountStackNavigator = createStackNavigator();
 export const AccountNavigator = () => {
     return (
         <AccountStackNavigator.Navigator screenOptions={defaultNavOptions}>
-            <AccountStackNavigator.Screen name="AccountOverviewList" component={AccountOverviewScreen} options={{ headerTitle: "Account" }} />
+            <AccountStackNavigator.Screen name="AccountOverviewList" component={MainNavigator} options={{ headerTitle: "Account" }} />
         </AccountStackNavigator.Navigator>
     );
+};
+
+// Activity Navigation
+const ActivityStackNavigator = createStackNavigator();
+export const ActivityNavigator = () => {
+    return (
+        <AccountStackNavigator.Navigator screenOptions={defaultNavOptions}>
+            <AccountStackNavigator.Screen name="ActivitiesDiscover" component={ActivitiesScreen} options={{ headerTitle: "Activities" }} />
+            <AccountStackNavigator.Screen name="ActivityDetail" component={ActivityDetail} options={{ headerTitle: "ActivityDetail Title" }} />
+        </AccountStackNavigator.Navigator>
+    );
+
+    
 };
 
 // createMaterialBottomTabNavigator or createBottomTabNavigator
@@ -39,7 +52,7 @@ export const MainNavigator = () => {
         //activeColor="#e91e63"
         >
             <MainTabNavigator.Screen name="Home" component={HomeScreen} options={homeScreenOptions} />
-            <MainTabNavigator.Screen name="Activities" component={ActivitiesScreen} options={activitiesScreenOptions} />
+            <MainTabNavigator.Screen name="Activities" component={ActivityNavigator} options={activitiesScreenOptions} />
             <MainTabNavigator.Screen name="ChatRoom" component={ChatRoomScreen} options={chatRoomScreenOptions} />
             <MainTabNavigator.Screen name="Calendar" component={CalendarScreen} options={calendarScreenOptions} />
             <MainTabNavigator.Screen name="Account" component={AccountNavigator} options={accountOverviewScreenOptions} />

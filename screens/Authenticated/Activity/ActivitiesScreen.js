@@ -55,6 +55,7 @@ export default function ActivitiesScreen(props) {
 
 export const screenOptions = navData => {
     return {
+        headerShown: false,
         headerTitle: "Activities",
         title: 'Discover',
         tabBarIcon: ({ color }) => (

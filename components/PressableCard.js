@@ -23,13 +23,13 @@ export default function PressableCard(props) {
     return (
         <>
             <Box alignItems="center" style={{ margin: 20, width: 250 }}>
-                <TouchableOpacity activeOpacity={0.8} style={{ width: "100%" }} onPress={()=>{props.navigation.navigate("ActivityDetail")}}>
+                <TouchableOpacity activeOpacity={0.8} style={{ width: "100%" }} onPress={() => { props.navigation.navigate("ActivityDetail") }}>
                     <Box borderWidth="1" borderColor="coolGray.300" shadow="3" bg={"coolGray.100"} p="5" rounded="8" >
                         <HStack alignItems="center">
 
                             <Image source={{
                                 uri: "https://images.unsplash.com/photo-1588286840104-8957b019727f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
-                            }}  style={styles.image}/>
+                            }} style={styles.image} />
 
                         </HStack>
                         <Text color="coolGray.800" mt="3" fontWeight="medium" fontSize="xl">
@@ -55,8 +55,8 @@ export default function PressableCard(props) {
 }
 
 const styles = StyleSheet.create({
-    image:{
-        width:"100%",
-        height:125,
+    image: {
+        width: "100%",
+        height: 125,
     },
 })

@@ -26,7 +26,6 @@ export default function ActivityDetail(props) {
         <ScrollView contentContainerStyle={{ flexGrow: 1 }} >
             <View style={styles.background}>
 
-                <Header />
                 <Image style={styles.image} source={{ uri: "https://images.unsplash.com/photo-1562088287-bde35a1ea917?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80" }} />
 
                 <CustomText fontSize="xl">Week Mass - Building Trainer</CustomText>
@@ -143,6 +142,19 @@ export default function ActivityDetail(props) {
             </View>
         </ScrollView>
     )
+}
+
+export const screenOptions = navData => {
+    return {
+        headerTitle: "Activity Title",
+        // title: 'Discover',
+        // tabBarIcon: ({ color }) => (
+        //     <MaterialCommunityIcons name="magnify" color={color} size={26} />
+        // ),
+        // headerLeft: (props) => (
+        //     <Text>Hello</Text>
+        // )
+    }
 }
 
 const styles = StyleSheet.create({
