@@ -4,6 +4,7 @@ import Values from '../../constants/Values';
 
 export const SIGNUP = "SIGNUP"
 export const LOGIN = "LOGIN"
+export const LOGIN_QUICK = "LOGIN_QUICK"
 
 const API_KEY = "AIzaSyC-l7NsOPS8BtT-NKnT3lapHmZzBj7RaJ4"
 
@@ -57,5 +58,11 @@ export const login = (email, password) => {
         // console.log(resDate)
 
         dispatch({ type: LOGIN, token: resDate.idToken, userId: resDate.localId })
+    }
+}
+
+export const loginQuick = () => {
+    return dispatch => {
+        dispatch({ type: LOGIN_QUICK })
     }
 }

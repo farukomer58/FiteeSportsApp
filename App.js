@@ -36,7 +36,7 @@ const rootReducer = combineReducers({
   auth: authReducer,
   activities: activityReducer,
 });
-const store = createStore(rootReducer, applyMiddleware(ReduxThunk)); // Enable to send request in redux actions
+const store = createStore(rootReducer, applyMiddleware(ReduxThunk)); // ReduxThunk:Enable to send request in redux actions
 
 // TEMP: Removes Warnings
 LogBox.ignoreLogs(['NativeBase:']);

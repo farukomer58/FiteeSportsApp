@@ -147,13 +147,6 @@ export default function ActivityDetailScreen(props) {
 export const screenOptions = navData => {
     return {
         headerTitle: "Activity Title",
-        // title: 'Discover',
-        // tabBarIcon: ({ color }) => (
-        //     <MaterialCommunityIcons name="magnify" color={color} size={26} />
-        // ),
-        // headerLeft: (props) => (
-        //     <Text>Hello</Text>
-        // )
     }
 }
 

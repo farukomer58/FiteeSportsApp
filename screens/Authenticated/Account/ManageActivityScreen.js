@@ -7,45 +7,27 @@ import {
   StyleSheet,
   Platform
 } from 'react-native';
-// import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { useSelector, useDispatch } from 'react-redux';
-
-// import HeaderButton from '../../components/UI/HeaderButton';
 import * as activityActions from '../../../store/actions/activityActions';
+
+// Custom
 import CustomText from '../../../components/native/CustomText';
 
 export default ManageActivityScreen = props => {
-  const activityId = props.route.params ? props.route.params.activityId : null;
-  const editedActivity = useSelector(state =>
-    state.activities.userActivities.find(activity => activity.id === activityId)
-  );
   const dispatch = useDispatch();
 
+  const activityId = props.route.params ? props.route.params.activityId : null;
+  const editedActivity = useSelector(state => state.activities.userActivities.find(activity => activity.id === activityId));
+
   const [title, setTitle] = useState(editedActivity ? editedActivity.title : '');
-  const [imageUrl, setImageUrl] = useState(
-    editedActivity ? editedActivity.imageUrl : ''
-  );
+  const [imageUrl, setImageUrl] = useState(editedActivity ? editedActivity.imageUrl : '');
   const [price, setPrice] = useState('');
-  const [description, setDescription] = useState(
-    editedActivity ? editedActivity.description : ''
-  );
+  const [description, setDescription] = useState(editedActivity ? editedActivity.description : '');
 
+  // Handler when Submited save or edit Activity
   const submitHandler = useCallback(() => {
-    // if (editedProduct) {
-    //   dispatch(
-    //     productsActions.updateProduct(prodId, title, description, imageUrl)
-    //   );
-    // } else {
-    //   dispatch(
-    //     productsActions.createProduct(title, description, imageUrl, +price)
-    //   );
-    // }
-    // props.navigation.goBack();
-  }, []);
 
-  // useEffect(() => {
-  //   props.navigation.setParams({ submit: submitHandler });
-  // }, [submitHandler]);
+  }, []);
 
   return (
     <ScrollView style={styles.background}>

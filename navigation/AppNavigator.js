@@ -10,13 +10,13 @@ import { MainNavigator } from './MainNavigator';
 
 export default AppNavigator = () => {
 
-    const isAuth = useSelector(state => !!state.auth.token);
-    const [isAuthenticated, setIsAuthenticated] = useState(true)
+    const isAuth = useSelector(state => state.auth.isAuthenticated);
+    // const [isAuthenticated, setIsAuthenticated] = useState(true)
 
     return (
         <NavigationContainer>
-            {!isAuthenticated && <AuthNavigator />}
-            {isAuthenticated && <MainNavigator />}
+            {!isAuth && <AuthNavigator />}
+            {isAuth && <MainNavigator />}
         </NavigationContainer>
     )
 }

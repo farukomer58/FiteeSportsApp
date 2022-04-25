@@ -79,6 +79,8 @@ export default function LoginScreen(props) {
     // Login user func, first validate
     const loginUser = () => {
         setIsLoading(true)
+        dispatch(authActions.loginQuick())
+        // props.navigation.navigate('Home')
 
         // console.log(formState, "Custom form and input")
 

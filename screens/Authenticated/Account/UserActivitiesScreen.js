@@ -1,21 +1,22 @@
 import React from 'react';
-import { View, Text, FlatList, Button, Platform, Alert,StyleSheet } from 'react-native';
+import { View, Text, FlatList, Button, Platform, Alert, StyleSheet } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
-// import { HeaderButtons, Item } from 'react-navigation-header-buttons';
-
-// import HeaderButton from '../../components/UI/HeaderButton';
-import ActivityItem from '../../../components/activities/ActivityItem';
-import Values from '../../../constants/Values';
 import * as activityActions from '../../../store/actions/activityActions';
 
-export default UserActivitiesScreen = props => {
-  const userActivities = useSelector(state => state.activities.userActivities);
-  const dispatch = useDispatch();
+// Custom
+import ActivityItem from '../../../components/activities/ActivityItem';
+import Values from '../../../constants/Values';
 
+export default UserActivitiesScreen = props => {
+  const dispatch = useDispatch();
+  const userActivities = useSelector(state => state.activities.userActivities); // Get User Activities of redux 
+
+  // Handler for redirecting to edit screen Activity
   const editActivityHandler = id => {
     props.navigation.navigate('ManageActivity', { activityId: id });
   };
 
+  // Handler for deleting activity
   const deleteHandler = id => {
     Alert.alert('Are you sure?', 'Do you really want to delete this item?', [
       { text: 'No', style: 'default' },
@@ -72,18 +73,6 @@ export default UserActivitiesScreen = props => {
 export const screenOptions = navData => {
   return {
     headerTitle: 'Your Activities',
-
-    // headerRight: () => (
-    //   <HeaderButtons HeaderButtonComponent={HeaderButton}>
-    //     <Item
-    //       title="Add"
-    //       iconName={Platform.OS === 'android' ? 'md-create' : 'ios-create'}
-    //       onPress={() => {
-    //         navData.navigation.navigate('ManageActivity'); // create and edit same screen, differantiate with params
-    //       }}
-    //     />
-    //   </HeaderButtons>
-    // )
   };
 };
 
@@ -92,5 +81,5 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
     backgroundColor: "#313131"
-},
+  },
 })
