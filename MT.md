@@ -35,13 +35,14 @@
 
 |               | CODE |TEST | DEVOPS   |OVERALL   |
 |---------------|------|-----|----------|--------------------|
-| Omer Citik   |  -  | - |   -    | - |
+| Omer Citik   |  1  | 1 |   1    | Below Expectation |
 
 #### What went well:
  - .........
 
 #### (Even) better if:
-- .........
-- .........
-- .........
+- Betere testen schrijven.
+- Nettere code schrijven: gebruik sonarlint hiervoor.
+- Gebruik een dev branche ipv alles op de master.
+- Kijk naar name test code conventions: https://medium.com/@stefanovskyi/unit-test-naming-conventions-dd9208eadbea
 
