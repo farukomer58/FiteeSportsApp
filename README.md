@@ -80,6 +80,11 @@ There are some requirments that needs to be done before the installation
 
 
 ### Configuration
+Run Jest Tests 
+   ```sh
+   npm tests
+   ```
+   Now the defined test will run
 
 
 
