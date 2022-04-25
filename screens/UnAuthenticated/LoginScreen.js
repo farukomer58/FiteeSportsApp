@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useReducer, useCallback } from 'react';
-import { Constants } from 'expo'
 import {
     Container,
     Header,
@@ -160,6 +159,7 @@ export default function LoginScreen(props) {
                             onInputChange={inputChangeHandler.bind(this, "email")}
                             email
                             required
+                            testId="emailInput"
                         />
                         <CustomInput
                             leftElement={<Ionicons name="key-outline" size={32} color="white" style={styles.inputIcon} />}
@@ -172,6 +172,7 @@ export default function LoginScreen(props) {
                             required
                             // minLength={6}
                             secureTextEntry={!show}
+                            testId="passwordInput"
                         />
                     </Stack>
                     <Stack space={1} w="100%" alignItems="center" style={{ marginTop: 15 }}>
@@ -181,7 +182,7 @@ export default function LoginScreen(props) {
                         </Link>
                         {isLoading ? <ActivityIndicator size={"large"} color={Values.fontPrimary} /> :
 
-                            <Button colorScheme="green" style={styles.customButton} onPress={loginUser}>Login</Button>
+                            <Button colorScheme="green" style={styles.customButton} onPress={loginUser} testID="loginButton">Login</Button>
                         }
                         <CustomText color="#b3b3ff" italic style={{}}>No account yet? Sign Up Now</CustomText>
                         <Button style={{ width: "30%" }} onPress={() => props.navigation.navigate('Register')}>Register</Button>
