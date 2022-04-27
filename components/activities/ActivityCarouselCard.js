@@ -19,7 +19,7 @@ export default ActivityCarouselCard = props => {
                     <CustomText title style={{ color: "black" }}>{props.title.substring(0, Values.numbersOfCharactersShown) + "..."}</CustomText>
                     <View style={Styles.flexDirectionRowSpace}>
                         <CustomText style={{ color: "black" }}>{props.location.substring(0, Values.numbersOfCharactersShown) + "..."}</CustomText>
-                        <CustomText style={{ color: Values.primaryColorDark, fontSize: 10, marginTop: 10 }}>Read More</CustomText>
+                        <CustomText style={{ color: Values.primaryColorDark, fontSize: 10, marginTop: 10 }}>{props.rightCornerText}</CustomText>
                     </View>
                 </View>
 
