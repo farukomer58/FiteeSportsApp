@@ -17,6 +17,8 @@ export default {
     textColorBlack:"1F292E",
 
     // Server Config
-    apiUrl: "http://localhost:8080/api/v1"
+    apiUrl: "http://localhost:8080/api/v1",
 
+
+    numbersOfCharactersShown:22,
 }

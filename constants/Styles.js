@@ -1,5 +1,16 @@
 export default {
-    paragraph:{
-        textAlign:"center",
+    paragraph: {
+        textAlign: "center",
+    },
+
+    paddingText: {
+        paddingTop: 20,
+        paddingLeft: 25,
+    },
+
+    flexDirectionRowSpace: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems:"center",
     }
 }

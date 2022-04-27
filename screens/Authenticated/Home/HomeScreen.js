@@ -1,44 +1,73 @@
-import React, { Component } from 'react';
-import { Constants } from 'expo'
+import React, { useState, useCallback, useRef } from 'react';
 import {
-    Container,
-    Button,
-    Text,
-    Body,
-    Form,
     Item as FormItem,
-    Link,
-    Label,
-    Spacer,
-    Heading,
     HStack,
 } from 'native-base';
 
-import { View, Image, StyleSheet, ImageBackground, ScrollView } from 'react-native'
+import { View, Image, StyleSheet, ImageBackground, ScrollView, Text, SafeAreaView } from 'react-native'
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
+import Carousel from 'react-native-snap-carousel';
+
 import PressableCard from '../../../components/PressableCard';
-import Card from '../../../components/Card';
+// import Card from '../../../components/Card';
 
 import Values from '../../../constants/Values';
+import Styles from '../../../constants/Styles';
+import CustomText from '../../../components/native/CustomText';
+
+import LinkText from '../../../components/native/LinkText';
+import ActivityCarousel from '../../../components/UI/ActivityCarousel';
+import Card from '../../../components/UI/Card'
+import { TouchableOpacity } from 'react-native-gesture-handler';
+
+import ActivityCarouselCard from '../../../components/activities/ActivityCarouselCard';
+import { RECENT_ACTIVITIES } from '../../../data/dummy-data';
 
 export default function HomeScreen(props) {
+
+    const [activeIndex, setActiveIndex] = useState(0);
+    const [carouselItems, setCarouselItems] = useState(RECENT_ACTIVITIES);
+    const ref = useRef(null);
+
+    const renderRecentActivitiesCarousel = useCallback(({ item, index }) => (
+        <ActivityCarouselCard
+            onPress={() => console.log("Go to Activity with title", item.title)}
+            imageUrl={item.imageUrl}
+            title={item.title}
+            location={item.description}
+        />
+    ), []);
 
     return (
         <ScrollView contentContainerStyle={{ flexGrow: 1 }} stickyHeaderIndices={[0]}>
 
             <View style={styles.background}>
 
-                <HStack alignItems="center">
-                    <Heading size="md" ml="-1" color="white" p={2}>
+
+                <View style={Styles.flexDirectionRowSpace}>
+                    <CustomText title style={{ ...Styles.paddingText, fontSize: 20 }}>
                         Recent Activities
-                    </Heading>
-                    <Spacer />
-                    <Link onPress={() => { props.navigation.navigate('Activities') }} isUnderlined={true} _text={{ color: Values.secondaryColor }} style={{ paddingRight: 10 }}>
-                        View All
-                    </Link>
-                </HStack>
+                    </CustomText>
+                    <LinkText onPress={() => { props.navigation.navigate('Activities') }} style={{ paddingTop: 20, paddingRight: 10, }}>View All</LinkText>
+                </View>
+
+                {/* <ActivityCarousel /> */}
+
+                <SafeAreaView style={{ flex: 1, paddingTop: 20 }}>
+                    <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center' }}>
+                        <Carousel
+                            layout="default"
+                            ref={ref}
+                            data={RECENT_ACTIVITIES}
+                            sliderWidth={250}
+                            itemWidth={275}
+                            renderItem={renderRecentActivitiesCarousel}
+                            onSnapToItem={(index) => setActiveIndex(index)}
+                        />
+                    </View>
+                </SafeAreaView>
 
                 <ScrollView horizontal={true} height={280} >
                     {/* style={{ backgroundColor: 'blue' }} */}
@@ -50,6 +79,7 @@ export default function HomeScreen(props) {
                     </HStack>
                 </ScrollView>
 
+
             </View>
         </ScrollView>
     )
@@ -59,7 +89,7 @@ export const screenOptions = navData => {
     return {
         headerTitle: "Home",
         title: 'Home',
-        tabBarBadge: 3,
+        // tabBarBadge: 3,
         tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="home" color={color} size={26} />
         ),
@@ -73,6 +103,26 @@ export const screenOptions = navData => {
 }
 
 const styles = StyleSheet.create({
+
+    card: {
+        shadowColor: 'black',
+        shadowOpacity: 0.26,
+        shadowOffset: { width: 0, height: 2 },
+        shadowRadius: 8,
+        elevation: 5,
+        borderRadius: 10,
+        padding: 10,
+        backgroundColor: 'white',
+        width: 250,
+        height: 200,
+    },
+    cardImageContainer: {},
+    cardImage: {
+        width: "100%",
+        height: 125,
+        borderRadius: 10,
+    },
+
 
     background: {
         flex: 1,

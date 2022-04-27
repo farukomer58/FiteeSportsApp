@@ -47,17 +47,15 @@ const formReducer = (state, action) => {
     }
     return state;
 }
-
 export default function LoginScreen(props) {
 
     const dispatch = useDispatch();
-
-    const [isLoading, setIsLoading] = useState(false)
-    const [error, setError] = useState(null)
-
     // Show password or not
     const [show, setShow] = useState(false);
     const handleClick = () => setShow(!show);
+
+    const [isLoading, setIsLoading] = useState(false)
+    const [error, setError] = useState(null)
 
     const [formState, dispatchForm] = useReducer(formReducer, {
         inputValues: {
@@ -77,40 +75,9 @@ export default function LoginScreen(props) {
 
     // Login user func, first validate
     const loginUser = () => {
+        
         setIsLoading(true)
         dispatch(authActions.loginQuick())
-        // props.navigation.navigate('Home')
-
-        // console.log(formState, "Custom form and input")
-
-        // axios.get("http://localhost:8080/").then(value => {
-        //     console.log(value)
-        // }).catch(err => {
-        //     console.log("REQUEST FAILED")
-        //     console.log(err)
-        // })
-
-        fetch('http://localhost:8082/', {
-            method: 'POST', // *GET, POST, PUT, DELETE, etc.
-            mode: 'cors', // no-cors, *cors, same-origin
-            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-            credentials: 'same-origin', // include, *same-origin, omit
-            headers: {
-                'Content-Type': 'application/json'
-                // 'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            redirect: 'follow', // manual, *follow, error
-            referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-            // body: JSON.stringify(data) // body data type must match "Content-Type" header
-        })
-            .then(response => response.json())
-            .then(data => console.log(data))
-            .catch(err => {
-                console.log("Jooo")
-                console.log(err)
-            })
-
-        // const response = await dispatch(authActions.signUp(formState.inputValues.email, formState.inputValues.password))
 
         if (formState.formIsValid) {
             // await Axios.post(`http://localhost:8081/api/v1/user/login`)
@@ -131,7 +98,7 @@ export default function LoginScreen(props) {
             setIsLoading(true)
             try {
                 // const response = await dispatch(authActions.login(formState.inputValues.email, formState.inputValues.password))
-                props.navigation.navigate('Home')
+                // props.navigation.navigate('Home')
             } catch (err) {
                 Alert.alert("An error occured", err.message, [{ text: "Okay" }])
                 setError(err.message)

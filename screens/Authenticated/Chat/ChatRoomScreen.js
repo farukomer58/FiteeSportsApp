@@ -28,6 +28,7 @@ export const screenOptions = navData => {
         headerShown:false,
         headerTitle: "Chat",
         title: 'Chat',
+        tabBarBadge: 3,
         tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="chat" color={color} size={26} />
         ),

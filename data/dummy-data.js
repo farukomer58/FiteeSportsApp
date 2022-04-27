@@ -389,3 +389,22 @@ export const ACTIVITIES = [
     5.49
   )
 ];
+
+export const RECENT_ACTIVITIES = [
+  new Activity(
+    'p1',
+    'u1',
+    'Joga lessons sloterparkbard, Amsterdam Oost',
+    'https://images.unsplash.com/photo-1562088287-bde35a1ea917?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80',
+    'A red t-shirt, perfect for days with non-red weather.',
+    29.99
+  ),
+  new Activity(
+    'p2',//product id
+    'u1',//userid
+    'Stay Fit, Fit together - Amsterdam West',
+    'https://images.unsplash.com/photo-1599058917212-d750089bc07e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1169&q=80',
+    'Fits your red shirt perfectly. To stand on. Not to wear it.',
+    99.99
+  ),
+];
