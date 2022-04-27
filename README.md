@@ -103,6 +103,7 @@ Frontend          |  ..... | SUPPLIER ACCOUNT: <br/> email: myUsername2@gmail.co
 
 <img src="https://i.imgur.com/kSUo2GW.jpg" alt="FiteeSports Login Screen" width="300"/>
 <img src="https://i.imgur.com/wxsgbEl.jpg" alt="FiteeSports Register Screen" width="300"/>
+<img src="https://i.imgur.com/lH9p65T.jpg" alt="FiteeSports Navigation" width="300"/>
   
 
 <!-- CONTRIBUTING -->
