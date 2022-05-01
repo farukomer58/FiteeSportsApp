@@ -36,10 +36,13 @@ export default function CustomInput(props) {
     // Check Validity on every key strok and dispatch to reducer to update input values
     const inputChangeHandler = value => {
         const regexEmail = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+
+        // const otherRegex = /"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z";
+        
         let isValid = true;
 
         if (props.required && value.trim().length === 0) { isValid = false }
-        if (props.email && !regexEmail.test(value.toLowerCase())) { isValid = false }
+        if (props.email && !regexEmail.test(value)) { isValid = false }
         if (props.min != null && +value < props.min) { isValid = false }
         if (props.max != null && +value > props.max) { isValid = false }
         if (props.minLength != null && value.length < props.minLength) { isValid = false 
@@ -49,7 +52,7 @@ export default function CustomInput(props) {
         dispatchInput({ type: UPDATE_INPUT, value: value, isValid: isValid })
 
         if (isTouched) {
-            props.onInputChange(inputState.value, inputState.isValid) // send input values back to overal Form
+            props.onInputChange(value, isValid) // send input values back to overal Form
         }
     }
 

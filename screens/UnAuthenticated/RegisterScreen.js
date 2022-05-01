@@ -94,13 +94,24 @@ export default function RegisterScreen(props) {
     }, [dispatchForm])
 
 
-    const registerUser = () => {
+    const registerUser = async () => {
         if (formState.formIsValid && agreed) {
-            props.navigation.navigate('Home')
-            console.log('Registered')
 
+            setIsLoading(true)
+            try{
+                const response = await dispatch(authActions.signUp(formState.inputValues.fullName, formState.inputValues.email, formState.inputValues.password))
+                console.log(response.data)
+            }catch(error){
+                Alert.alert("An error occured", err.message, [{ text: "Okay" }])
+            }
             // Dispacth to redux and send request backend
             // show succes or failure alert
+
+            
+
+            // props.navigation.navigate('Home')
+            // console.log('Registered')
+
         } else {
             console.log('Validation Failed');
             // console.log(agreed)

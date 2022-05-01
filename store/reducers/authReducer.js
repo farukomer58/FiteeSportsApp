@@ -13,7 +13,7 @@ export default (state = initialState, action) => {
         case SIGNUP:
             return { userId: action.userId, token: action.token }
         case LOGIN:
-            return { userId: action.userId, token: action.token, isAuthenticated: true }
+            return { userId: action.userId, token: action.token, isAuthenticated: false }
         case LOGIN_QUICK:
             return { ...state, isAuthenticated: true }
         default:

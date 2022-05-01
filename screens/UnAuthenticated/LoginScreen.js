@@ -77,80 +77,21 @@ export default function LoginScreen(props) {
     }, [dispatchForm])
 
     // Login user func, first validate
-    const loginUser = () => {
-
-        // fetch(`https://104f-2a02-a454-fca1-1-fc95-40cc-fcaf-ec13.eu.ngrok.io/api/v1/users`).then(response=>{
-        //     console.log(response)
-        //     console.log(response.json())
-        // }).catch(e=>{
-        //     console.log("Fail")
-        //     console.log(e)
-        // })
-        setIsLoading(true)
-        axios.get(`${Values.apiUrl}/users`, {
-            cancelToken: source.token
-        }).then(response => {
-            console.log(response.data)
-            source.cancel('Operation canceled by the user.');
-            setIsLoading(false)
-        }).catch(e => {
-            if (axios.isCancel(e)) {
-                console.log('Request canceled', e.message);
-            } else {
-                console.log(e)
-            }
-        })
-
-        // dispatch(authActions.loginQuick())
+    const loginUser = async () => {
 
         if (formState.formIsValid) {
-            // await Axios.post(`http://localhost:8081/api/v1/user/login`)
-            //     .then(async (response) => {
-            //         if (response.status === 201) {
-            //             // props.navigation.navigate('Home')
-            //             // console.log('Submitted')
-
-            //         } else {
-            //             console.log('Falsee')
-            //         }
-            //     })
-            // props.navigation.navigate('Home')
-            console.log('Submitted')
-            console.log(formState)
-            // dispatch(authActions.signUp(formState.inputValues.email,formState.inputValues.password))
-            setError(null)
             setIsLoading(true)
             try {
-                // const response = await dispatch(authActions.login(formState.inputValues.email, formState.inputValues.password))
-                // props.navigation.navigate('Home')
+                const response = await dispatch(authActions.login(formState.inputValues.email, formState.inputValues.password))
+                console.log(response.data)
             } catch (err) {
                 Alert.alert("An error occured", err.message, [{ text: "Okay" }])
-                setError(err.message)
+                // setError(err.message)
             }
             setIsLoading(false)
         } else {
-            console.log('Validation Failed');
-            // Axios.get(`${Values.apiUrl}/users`)
-            // .then((response) => {
-            //     if (response.status === 201) {
-            //         // props.navigation.navigate('Home')
-            //         console.log(response)
-            //     } else {
-            //         console.log('Falsee')
-            //         console.log(response)
-            //     }
-            // }).catch(e => {
-            //     console.log("faillll")
-            //     console.log(e)
-            // })
-
-            // fetch(`${Values.apiUrl}/users`).then(response=>{
-            //     console.log(response)
-            //     console.log(response.json())
-            // }).catch(e=>{
-            //     console.log("Fail")
-            //     console.log(e)
-            // })
+            // console.log('Validation Failed');
+            Alert.alert("Something went wrong", "Could you please make sure that you have entered all fields correctly", [{ text: "Okay" }])
         }
     }
 
