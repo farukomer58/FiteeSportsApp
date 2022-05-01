@@ -22,7 +22,7 @@ import {
 } from 'react-native'
 import { Ionicons, MaterialIcons, AntDesign } from '@expo/vector-icons';
 
-import axios from "axios";
+import Axios from "axios";
 import { useDispatch } from 'react-redux';
 import * as authActions from '../../store/actions/authActions'
 
@@ -32,6 +32,9 @@ import CustomInput from '../../components/UI/CustomInput';
 import IconButton from '../../components/IconButton/IconButton';
 
 import Values from '../../constants/Values';
+import axios from 'axios';
+const CancelToken = axios.CancelToken;
+const source = CancelToken.source();
 
 const formReducer = (state, action) => {
     if (action.type === "UPDATE") {
@@ -75,9 +78,30 @@ export default function LoginScreen(props) {
 
     // Login user func, first validate
     const loginUser = () => {
-        
+
+        // fetch(`https://104f-2a02-a454-fca1-1-fc95-40cc-fcaf-ec13.eu.ngrok.io/api/v1/users`).then(response=>{
+        //     console.log(response)
+        //     console.log(response.json())
+        // }).catch(e=>{
+        //     console.log("Fail")
+        //     console.log(e)
+        // })
         setIsLoading(true)
-        dispatch(authActions.loginQuick())
+        axios.get(`${Values.apiUrl}/users`, {
+            cancelToken: source.token
+        }).then(response => {
+            console.log(response.data)
+            source.cancel('Operation canceled by the user.');
+            setIsLoading(false)
+        }).catch(e => {
+            if (axios.isCancel(e)) {
+                console.log('Request canceled', e.message);
+            } else {
+                console.log(e)
+            }
+        })
+
+        // dispatch(authActions.loginQuick())
 
         if (formState.formIsValid) {
             // await Axios.post(`http://localhost:8081/api/v1/user/login`)
@@ -106,8 +130,37 @@ export default function LoginScreen(props) {
             setIsLoading(false)
         } else {
             console.log('Validation Failed');
+            // Axios.get(`${Values.apiUrl}/users`)
+            // .then((response) => {
+            //     if (response.status === 201) {
+            //         // props.navigation.navigate('Home')
+            //         console.log(response)
+            //     } else {
+            //         console.log('Falsee')
+            //         console.log(response)
+            //     }
+            // }).catch(e => {
+            //     console.log("faillll")
+            //     console.log(e)
+            // })
+
+            // fetch(`${Values.apiUrl}/users`).then(response=>{
+            //     console.log(response)
+            //     console.log(response.json())
+            // }).catch(e=>{
+            //     console.log("Fail")
+            //     console.log(e)
+            // })
         }
     }
+
+    useEffect(() => {
+        const abortController = new AbortController();
+        // MyFunction()
+        return () => {
+            abortController.abort();
+        };
+    }, []);
 
     return (
         <ImageBackground style={styles.background} source={require("../../assets/images/loginBg.png")} resizeMode="cover">

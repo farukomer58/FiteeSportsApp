@@ -25,7 +25,7 @@ export default function ChatScreen(props) {
             <Text>Chat</Text>
             {/* <Footer /> */}
             <HStack space={2}>
-                <Input flex={1} onChangeText={v => setInputValue(v)}  placeholder="Message" />
+                <Input flex={1} onChangeText={v => setInputValue(v)} placeholder="Message" />
                 {/* <IconButton borderRadius="sm" variant="solid" icon={<Icon as={Feather} name="plus" size="sm" color="warmGray.50" />} onPress={() => {
                     addItem(inputValue);
                     setInputValue("");
@@ -36,7 +36,9 @@ export default function ChatScreen(props) {
 }
 
 export const screenOptions = navData => {
+    console.log(navData.route.params.groupName)
     return {
+        headerTitle:navData.route.params.groupName
     }
 }
 

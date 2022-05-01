@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet,FlatList } from 'react-native'
+import { View, StyleSheet, FlatList } from 'react-native'
 
 // Icons
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
@@ -58,11 +58,11 @@ export default function ChatRoomScreen(props) {
 
     const renderChatGroupItem = ({ item }) => (
         <ChatGroupCard
-            onPress={() => props.navigation.navigate("ChatConversation")}
+            onPress={() => props.navigation.navigate("ChatConversation", { groupId: item.id, groupName: item.groupName })}
             groupImage={item.groupImage}
             groupName={item.groupName}
             groupLastMessage={item.groupLastMessage}
-            groupLastTime={item.groupLastTime}
+            groupLastMessageTime={item.groupLastMessageTime}
 
         />
     )
@@ -81,7 +81,7 @@ export default function ChatRoomScreen(props) {
 export const screenOptions = navData => {
     return {
         headerShown: false,
-        headerTitle: "Chat",
+        headerTitle: "Group Name Here",
         title: 'Chat',
         tabBarBadge: 3,
         tabBarIcon: ({ color }) => (

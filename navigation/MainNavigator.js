@@ -10,7 +10,7 @@ import ActivityDetailScreen, { screenOptions as activityDetailScreenOptions } fr
 import ActivitiesScreen, { screenOptions as activitiesScreenOptions } from '../screens/Authenticated/Activity/ActivitiesScreen';
 
 import ChatRoomScreen, { screenOptions as chatRoomScreenOptions } from '../screens/Authenticated/Chat/ChatRoomScreen';
-import ChatScreen from '../screens/Authenticated/Chat/ChatScreen';
+import ChatScreen, { screenOptions as chatScreenOptions } from '../screens/Authenticated/Chat/ChatScreen';
 
 import CalendarScreen, { screenOptions as calendarScreenOptions } from '../screens/Authenticated/CalendarScreen';
 import AccountOverviewScreen, { screenOptions as accountOverviewScreenOptions } from '../screens/Authenticated/Account/AccountOverviewScreen'
@@ -49,7 +49,7 @@ export const ChatNavigator = () => {
     return (
         <ChatStackNavigator.Navigator screenOptions={defaultNavOptions}>
             <ChatStackNavigator.Screen name="ChatRooms" component={ChatRoomScreen} options={{ headerTitle: "Chat" }} />
-            <ChatStackNavigator.Screen name="ChatConversation" component={ChatScreen} options={{ headerShown: false }} />
+            <ChatStackNavigator.Screen name="ChatConversation" component={ChatScreen} options={chatScreenOptions} />
         </ChatStackNavigator.Navigator>
     );
 };
