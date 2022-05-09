@@ -4,16 +4,32 @@ import { View, Text, Button, StyleSheet } from 'react-native';
 import CartItem from './CartItem';
 import Values from '../../constants/Values';
 import Card from '../UI/Card';
+import { backgroundColor } from 'react-native/Libraries/Components/View/ReactNativeStyleAttributes';
 
-const OrderItem = props => {
+export default OrderItem = props => {
   const [showDetails, setShowDetails] = useState(false);
 
   return (
     <Card style={styles.orderItem}>
       <View style={styles.summary}>
-        <Text style={styles.totalAmount}>${15.66.toFixed(2)}</Text>
-        <Text style={styles.date}>28 April</Text>
+        <Text style={styles.totalAmount}>${props.amount.toFixed(2)}</Text>
+        <Text style={styles.date}>28 April </Text>
+        {/* <Text style={styles.date}>{props.date}</Text> */}
       </View>
+      
+      {true && (
+        <View style={styles.detailItems}>
+          {props.items.map(cartItem => (
+            <CartItem
+              key={cartItem.activityId}
+              quantity={cartItem.quantity}
+              amount={cartItem.sum}
+              title={cartItem.activityTitle}
+            />
+          ))}
+        </View>
+      )}
+
       <Button
         color={Values.primaryColor}
         title={showDetails ? 'Hide Details' : 'Show Details'}
@@ -21,18 +37,6 @@ const OrderItem = props => {
           setShowDetails(prevState => !prevState);
         }}
       />
-      {/* {showDetails && (
-        <View style={styles.detailItems}>
-          {props.items.map(cartItem => (
-            <CartItem
-              key={cartItem.productId}
-              quantity={cartItem.quantity}
-              amount={cartItem.sum}
-              title={cartItem.productTitle}
-            />
-          ))}
-        </View>
-      )} */}
     </Card>
   );
 };
@@ -41,7 +45,8 @@ const styles = StyleSheet.create({
   orderItem: {
     margin: 20,
     padding: 10,
-    alignItems: 'center'
+    alignItems: 'center',
+    backgroundColor:"#fafafa",
   },
   summary: {
     flexDirection: 'row',
@@ -64,4 +69,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default OrderItem;
+

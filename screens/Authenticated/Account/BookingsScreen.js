@@ -5,49 +5,69 @@ import {
   Text,
   TextInput,
   StyleSheet,
-  Platform
+  Platform,
+  FlatList
 } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import * as activityActions from '../../../store/actions/activityActions';
 
 // Custom
 import CustomText from '../../../components/native/CustomText';
+import OrderItem from '../../../components/bookings/OrderItem';
 
 export default BookingsSceen = props => {
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-    const [isLoading, setIsLoading] = useState(false);
-    // const orders = useSelector(state => state.orders.orders);
-    const orders = [{
-        totalAmount:5.00,
-        readableDate:"date",
-        items:[]
-    },{}]
+  const [isLoading, setIsLoading] = useState(false);
+  // const orders = useSelector(state => state.orders.orders);
+  const orders = [{
+    totalAmount: 5.00,
+    readableDate: "date",
+    items: [{
+      activityId: 1,
+      activityTitle: "Activity Title",
+      quantity: "1 Lesson - ",
+      sum: 2
+    }]
+  },
+  {
+    totalAmount: 8.00,
+    readableDate: "date",
+    items: [{
+      activityId: 1,
+      activityTitle: "Kickbox sloterplas",
+      quantity: "2 Lessons - ",
+      sum: 2
+    }]
+  },
+  ]
 
-    useEffect(() => {
-      setIsLoading(true);
-      dispatch(ordersActions.fetchOrders()).then(() => {
-        setIsLoading(false);
-      });
-    }, [dispatch]);
-  
-    if (isLoading) {
-      return (
-        <View style={styles.centered}>
-          <ActivityIndicator size="large" color={Colors.primary} />
-        </View>
-      );
-    }
-  
-    if (orders.length === 0) {
-      return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <Text>No order found, maybe start ordering some products?</Text>
-        </View>
-      );
-    }
-  
+  // useEffect(() => {
+  //   setIsLoading(true);
+  //   dispatch(ordersActions.fetchOrders()).then(() => {
+  //     setIsLoading(false);
+  //   });
+  // }, [dispatch]);
+
+  if (isLoading) {
     return (
+      <View style={styles.centered}>
+        <ActivityIndicator size="large" color={Colors.primary} />
+      </View>
+    );
+  }
+
+  if (orders.length === 0) {
+    return (
+      <View style={{ ...styles.background, alignItems: 'center', justifyContent: 'center' }}>
+        <CustomText style={{ textAlign: "center" }}>No orders found, maybe start participating to some activities?</CustomText>
+      </View>
+    );
+  }
+
+  return (
+    <View style={styles.background}>
+
       <FlatList
         data={orders}
         keyExtractor={item => item.id}
@@ -55,17 +75,18 @@ export default BookingsSceen = props => {
           <OrderItem
             amount={itemData.item.totalAmount}
             date={itemData.item.readableDate}
-            items={itemData.item.items}
+            items={itemData.item.items} // Ordered Acitivty
           />
         )}
       />
-    );
+    </View>
+  );
 };
 
 export const screenOptions = navData => {
   const routeParams = navData.route.params ? navData.route.params : {};
   return {
-    headerTitle: routeParams.productId ? 'Edit Activity' : 'Add Activity'
+    headerTitle: 'Bookings'
   };
 };
 
@@ -73,7 +94,8 @@ const styles = StyleSheet.create({
   background: {
     flex: 1,
     width: "100%",
-    backgroundColor: "#313131"
+    backgroundColor: "#313131",
+
   },
 
   form: {
