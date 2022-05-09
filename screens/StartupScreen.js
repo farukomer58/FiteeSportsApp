@@ -1,27 +1,33 @@
-import React, { useEffect } from "react"
+import React, { useEffect } from 'react';
 import {
     View,
     ActivityIndicator,
     StyleSheet,
     AsyncStorage
-} from "react-native"
+} from 'react-native';
+import { useDispatch } from 'react-redux';
+import Values from '../constants/Values';
 
-export default StartupScreen = props => {
+import * as authActions from '../store/actions/authActions';
+
+const StartupScreen = props => {
+    const dispatch = useDispatch();
+
     useEffect(() => {
         const tryLogin = async () => {
-            const userData = await AsyncStorage.getItem("userData");
+            const userData = await AsyncStorage.getItem('userData');
             if (!userData) {
-                props.navigation.navigate("Login")
+                // props.navigation.navigate('Auth');
+                dispatch(authActions.setDidTryAL());
                 return;
             }
-            const transformedData = JSON.parse(userData)
+            const transformedData = JSON.parse(userData);
             const { token, userId, expiryDate } = transformedData;
             const expirationDate = new Date(expiryDate);
 
             if (expirationDate <= new Date() || !token || !userId) {
                 // props.navigation.navigate('Auth');
-                props.navigation.navigate("Login")
-                // dispatch(authActions.setDidTryAL());
+                dispatch(authActions.setDidTryAL());
                 return;
             }
 
@@ -29,20 +35,24 @@ export default StartupScreen = props => {
 
             // props.navigation.navigate('Shop');
             dispatch(authActions.authenticate(userId, token, expirationTime));
-        }
+        };
 
         tryLogin();
-    })
+    }, [dispatch]);
 
-    return <View style={styles.screen}>
-        <ActivityIndicator size={"large"} color="red" />
-    </View>
-}
+    return (
+        <View style={styles.screen}>
+            <ActivityIndicator size="large" color={Values.primary} />
+        </View>
+    );
+};
 
 const styles = StyleSheet.create({
     screen: {
         flex: 1,
-        justifyContent: "center",
-        alignItems: "center"
+        justifyContent: 'center',
+        alignItems: 'center'
     }
-})
+});
+
+export default StartupScreen;

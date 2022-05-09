@@ -38,18 +38,40 @@ import IconButton from '../../components/IconButton/IconButton';
 import Values from '../../constants/Values';
 
 const formReducer = (state, action) => {
-    if (action.type === "UPDATE") {
-        const updatedValues = { ...state.inputValues, [action.input]: action.value }
-        const updatedValidities = { ...state.inputValidities, [action.input]: action.isValid }
 
-        let formIsValid = true
-        for (const key in updatedValidities) {
-            formIsValid = formIsValid && updatedValidities[key]
+    switch (action.type) {
+        case "UPDATE": {
+            const updatedValues = { ...state.inputValues, [action.input]: action.value }
+            const updatedValidities = { ...state.inputValidities, [action.input]: action.isValid }
+
+            let formIsValid = true
+            for (const key in updatedValidities) {
+                formIsValid = formIsValid && updatedValidities[key]
+            }
+            return { ...state, inputValues: updatedValues, inputValidities: updatedValidities, formIsValid: formIsValid }
         }
-
-        return { ...state, inputValues: updatedValues, inputValidities: updatedValidities, formIsValid: formIsValid }
+        case "CLEAR":
+            return defaultForm;
+        default:
+            return state;
     }
-    return state;
+}
+const defaultForm = {
+    inputValues: {
+        fullName: "",
+        email: "",
+        birthDate: "",
+        phone: "",
+        password: "",
+    },
+    inputValidities: {
+        fullName: false,
+        email: false,
+        birthDate: false,
+        phone: false,
+        password: false,
+    },
+    formIsValid: false,
 }
 export default function RegisterScreen(props) {
 
@@ -71,28 +93,17 @@ export default function RegisterScreen(props) {
     const [agreed, setAgreed] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
 
-    const [formState, dispatchForm] = useReducer(formReducer, {
-        inputValues: {
-            fullName: "",
-            email: "",
-            birthDate: "",
-            phone: "",
-            password: "",
-        },
-        inputValidities: {
-            fullName: false,
-            email: false,
-            birthDate: false,
-            phone: false,
-            password: false,
-        },
-        formIsValid: false,
-    })
+    const [formState, dispatchForm] = useReducer(formReducer, defaultForm)
 
     const inputChangeHandler = useCallback((inputIdentifier, inputValue, inputIsValid) => {
         dispatchForm({ type: "UPDATE", value: inputValue, isValid: inputIsValid, input: inputIdentifier })
     }, [dispatchForm])
 
+
+    const returnToLoginScreen = () => {
+        dispatchForm({ type: "CLEAR" })
+        props.navigation.navigate("Login")
+    }
 
     const registerUser = async () => {
         if (formState.formIsValid && agreed) {
@@ -100,8 +111,8 @@ export default function RegisterScreen(props) {
             setIsLoading(true)
             try {
                 const response = await dispatch(authActions.signUp(formState.inputValues, selectedUserType))
-                console.log(response.data)
-                console.log("anlamadim")
+                setIsLoading(false)
+                Alert.alert("Registration succesfull", "Your registration has completed successfully, please go to the Login screen to enter the application", [{ text: "Return To Login", onPress: () => returnToLoginScreen() }])
                 // props.navigation.navigate('Home')
                 // console.log('Registered')
             } catch (error) {
@@ -112,7 +123,9 @@ export default function RegisterScreen(props) {
             // Dispacth to redux and send request backend
             // show succes or failure alert
         } else {
+            Alert.alert("Something went wrong", "Could you please make sure that you have entered all fields correctly", [{ text: "Okay"}])
             console.log('Validation Failed');
+            // props.navigation.navigate("RegisterSuccesfull")
             // console.log(agreed)
         }
     }
@@ -229,6 +242,14 @@ export default function RegisterScreen(props) {
                     leftElement={<AntDesign name="calendar" size={32} color="white" style={styles.inputIcon} />}
                     placeholder="Date Of Birth (dd-mm-yyyy)"
                     errorText="Please Enter a valid Date"
+                    // onKeyPress={(value) => {
+                    //     let v = value
+                    //     if (v.match(/^\d{2}$/) !== null) {
+                    //         this.value = v + '/';
+                    //     } else if (v.match(/^\d{2}\/\d{2}$/) !== null) {
+                    //         this.value = v + '/';
+                    //     }
+                    // }}
                     onInputChange={inputChangeHandler.bind(this, "birthDate")}
                 />
                 <CustomInput
@@ -268,7 +289,7 @@ export default function RegisterScreen(props) {
                 {/* (selectedUserType === "customer") */}
 
                 {/* <Text color="#b3b3ff" underline style={{ textAlign: "left" }}>Already an account? Login now</Text> */}
-                <Link onPress={() => { props.navigation.navigate('Login') }} isUnderlined={true} _text={{ color: Values.textColor }} style={{ paddingBottom: 20 }}>
+                <Link onPress={() => { returnToLoginScreen() }} isUnderlined={true} _text={{ color: Values.textColor }} style={{ paddingBottom: 20 }}>
                     Already an account? Login now
                 </Link>
             </Stack>

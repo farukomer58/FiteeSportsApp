@@ -16,7 +16,7 @@ export default (state = initialState, action) => {
     case CREATE_ACTIVITY:
       const newActivity = new Activity(
         new Date().toString(),
-        'u1',
+        action.activityData.ownerId,
         action.activityData.title,
         action.activityData.imageUrl,
         action.activityData.description,

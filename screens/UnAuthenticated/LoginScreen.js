@@ -78,20 +78,11 @@ export default function LoginScreen(props) {
     // Login user func, first validate
     const loginUser = async () => {
 
-        
         if (formState.formIsValid) {
             setIsLoading(true)
             try {
                 const response = await dispatch(authActions.login(formState.inputValues.email, formState.inputValues.password))
                 console.log(response.data)
-
-                // dispatch(authActions.login(formState.inputValues.email, formState.inputValues.password)).then(response=>{
-                //     console.log(response.data)
-                // }).catch(error=>{
-                //     // Alert.alert("An error occured", err.message, [{ text: "Okay" }])
-                //     console.log(error)
-                // })
-
             } catch (err) {
                 Alert.alert("An error occured", err.message, [{ text: "Okay" }])
                 // setError(err.message)

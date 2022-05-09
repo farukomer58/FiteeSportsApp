@@ -17,9 +17,9 @@ export default AppNavigator = () => {
     return (
         <NavigationContainer>
 
-            {/* {!isAuth && !didTryAutoLogin && <StartupScreen />} */}
             {!isAuth && <AuthNavigator />}
             {isAuth && <MainNavigator />}
+            {/* {!isAuth && !didTryAutoLogin && <StartupScreen />} */}
 
         </NavigationContainer>
     )

@@ -19,7 +19,7 @@ export default {
     textColorBlack:"1F292E",
 
     // Server Config
-    apiUrl: Platform.OS === 'android' ? 'http://192.168.224.1:8080' : "http://localhost:8081/api/v1",
+    apiUrl: Platform.OS === 'android' ? ' https://1424-86-89-50-62.eu.ngrok.io' : "http://localhost:8081/api/v1",
 
     numbersOfCharactersShown:22,
 }

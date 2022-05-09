@@ -30,71 +30,28 @@ export const authenticate = (userId, token, expiryTime) => {
 
 // SingUp / Register action function
 export const signUp = (inputValues, userRole) => {
+    const lastName = inputValues.fullName.split(" ")[1]
     return async dispatch => { //Because redux-thunk we can send two return one async one
+        const body = { firstName: inputValues.fullName, lastName: lastName?lastName:"", email: inputValues.email, password: inputValues.password, birthDate: null, phone: inputValues.phone, userRole: userRole }
+        console.log(body)
+
         const response = await axios.post(`${Values.apiUrl}/api/v1/users/register`,
-            JSON.stringify({ firstName: inputValues.fullName, email: inputValues.email, password: inputValues.password, birthDate: null, phone: inputValues.phone, userRole: userRole }),
+            body,
             { headers }
         )
-        // if (response.status ==) { throw new Error("Something went wrong!") }
-
-        // const resData = response.data;
-        // console.log(resData);
-        // dispatch(
-        //     authenticate(
-        //         resData.localId,
-        //         resData.idToken,
-        //         parseInt(resData.expiresIn) * 1000
-        //     )
-        // );
-        // const expirationDate = new Date(
-        //     new Date().getTime() + parseInt(resData.expiresIn) * 1000
-        // );
-        // saveDataToStorage(resData.idToken, resData.localId, expirationDate);
-
-        dispatch({ type: SIGNUP, token: "response.idToken", userId: "response.localId" })
+        if (response.status == 200) {
+            const resData = await response.data;
+            console.log(resData, "Register");
+            dispatch({ type: SIGNUP, token: "response.idToken", userId: "response.localId" })
+        }
+        console.log(response)
         return response
     }
 }
 
 // Login action function
 export const login = (email, password) => {
-
-    const params = new URLSearchParams();
-    params.append('email', email);
-    params.append('pasword', password);
-
-    // console.log(params, "PARAMS")
     return async dispatch => { //Because redux-thunk we can send two return one async one
-        // axios.post(`${Values.apiUrl}/login`,
-        //     { email, password },
-        //     {
-        //         headers: {
-        //             "content-Type": "application/x-www-form-urlencoded"
-        //         }
-        //     }
-        // ).then(response => {
-        //     console.log("SUCCES")
-        //     console.log(response)
-        //     // console.log(response.data, "From authActions.js")
-        //     // dispatch(
-        //     //     authenticate(
-        //     //         resData.localId,
-        //     //         resData.idToken,
-        //     //         parseInt(resData.expiresIn) * 1000
-        //     //     )
-        //     // );
-        //     // const expirationDate = new Date(
-        //     //     new Date().getTime() + parseInt(resData.expiresIn) * 1000
-        //     // );
-        //     // saveDataToStorage("token", "userId", expirationDate);
-        //     dispatch({ type: LOGIN, token: "response.idToken", userId: "response.localId" })
-        //     return response
-        // }).catch(error => {
-        //     let message = 'Something went wrong!';
-        //     //check for different types of error and set corespending error message
-        //     throw new Error(message);
-        // })
-
         const response = await axios({
             method: 'post',
             url: `${Values.apiUrl}/login`,
@@ -107,10 +64,18 @@ export const login = (email, password) => {
             }
         })
 
-        console.log("dsadasdsada")
-        console.log(response.data.access_token)
+        // Login Succesfully
+        if (response.status === 200) {
 
-        dispatch({ type: LOGIN, token: "response.idToken", userId: "response.localId" })
+            const resData = response.data;
+            console.log(resData)
+
+            dispatch({ type: LOGIN, token: resData.access_token, userId: resData.user_id })
+            const expirationDate = new Date(
+                new Date().getTime() * 1000
+            );
+            saveDataToStorage(resData.access_token, resData.user_id, expirationDate);
+        }
         return response
     }
 }
@@ -136,7 +101,6 @@ const saveDataToStorage = (token, userId, expirationDate) => {
         })
     );
 };
-
 
 export const loginQuick = () => {
     return dispatch => {

@@ -1,8 +1,11 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { View, Image, StyleSheet, ImageBackground, ScrollView, TouchableOpacity } from 'react-native'
 import { Ionicons, MaterialIcons, AntDesign, Fontisto } from '@expo/vector-icons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useSelector, useDispatch } from 'react-redux';
+
+import axios from 'axios';
 
 //Custom
 import CustomText from '../../../components/native/CustomText'
@@ -10,6 +13,24 @@ import Values from '../../../constants/Values';
 import ListItem from '../../../components/UI/ListItem';
 
 export default function AccountOverviewScreen(props) {
+    const auth = useSelector(state => state.auth); // Get User Activities of redux 
+    const [accountDetails, setAccountDetails] = useState({})
+
+
+    useEffect(() => {
+        console.log("Helllow Fetch user data")
+        console.log(auth)
+        axios.get(`${Values.apiUrl}/api/v1/users/?id=${auth.userId}`, {
+            header: {
+                "Authorization": `Bearer ${auth.token}`
+            }
+        }).then(response => {
+            console.log(response.data[0])
+            setAccountDetails(response.data[0])
+        }).catch(e => {
+            console.log(e)
+        })
+    }, [])
 
     return (
         <ScrollView contentContainerStyle={{ flexGrow: 1 }} >
@@ -18,7 +39,7 @@ export default function AccountOverviewScreen(props) {
                 <View style={styles.head}>
                     <View style={{ alignItems: "center" }}>
                         <MaterialIcons name="account-circle" size={75} color="white" style={styles.inputIcon} />
-                        <CustomText title style={styles.userName}>User Full Name</CustomText>
+                        <CustomText title style={styles.userName}>{accountDetails.firstName} {accountDetails.lastName}</CustomText>
                     </View>
 
                 </View>

@@ -12,7 +12,7 @@ export default (state = initialState, action) => {
         case SIGNUP:
             return { userId: action.userId, token: action.token };
         case LOGIN:
-            return { userId: action.userId, token: action.token, isAuthenticated: false };
+            return { userId: action.userId, token: action.token, isAuthenticated: true };
         case SET_DID_TRY_AL:
             return {
                 ...state,
