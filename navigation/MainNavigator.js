@@ -15,10 +15,11 @@ import ChatScreen, { screenOptions as chatScreenOptions } from '../screens/Authe
 import CalendarScreen, { screenOptions as calendarScreenOptions } from '../screens/Authenticated/CalendarScreen';
 // Account Screens
 import AccountOverviewScreen, { screenOptions as accountOverviewScreenOptions } from '../screens/Authenticated/Account/AccountOverviewScreen'
+import ProfileSettingsScreen, { screenOptions as profileSettingsScreenOptions} from '../screens/Authenticated/Account/ProfileSettingsScreen';
+import BookingsScreen, { screenOptions as bookingsScreenOptions} from '../screens/Authenticated/Account/BookingsScreen';
+import BankDetail, { screenOptions as bankDetailScreenOptions} from '../screens/Authenticated/Account/BankDetail';
 import UserActivitiesScreen, { screenOptions as userActivitiesScreenOptions } from '../screens/Authenticated/Account/UserActivitiesScreen';
 import ManageActivityScreen, { screenOptions as manageActivityScreenOptions } from '../screens/Authenticated/Account/ManageActivityScreen';
-import BookingsScreen, { screenOptions as bookingsScreenOptions} from '../screens/Authenticated/Account/BookingsScreen';
-import ProfileSettingsScreen, { screenOptions as profileSettingsScreenOptions} from '../screens/Authenticated/Account/ProfileSettingsScreen';
 
 import { defaultNavOptions } from './navigationConfig';
 import Values from '../constants/Values';
@@ -31,6 +32,8 @@ export const AccountNavigator = () => {
             <AccountStackNavigator.Screen name="AccountOverviewList" component={AccountOverviewScreen} options={{ headerTitle: "Account" }} />
             <AccountStackNavigator.Screen name="ProfileSettings" component={ProfileSettingsScreen} options={profileSettingsScreenOptions} />
             <AccountStackNavigator.Screen name="Bookings" component={BookingsScreen} options={bookingsScreenOptions} />
+            <AccountStackNavigator.Screen name="BankDetail" component={BankDetail} options={bankDetailScreenOptions} />
+
             <AccountStackNavigator.Screen name="UserActivities" component={UserActivitiesScreen} options={userActivitiesScreenOptions} />
             <AccountStackNavigator.Screen name="ManageActivity" component={ManageActivityScreen} options={manageActivityScreenOptions} />
         </AccountStackNavigator.Navigator>

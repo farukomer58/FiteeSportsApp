@@ -55,7 +55,7 @@ export default function AccountOverviewScreen(props) {
                     listItemIcon={<MaterialIcons name="history" size={40} color="white" style={styles.inputIcon} />}
                 />
                 <ListItem
-                    onPress={() => { props.navigation.navigate("Activities") }}
+                    onPress={() => { props.navigation.navigate("BankDetail") }}
                     listItem="Bank Detail"
                     listItemIcon={<MaterialIcons name="payment" size={40} color="white" style={styles.inputIcon} />}
                 />
