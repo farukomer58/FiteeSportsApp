@@ -45,7 +45,7 @@ export default function AccountOverviewScreen(props) {
                 </View>
 
                 <ListItem
-                    onPress={() => { props.navigation.navigate("Activities") }}
+                    onPress={() => { props.navigation.navigate("ProfileSettings", { user: accountDetails }) }}
                     listItem="Profile Settings"
                     listItemIcon={<MaterialIcons name="settings" size={40} color="white" style={styles.inputIcon} />}
                 />
