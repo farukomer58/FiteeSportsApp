@@ -55,7 +55,7 @@ export default function LoginScreen(props) {
     const dispatch = useDispatch();
     // Show password or not
     const [show, setShow] = useState(false);
-    const handleClick = () => setShow(!show);
+    const handleClick = () => setShow(oldState => !oldState);
 
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState(null)
@@ -71,7 +71,6 @@ export default function LoginScreen(props) {
         },
         formIsValid: false,
     })
-
     const inputChangeHandler = useCallback((inputIdentifier, inputValue, inputIsValid) => {
         dispatchForm({ type: "UPDATE", value: inputValue, isValid: inputIsValid, input: inputIdentifier })
     }, [dispatchForm])
@@ -79,11 +78,20 @@ export default function LoginScreen(props) {
     // Login user func, first validate
     const loginUser = async () => {
 
+        
         if (formState.formIsValid) {
             setIsLoading(true)
             try {
                 const response = await dispatch(authActions.login(formState.inputValues.email, formState.inputValues.password))
                 console.log(response.data)
+
+                // dispatch(authActions.login(formState.inputValues.email, formState.inputValues.password)).then(response=>{
+                //     console.log(response.data)
+                // }).catch(error=>{
+                //     // Alert.alert("An error occured", err.message, [{ text: "Okay" }])
+                //     console.log(error)
+                // })
+
             } catch (err) {
                 Alert.alert("An error occured", err.message, [{ text: "Okay" }])
                 // setError(err.message)
@@ -106,7 +114,7 @@ export default function LoginScreen(props) {
     return (
         <ImageBackground style={styles.background} source={require("../../assets/images/loginBg.png")} resizeMode="cover">
             <ScrollView>
-                <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} keyboardVerticalOffset={-150} style={{ marginTop: 275 }}>
+                <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} keyboardVerticalOffset={-150} style={{ marginTop: 250 }}>
 
                     <Stack space={3} w="100%" alignItems="center">
 

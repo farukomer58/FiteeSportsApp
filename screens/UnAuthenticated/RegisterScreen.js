@@ -65,7 +65,7 @@ export default function RegisterScreen(props) {
 
     const [date, setDate] = useState('09-10-2021');
 
-    const [selectedUserType, setSelectedUserType] = useState("customer")
+    const [selectedUserType, setSelectedUserType] = useState("CUSTOMER")
     const [isNextStep, setIsNextStep] = useState(false)
 
     const [agreed, setAgreed] = useState(false);
@@ -98,20 +98,19 @@ export default function RegisterScreen(props) {
         if (formState.formIsValid && agreed) {
 
             setIsLoading(true)
-            try{
-                const response = await dispatch(authActions.signUp(formState.inputValues.fullName, formState.inputValues.email, formState.inputValues.password))
+            try {
+                const response = await dispatch(authActions.signUp(formState.inputValues, selectedUserType))
                 console.log(response.data)
-            }catch(error){
-                Alert.alert("An error occured", err.message, [{ text: "Okay" }])
+                console.log("anlamadim")
+                // props.navigation.navigate('Home')
+                // console.log('Registered')
+            } catch (error) {
+                Alert.alert("An error occured", error.message, [{ text: "Okay" }])
+                setIsLoading(false)
             }
+            setIsLoading(false)
             // Dispacth to redux and send request backend
             // show succes or failure alert
-
-            
-
-            // props.navigation.navigate('Home')
-            // console.log('Registered')
-
         } else {
             console.log('Validation Failed');
             // console.log(agreed)
@@ -204,8 +203,8 @@ export default function RegisterScreen(props) {
                     base: "auto",
                     md: 0
                 }} size="lg" borderRadius="lg">
-                    <Button variant={selectedUserType === 'freelancer' ? "outline" : "solid"} onPress={() => setSelectedUserType("customer")}>Customer</Button>
-                    <Button variant={selectedUserType === 'freelancer' ? "solid" : "outline"} onPress={() => setSelectedUserType("freelancer")}>Freelancer</Button>
+                    <Button variant={selectedUserType === 'FREELANCER' ? "outline" : "solid"} onPress={() => setSelectedUserType("CUSTOMER")}>Customer</Button>
+                    <Button variant={selectedUserType === 'FREELANCER' ? "solid" : "outline"} onPress={() => setSelectedUserType("FREELANCER")}>Freelancer</Button>
                 </Button.Group>
 
                 <CustomInput
@@ -262,7 +261,7 @@ export default function RegisterScreen(props) {
                 </Checkbox>
 
                 {isLoading ? <ActivityIndicator size={"large"} color={Values.fontPrimary} /> : <>
-                    {(selectedUserType === "customer") ? <Button colorScheme="green" style={styles.customButton} onPress={registerUser} key={1}>Register</Button> : <Button key={2} style={styles.customButton} onPress={() => goNextStep()}>Next</Button>}
+                    {(selectedUserType === "CUSTOMER") ? <Button colorScheme="green" style={styles.customButton} onPress={registerUser} key={1}>Register</Button> : <Button key={2} style={styles.customButton} onPress={() => goNextStep()}>Next</Button>}
                 </>
                 }
                 {/* <Button onPress={() => setIsNextStep(true)}>Next</Button> */}

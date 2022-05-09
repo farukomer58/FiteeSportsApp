@@ -13,9 +13,11 @@ import ChatRoomScreen, { screenOptions as chatRoomScreenOptions } from '../scree
 import ChatScreen, { screenOptions as chatScreenOptions } from '../screens/Authenticated/Chat/ChatScreen';
 
 import CalendarScreen, { screenOptions as calendarScreenOptions } from '../screens/Authenticated/CalendarScreen';
+// Account Screens
 import AccountOverviewScreen, { screenOptions as accountOverviewScreenOptions } from '../screens/Authenticated/Account/AccountOverviewScreen'
 import UserActivitiesScreen, { screenOptions as userActivitiesScreenOptions } from '../screens/Authenticated/Account/UserActivitiesScreen';
 import ManageActivityScreen, { screenOptions as manageActivityScreenOptions } from '../screens/Authenticated/Account/ManageActivityScreen';
+import BookingsScreen, { screenOptions as bookingsScreenOptions} from '../screens/Authenticated/Account/BookingsScreen';
 
 import { defaultNavOptions } from './navigationConfig';
 import Values from '../constants/Values';
@@ -28,6 +30,7 @@ export const AccountNavigator = () => {
             <AccountStackNavigator.Screen name="AccountOverviewList" component={AccountOverviewScreen} options={{ headerTitle: "Account" }} />
             <AccountStackNavigator.Screen name="UserActivities" component={UserActivitiesScreen} options={userActivitiesScreenOptions} />
             <AccountStackNavigator.Screen name="ManageActivity" component={ManageActivityScreen} options={manageActivityScreenOptions} />
+            <AccountStackNavigator.Screen name="Bookings" component={BookingsScreen} options={bookingsScreenOptions} />
         </AccountStackNavigator.Navigator>
     );
 };
