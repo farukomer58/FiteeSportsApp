@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Platform
 } from 'react-native';
+import { Button } from 'native-base';
 import { useSelector, useDispatch } from 'react-redux';
 import * as activityActions from '../../../store/actions/activityActions';
 
@@ -25,7 +26,7 @@ export default ManageActivityScreen = props => {
   const [description, setDescription] = useState(editedActivity ? editedActivity.description : '');
 
   // Handler when Submited save or edit Activity
-  const submitHandler = useCallback(() => {
+  const updateActivity = useCallback(() => {
 
   }, []);
 
@@ -70,6 +71,7 @@ export default ManageActivityScreen = props => {
             onChangeText={text => setDescription(text)}
           />
         </View>
+        <Button colorScheme="green" style={styles.customButton} onPress={updateActivity} key={1}>Update Activity</Button>
       </View>
     </ScrollView>
   );
@@ -104,5 +106,11 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     borderBottomColor: '#ccc',
     borderBottomWidth: 1
-  }
+  },
+  customButton: {
+    // width: "50%",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 20
+  },
 });

@@ -21,6 +21,7 @@ export default BookingsSceen = props => {
   const [isLoading, setIsLoading] = useState(false);
   // const orders = useSelector(state => state.orders.orders);
   const orders = [{
+    id:1,
     totalAmount: 5.00,
     readableDate: "date",
     items: [{
@@ -31,6 +32,7 @@ export default BookingsSceen = props => {
     }]
   },
   {
+    id:2,
     totalAmount: 8.00,
     readableDate: "date",
     items: [{
@@ -113,5 +115,7 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     borderBottomColor: '#ccc',
     borderBottomWidth: 1
-  }
+  },
+
+
 });

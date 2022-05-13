@@ -242,14 +242,6 @@ export default function RegisterScreen(props) {
                     leftElement={<AntDesign name="calendar" size={32} color="white" style={styles.inputIcon} />}
                     placeholder="Date Of Birth (dd-mm-yyyy)"
                     errorText="Please Enter a valid Date"
-                    // onKeyPress={(value) => {
-                    //     let v = value
-                    //     if (v.match(/^\d{2}$/) !== null) {
-                    //         this.value = v + '/';
-                    //     } else if (v.match(/^\d{2}\/\d{2}$/) !== null) {
-                    //         this.value = v + '/';
-                    //     }
-                    // }}
                     onInputChange={inputChangeHandler.bind(this, "birthDate")}
                 />
                 <CustomInput

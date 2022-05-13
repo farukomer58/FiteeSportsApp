@@ -10,8 +10,6 @@ export const SET_DID_TRY_AL = 'SET_DID_TRY_AL';
 
 export const LOGIN_QUICK = "LOGIN_QUICK"
 
-const API_KEY = "AIzaSyC-l7NsOPS8BtT-NKnT3lapHmZzBj7RaJ4"
-
 const headers = {
     "Content-Type": "application/json",
 };
