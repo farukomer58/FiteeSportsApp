@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer, useCallback } from 'react';
+import React, { useState, useEffect, useReducer, useCallback, AsyncStorage } from 'react';
 import {
     Container,
     Header,
@@ -77,20 +77,19 @@ export default function LoginScreen(props) {
 
     // Login user func, first validate
     const loginUser = async () => {
-
         if (formState.formIsValid) {
             setIsLoading(true)
             try {
                 const response = await dispatch(authActions.login(formState.inputValues.email, formState.inputValues.password))
                 console.log(response.data)
             } catch (err) {
-                Alert.alert("An error occured", err.message, [{ text: "Okay" }])
-                // setError(err.message)
+                Alert.alert("Login Failed", "Could not login with the provided email and password", [{ text: "Okay" }])
+                // Alert.alert("Login Failed", err.message, [{ text: "Okay" }])
+                setIsLoading(false)
             }
-            setIsLoading(false)
         } else {
             // console.log('Validation Failed');
-            Alert.alert("Something went wrong", "Could you please make sure that you have entered all fields correctly", [{ text: "Okay" }])
+            Alert.alert("Something went wrong", "Please make sure that all fields are entered correctly", [{ text: "Okay" }])
         }
     }
 
@@ -156,13 +155,6 @@ export default function LoginScreen(props) {
 export const screenOptions = navData => {
     return {
         headerTitle: "Login",
-        // title: 'Home',
-        // tabBarIcon: ({ color }) => (
-        //     <MaterialCommunityIcons name="home" color={color} size={26} />
-        // ),
-        // headerLeft: (props) => (
-        //     <Text>Hello</Text>
-        // )
     }
 }
 

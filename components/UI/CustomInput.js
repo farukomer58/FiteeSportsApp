@@ -42,7 +42,7 @@ export default function CustomInput(props) {
         let isValid = true;
 
         if (props.required && value.trim().length === 0) { isValid = false }
-        if (props.email && !regexEmail.test(value)) { isValid = false }
+        if (props.email && !regexEmail.test(value.trim())) { isValid = false }
         if (props.min != null && +value < props.min) { isValid = false }
         if (props.max != null && +value > props.max) { isValid = false }
         if (props.minLength != null && value.length < props.minLength) { isValid = false 

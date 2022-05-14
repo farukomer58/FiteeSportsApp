@@ -3,8 +3,8 @@ import {
     View,
     ActivityIndicator,
     StyleSheet,
-    AsyncStorage
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch } from 'react-redux';
 import Values from '../constants/Values';
 
@@ -15,26 +15,29 @@ const StartupScreen = props => {
 
     useEffect(() => {
         const tryLogin = async () => {
+            console.log("I AM TRYING TO AUTO LOGIN")
             const userData = await AsyncStorage.getItem('userData');
+            console.log(userData)
             if (!userData) {
                 // props.navigation.navigate('Auth');
                 dispatch(authActions.setDidTryAL());
                 return;
             }
-            const transformedData = JSON.parse(userData);
-            const { token, userId, expiryDate } = transformedData;
-            const expirationDate = new Date(expiryDate);
+         
+            // const transformedData = JSON.parse(userData);
+            // const { token, userId, expiryDate } = transformedData;
+            // const expirationDate = new Date(expiryDate);
 
-            if (expirationDate <= new Date() || !token || !userId) {
-                // props.navigation.navigate('Auth');
-                dispatch(authActions.setDidTryAL());
-                return;
-            }
+            // if (expirationDate <= new Date() || !token || !userId) {
+            //     // props.navigation.navigate('Auth');
+            //     dispatch(authActions.setDidTryAL());
+            //     return;
+            // }
 
-            const expirationTime = expirationDate.getTime() - new Date().getTime();
+            // const expirationTime = expirationDate.getTime() - new Date().getTime();
 
-            // props.navigation.navigate('Shop');
-            dispatch(authActions.authenticate(userId, token, expirationTime));
+            // // props.navigation.navigate('Shop');
+            dispatch(authActions.authenticate(userData.userId, userData.token, userData.expiryDate));
         };
 
         tryLogin();
@@ -51,7 +54,8 @@ const styles = StyleSheet.create({
     screen: {
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        // backgroundColor:"red",
     }
 });
 

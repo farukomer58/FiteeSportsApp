@@ -13,29 +13,13 @@ export default AppNavigator = () => {
 
     const isAuth = useSelector(state => state.auth.isAuthenticated);
     const didTryAutoLogin = useSelector(state => state.auth.didTryAutoLogin);
-    // const [isAuthenticated, setIsAuthenticated] = useState(true)
+
+    // Try Auto-Login First
     return (
         <NavigationContainer>
-
-            {!isAuth && <AuthNavigator />}
+            {!isAuth && !didTryAutoLogin && <StartupScreen />}
+            {!isAuth && didTryAutoLogin && <AuthNavigator />}
             {isAuth && <MainNavigator />}
-            {/* {!isAuth && !didTryAutoLogin && <StartupScreen />} */}
-
         </NavigationContainer>
     )
 }
-// createStackNavigator({
-//     Categories: {
-//         screen: CategoriesScreen,
-//         // navigationOptions: options
-//     },
-//     CategoryMeals: CategoryMealsScreen,
-//     MealDetail: MealDetailScreen,
-// }, {
-//     // initialRouteName:"Categoies", Inital Screen, takes first by default
-//     mode: "modal", //has efect on IOS
-//     defaultNavigationOptions: options
-// })
-
-
-// export default createAppContainer(MealsNavigator)

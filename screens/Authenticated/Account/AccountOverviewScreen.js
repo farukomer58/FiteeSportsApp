@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { View, Image, StyleSheet, ImageBackground, ScrollView, TouchableOpacity } from 'react-native'
 import { Ionicons, MaterialIcons, AntDesign, Fontisto } from '@expo/vector-icons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
+import * as authActions from '../../../store/actions/authActions'
 import { useSelector, useDispatch } from 'react-redux';
 
 import axios from 'axios';
@@ -13,6 +15,9 @@ import Values from '../../../constants/Values';
 import ListItem from '../../../components/UI/ListItem';
 
 export default function AccountOverviewScreen(props) {
+    
+    const dispatch = useDispatch();
+
     const auth = useSelector(state => state.auth); // Get User Activities of redux 
     const [accountDetails, setAccountDetails] = useState({})
 
@@ -64,6 +69,12 @@ export default function AccountOverviewScreen(props) {
                     onPress={() => { props.navigation.navigate("UserActivities") }}
                     listItem="Own Activities"
                     listItemIcon={<MaterialIcons name="list" size={40} color="white" style={styles.inputIcon} />}
+                />
+
+                <ListItem
+                    onPress={() => { dispatch(authActions.logout())}}
+                    listItem="Logout"
+                    listItemIcon={<MaterialIcons name="logout" size={40} color="white" style={styles.inputIcon} />}
                 />
             </View>
         </ScrollView>
