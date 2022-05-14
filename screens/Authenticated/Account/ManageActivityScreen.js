@@ -30,6 +30,9 @@ export default ManageActivityScreen = props => {
 
   }, []);
 
+
+  //TODO: SHould be able to render empty input fied when Creating a new activity
+
   return (
     <ScrollView style={styles.background}>
       <View style={styles.form}>

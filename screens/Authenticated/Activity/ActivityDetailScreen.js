@@ -39,6 +39,10 @@ export default function ActivityDetailScreen(props) {
                 <CustomText style={styles.description}>
                     and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
                 </CustomText>
+                {/* Location  */}
+                {/* Review  */}
+                {/* Save as Favorite Button or maybe in header instead of the bell icon */}
+
 
                 <Heading size="md" ml="-1" color="white" p={2}>
                     Planned Activities
@@ -53,6 +57,7 @@ export default function ActivityDetailScreen(props) {
                     </HStack>
                 </ScrollView>
 
+                {/* Booking Options  */}
                 <Heading size="md" ml="-1" color="white" p={2}>
                     Price
                 </Heading>
@@ -138,6 +143,7 @@ export default function ActivityDetailScreen(props) {
                     </TouchableOpacity>
                 </Box>
 
+                {/* When clicked on reviews redirected to here, Bottom reviews */}
 
             </View>
         </ScrollView>

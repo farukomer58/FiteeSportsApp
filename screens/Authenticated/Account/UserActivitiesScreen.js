@@ -38,6 +38,8 @@ export default UserActivitiesScreen = props => {
     );
   }
 
+
+  // TODO Here also PAGINATION MAYBE
   return (
     <FlatList
       data={userActivities}

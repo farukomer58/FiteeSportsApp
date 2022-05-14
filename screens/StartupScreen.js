@@ -18,12 +18,13 @@ const StartupScreen = props => {
 
         const tryLogin = async () => {
             const userData = await AsyncStorage.getItem('userData');
+            console.log(userData)
             if (!userData) {
                 dispatch(authActions.setDidTryAL());
                 return;
             }
             // const expirationDate = new Date(expiryDate);
-            if (userData.expirationDate <= new Date() || !userData.token || !userData.userId) {
+            if (!!userData.token || !!userData.userId) {
                 dispatch(authActions.setDidTryAL());
                 return;
             }

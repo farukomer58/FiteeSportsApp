@@ -86,7 +86,7 @@ export default function HomeScreen(props) {
                     <LinkText onPress={() => { props.navigation.navigate('Activities') }} style={{ paddingTop: 20, paddingRight: 10, }}>View All</LinkText>
                 </View>
 
-                {/* Show Map with Points  */}
+                {/* TODO: Show Map with Points  */}
                 <SafeAreaView style={{ flex: 1, paddingTop: 20 }}>
                     <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center' }}>
                         <Carousel

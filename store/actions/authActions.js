@@ -28,9 +28,10 @@ export const authenticate = (userId, token, expiryTime) => {
 
 // SingUp / Register action function
 export const signUp = (inputValues, userRole) => {
+    const firstName = inputValues.fullName.split(" ")[0]
     const lastName = inputValues.fullName.split(" ")[1]
     return async dispatch => { //Because redux-thunk we can send two return one async one
-        const body = { firstName: inputValues.fullName, lastName: lastName ? lastName : "", email: inputValues.email, password: inputValues.password, birthDate: null, phone: inputValues.phone, userRole: userRole }
+        const body = { firstName: firstName, lastName: lastName ? lastName : "", email: inputValues.email, password: inputValues.password, birthDate: null, phone: inputValues.phone, userRole: userRole }
 
         // Register Request
         const response = await axios.post(`${Values.apiUrl}/api/v1/users/register`, body, { headers })

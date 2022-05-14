@@ -63,6 +63,11 @@ export default BookingsSceen = props => {
     return (
       <View style={{ ...styles.background, alignItems: 'center', justifyContent: 'center' }}>
         <CustomText style={{ textAlign: "center" }}>No orders found, maybe start participating to some activities?</CustomText>
+      {/* See activity title */}
+      {/* Total price */}
+        {/* How many Lessons purchased */}
+
+
       </View>
     );
   }
