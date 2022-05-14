@@ -10,34 +10,26 @@ import Values from '../constants/Values';
 
 import * as authActions from '../store/actions/authActions';
 
+// First loaded screen that checks wheter user has token on device for auto-login or not
 const StartupScreen = props => {
     const dispatch = useDispatch();
 
     useEffect(() => {
+
         const tryLogin = async () => {
-            console.log("I AM TRYING TO AUTO LOGIN")
             const userData = await AsyncStorage.getItem('userData');
-            console.log(userData)
             if (!userData) {
-                // props.navigation.navigate('Auth');
                 dispatch(authActions.setDidTryAL());
                 return;
             }
-         
-            // const transformedData = JSON.parse(userData);
-            // const { token, userId, expiryDate } = transformedData;
             // const expirationDate = new Date(expiryDate);
-
-            // if (expirationDate <= new Date() || !token || !userId) {
-            //     // props.navigation.navigate('Auth');
-            //     dispatch(authActions.setDidTryAL());
-            //     return;
-            // }
-
+            if (userData.expirationDate <= new Date() || !userData.token || !userData.userId) {
+                dispatch(authActions.setDidTryAL());
+                return;
+            }
             // const expirationTime = expirationDate.getTime() - new Date().getTime();
-
-            // // props.navigation.navigate('Shop');
             dispatch(authActions.authenticate(userData.userId, userData.token, userData.expiryDate));
+
         };
 
         tryLogin();

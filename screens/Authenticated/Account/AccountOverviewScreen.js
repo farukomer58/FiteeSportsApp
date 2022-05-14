@@ -21,7 +21,6 @@ export default function AccountOverviewScreen(props) {
     const auth = useSelector(state => state.auth); // Get User Activities of redux 
     const [accountDetails, setAccountDetails] = useState({})
 
-
     useEffect(() => {
         console.log("Helllow Fetch user data")
         console.log(auth)

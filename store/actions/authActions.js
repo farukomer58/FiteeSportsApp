@@ -3,23 +3,22 @@ import axios from 'axios';
 import Values from '../../constants/Values';
 import qs from 'qs'
 
-export const AUTHENTICATE = "AUTHENTICATE"; 
 export const SIGNUP = "SIGNUP"
 export const LOGIN = "LOGIN"
 export const LOGOUT = "LOGOUT"
 export const SET_DID_TRY_AL = 'SET_DID_TRY_AL';
 
-export const LOGIN_QUICK = "LOGIN_QUICK"
-
+// Default Headers
 const headers = {
     "Content-Type": "application/json",
 };
 
-let timer;
-
+// Try Auto Login
 export const setDidTryAL = () => {
     return { type: SET_DID_TRY_AL };
 };
+
+// Authenticate with token saved on device
 export const authenticate = (userId, token, expiryTime) => {
     return dispatch => {
         // dispatch(setLogoutTimer(expiryTime));
@@ -31,19 +30,16 @@ export const authenticate = (userId, token, expiryTime) => {
 export const signUp = (inputValues, userRole) => {
     const lastName = inputValues.fullName.split(" ")[1]
     return async dispatch => { //Because redux-thunk we can send two return one async one
-        const body = { firstName: inputValues.fullName, lastName: lastName?lastName:"", email: inputValues.email, password: inputValues.password, birthDate: null, phone: inputValues.phone, userRole: userRole }
-        console.log(body)
+        const body = { firstName: inputValues.fullName, lastName: lastName ? lastName : "", email: inputValues.email, password: inputValues.password, birthDate: null, phone: inputValues.phone, userRole: userRole }
 
-        const response = await axios.post(`${Values.apiUrl}/api/v1/users/register`,
-            body,
-            { headers }
-        )
+        // Register Request
+        const response = await axios.post(`${Values.apiUrl}/api/v1/users/register`, body, { headers })
+
         if (response.status == 200) {
             const resData = await response.data;
-            console.log(resData, "Register");
-            dispatch({ type: SIGNUP, token: "response.idToken", userId: "response.localId" })
+            console.log(resData, "Registered");
+            dispatch({ type: SIGNUP, token: "response.idToken", userId: "response.localId" }) // User needs to verify email first
         }
-        console.log(response)
         return response
     }
 }
@@ -54,13 +50,8 @@ export const login = (email, password) => {
         const response = await axios({
             method: 'post',
             url: `${Values.apiUrl}/login`,
-            data: qs.stringify({
-                email: email,
-                password: password
-            }),
-            headers: {
-                'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
-            }
+            data: qs.stringify({ email: email, password: password }),// Send data in x-www-form-encoded form
+            headers: { 'content-type': 'application/x-www-form-urlencoded;charset=utf-8' }
         })
 
         // Login Succesfully
@@ -79,25 +70,14 @@ export const login = (email, password) => {
     }
 }
 
+// Logout user, remove also token from local device
 export const logout = () => {
     // clearLogoutTimer();
     AsyncStorage.removeItem('userData');
     return { type: LOGOUT };
 };
-const clearLogoutTimer = () => {
-    if (timer) {
-        clearTimeout(timer);
-    }
-};
 
-const setLogoutTimer = expirationTime => {
-    return dispatch => {
-      timer = setTimeout(() => {
-        dispatch(logout());
-      }, expirationTime);
-    };
-  };
-
+// Save token, userId, experationDate on device
 const saveDataToStorage = (token, userId, expirationDate) => {
     AsyncStorage.setItem(
         'userData',
@@ -109,8 +89,19 @@ const saveDataToStorage = (token, userId, expirationDate) => {
     );
 };
 
-export const loginQuick = () => {
-    return dispatch => {
-        dispatch({ type: LOGIN_QUICK })
+
+
+let timer;
+// Function for auto-logout when token expires / TODO needs further implemantation
+const clearLogoutTimer = () => {
+    if (timer) {
+        clearTimeout(timer);
     }
-}
+};
+const setLogoutTimer = expirationTime => {
+    return dispatch => {
+        timer = setTimeout(() => {
+            dispatch(logout());
+        }, expirationTime);
+    };
+};

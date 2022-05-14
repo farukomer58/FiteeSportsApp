@@ -1,25 +1,15 @@
 import React, { useState, useReducer, useEffect, useCallback } from 'react';
-import { Constants } from 'expo'
 import {
-    Container,
-    Header,
     Button,
     Text,
     Checkbox,
-    Body,
-    Form,
     Center,
     HStack,
     Item as FormItem,
-    Input,
     Link,
-    Title,
-    Icon,
     Modal,
     Box,
     Stack,
-    useToast,
-    // Alert,
 } from 'native-base';
 
 import { View, Image, StyleSheet, ImageBackground, TouchableOpacity, ScrollView, KeyboardAvoidingView, ActivityIndicator, Alert } from 'react-native'
@@ -74,52 +64,44 @@ const defaultForm = {
     formIsValid: false,
 }
 export default function RegisterScreen(props) {
+    
+    const dispatch = useDispatch();                                         // Redux dispatch
 
-    // Redux dispatch
-    const dispatch = useDispatch();
-
-    // Show password or not
-    const [show, setShow] = useState(false);
+    const [show, setShow] = useState(false);                                // Show password or not
     const handleClick = () => setShow(!show);
 
-    const [isLoading, setIsLoading] = useState(false)
-    const [error, setError] = useState(null)
+    const [isLoading, setIsLoading] = useState(false)                       // Is busy with request....
 
-    const [date, setDate] = useState('09-10-2021');
+    const [selectedUserType, setSelectedUserType] = useState("CUSTOMER")    // Registering as ....
+    const [isNextStep, setIsNextStep] = useState(false)                     // Registering as Freelancer show advanced register options or not
 
-    const [selectedUserType, setSelectedUserType] = useState("CUSTOMER")
-    const [isNextStep, setIsNextStep] = useState(false)
+    const [modalVisible, setModalVisible] = useState(false);                // Show modal term of condition or not
 
-    const [agreed, setAgreed] = useState(false);
-    const [modalVisible, setModalVisible] = useState(false);
-
-    const [formState, dispatchForm] = useReducer(formReducer, defaultForm)
-
+    const [agreed, setAgreed] = useState(false);                            // Agreed to the Terms of Condition or not
+    const [formState, dispatchForm] = useReducer(formReducer, defaultForm)  // Form Reducer with all values and validatity values
+    // Handler when user input changes, updates reducer state 
     const inputChangeHandler = useCallback((inputIdentifier, inputValue, inputIsValid) => {
         dispatchForm({ type: "UPDATE", value: inputValue, isValid: inputIsValid, input: inputIdentifier })
     }, [dispatchForm])
 
-
+    // Clear Register form and navigate back to login page
     const returnToLoginScreen = () => {
         dispatchForm({ type: "CLEAR" })
-        props.navigation.navigate("Login")
+        props.navigation.replace("Login")
     }
 
+    // Register User Handler
     const registerUser = async () => {
         if (formState.formIsValid && agreed) {
-
             setIsLoading(true)
             try {
                 const response = await dispatch(authActions.signUp(formState.inputValues, selectedUserType))
                 setIsLoading(false)
-                Alert.alert("Registration succesfull", "Your registration has completed successfully, please go to the Login screen to enter the application", [{ text: "Return To Login", onPress: () => returnToLoginScreen() }])
-                // props.navigation.navigate('Home')
-                // console.log('Registered')
+                Alert.alert("Registration succesfull", "Your registration has completed successfully, please Login screen to enter the application", [{ text: "Return To Login", onPress: () => returnToLoginScreen() }])
             } catch (error) {
-                Alert.alert("An error occured", error.message, [{ text: "Okay" }])
+                Alert.alert("Registration failed", "Please Enter all fields correctly", [{ text: "Okay" }])
                 setIsLoading(false)
             }
-            setIsLoading(false)
             // Dispacth to redux and send request backend
             // show succes or failure alert
         } else {
@@ -130,6 +112,7 @@ export default function RegisterScreen(props) {
         }
     }
 
+    // When User type = FREELANCER go to extra register options screen for additional information
     const goNextStep = () => {
         if (formState.formIsValid && agreed) {
             setIsNextStep(true)
@@ -139,7 +122,7 @@ export default function RegisterScreen(props) {
         }
     }
 
-    // Customer Register or Extra step for Freelancer register
+    // Set content to Customer Register or Extra step for Freelancer register
     let content;
     if (isNextStep) {
         content = (
@@ -290,7 +273,6 @@ export default function RegisterScreen(props) {
 
     return (
         <ImageBackground style={styles.background} source={require("../../assets/images/loginBg.png")} resizeMode="cover">
-            {/* <View style={{ marginTop: 100 }}> */}
             <ScrollView>
                 <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} keyboardVerticalOffset={-150} style={{ marginTop: 80 }}>
                     <Box alignItems="center">
@@ -340,7 +322,6 @@ export default function RegisterScreen(props) {
                             </Modal.Footer>
                         </Modal.Content>
                     </Modal>
-
                 </KeyboardAvoidingView>
             </ScrollView>
         </ImageBackground>
@@ -350,13 +331,6 @@ export default function RegisterScreen(props) {
 export const screenOptions = navData => {
     return {
         headerTitle: "Register",
-        // title: 'Home',
-        // tabBarIcon: ({ color }) => (
-        //     <MaterialCommunityIcons name="home" color={color} size={26} />
-        // ),
-        // headerLeft: (props) => (
-        //     <Text>Hello</Text>
-        // )
     }
 }
 

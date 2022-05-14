@@ -1,4 +1,4 @@
-import { SIGNUP, LOGIN, LOGIN_QUICK,SET_DID_TRY_AL,LOGOUT } from "../actions/authActions";
+import { SIGNUP, LOGIN, SET_DID_TRY_AL, LOGOUT } from "../actions/authActions";
 
 const initialState = {
     userId: '',             // Logged in User ID   
@@ -12,7 +12,7 @@ export default (state = initialState, action) => {
         case SIGNUP:
             return { userId: action.userId, token: action.token };
         case LOGIN:
-            return { userId: action.userId, token: action.token, isAuthenticated: true, didTryAutoLogin:true };
+            return { userId: action.userId, token: action.token, isAuthenticated: true, didTryAutoLogin: true };
         case SET_DID_TRY_AL:
             return {
                 ...state,
@@ -23,8 +23,6 @@ export default (state = initialState, action) => {
                 ...initialState,
                 didTryAutoLogin: true
             };
-        case LOGIN_QUICK:
-            return { ...state, isAuthenticated: true };
         default:
             return state
     }

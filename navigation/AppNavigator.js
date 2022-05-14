@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-import { Platform } from 'react-native'
 import { useSelector } from 'react-redux';
-import { createStackNavigator } from '@react-navigation/stack';
 
 // Navigation
 import { NavigationContainer } from '@react-navigation/native';

@@ -84,7 +84,6 @@ export default function LoginScreen(props) {
                 console.log(response.data)
             } catch (err) {
                 Alert.alert("Login Failed", "Could not login with the provided email and password", [{ text: "Okay" }])
-                // Alert.alert("Login Failed", err.message, [{ text: "Okay" }])
                 setIsLoading(false)
             }
         } else {
