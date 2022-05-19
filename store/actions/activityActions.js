@@ -11,7 +11,6 @@ export const UPDATE_ACTIVITY = 'UPDATE_ACTIVITY';
 export const fetchActivities = () => {
     return async (dispatch, getState) => {
         const userId = getState().auth.userId;
-
     }
 }
 
@@ -40,6 +39,8 @@ export const createActivity = (body) => {
 
     return async (dispatch, getState) => {
 
+        // console.log(body)
+
         const auth = getState().auth;
         const response = await axios({
             method: 'POST',
@@ -51,19 +52,12 @@ export const createActivity = (body) => {
             }
         })
 
+        console.log("Created Activity")
         console.log(response)
         // console.log(response.data)
         // Retrieving Succesfully
         if (response.status === 200) {
-            // dispatch({
-            //     type: CREATE_ACTIVITY,
-            //     activityData: {
-            //         title,
-            //         description,
-            //         imageUrl,
-            //         price
-            //     }
-            // })
+            dispatch({ type: CREATE_ACTIVITY, activityData: response.data })
         }
         return response
     }

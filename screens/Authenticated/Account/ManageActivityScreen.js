@@ -20,14 +20,13 @@ export default ManageActivityScreen = props => {
   const activityId = props.route.params ? props.route.params.activityId : null;
   const editedActivity = useSelector(state => state.activities.userActivities.find(activity => activity.id === activityId));
 
-  const [title, setTitle] = useState(editedActivity ? editedActivity.title : '');
-  const [imageUrl, setImageUrl] = useState(editedActivity ? editedActivity.imageUrl : '');
-  const [price, setPrice] = useState('');
-  const [description, setDescription] = useState(editedActivity ? editedActivity.description : '');
+  const [title, setTitle] = useState(editedActivity ? editedActivity.title : "");
+  const [imageUrl, setImageUrl] = useState(editedActivity ? editedActivity.imageUrl : "");
+  const [price, setPrice] = useState("");
+  const [description, setDescription] = useState(editedActivity ? editedActivity.description : "");
 
   // Handler when Submited save or edit Activity
-  const saveOrUpdateActivity = useCallback(async () => {
-
+  const saveOrUpdateActivity = async () => {
     let body = {
       title: title,
       description: description,
@@ -41,9 +40,14 @@ export default ManageActivityScreen = props => {
         { date: "2022-05-29 18:00", maxParticipants: 15 }
       ]
     }
+    console.log(body)
     const response = await dispatch(activityActions.createActivity(body))
-    console.log(response.status)
-  }, []);
+
+    if (response.status === 201) {
+      props.navigation.replace("UserActivities")
+    }
+
+  };
 
 
   return (

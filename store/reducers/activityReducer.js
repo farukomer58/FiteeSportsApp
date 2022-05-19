@@ -20,18 +20,9 @@ export default (state = initialState, action) => {
         userActivities: action.activities
       };
     case CREATE_ACTIVITY:
-      const newActivity = new Activity(
-        new Date().toString(),
-        action.activityData.ownerId,
-        action.activityData.title,
-        action.activityData.imageUrl,
-        action.activityData.description,
-        action.activityData.price
-      );
       return {
         ...state,
-        availableActivities: state.availableActivities.concat(newActivity),
-        userActivities: state.userActivities.concat(newActivity)
+        userActivities: state.userActivities.concat(action.activityData)
       };
     case UPDATE_ACTIVITY:
       const activityIndex = state.userActivities.findIndex(

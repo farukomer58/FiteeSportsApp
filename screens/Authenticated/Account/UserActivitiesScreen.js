@@ -11,7 +11,7 @@ import CustomText from '../../../components/native/CustomText';
 
 export default UserActivitiesScreen = props => {
   const dispatch = useDispatch();
-  // const userActivities = useSelector(state => state.activities.userActivities); // Get User Activities of redux 
+  const userActivities = useSelector(state => state.activities.userActivities); // Get User Activities of redux 
   const auth = useSelector(state => state.auth); // Get User Activities of redux 
 
   const [ownActivities, setOwnActivities] = useState([]);
@@ -73,7 +73,7 @@ export default UserActivitiesScreen = props => {
       {/* <Button color={Values.primaryColor} onPress={() => props.navigation.navigate('Home')} style={{margin:10}}>Create New Activity</Button> */}
 
       <FlatList
-        data={ownActivities}
+        data={userActivities}
         keyExtractor={item => item.id}
         onRefresh={() => getActivityData()}
         refreshing={isFetching}
