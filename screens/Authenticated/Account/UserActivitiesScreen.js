@@ -14,37 +14,28 @@ export default UserActivitiesScreen = props => {
   const auth = useSelector(state => state.auth); // Get User Activities of redux 
 
   const [ownActivities, setOwnActivities] = useState([]);
+  const [isFetching, setIsFetching] = useState(false);
 
   useEffect(() => {
     console.log(`Bearer ${auth.token}`)
-    // axios.get(`${Values.apiUrl}/api/v1/activities/own`, {},{
-    //   header: {
-    //     'content-type': 'application/json',
-    //     'authorization': `Bearer ${auth.token}`,
-    //     // "User-Agent": "Mozilla/5.0"
-    //   }
-    // }).then(response => {
-    //   console.log(response.data)
-    //   // console.log(response.data.content[0].title)
-    // }).catch(e => {
-    //   console.log(e.message)
-    // })
+    getActivityData()
+  }, [])
 
-
+  const getActivityData = () => {
+    setIsFetching(true)
     axios({
       method: 'GET',
       url: `${Values.apiUrl}/api/v1/activities/own`,
       headers: { 'authorization': `Bearer ${auth.token}` }
     }).then(response => {
-      // console.log(response.data)
+      console.log(response.data)
       setOwnActivities(response.data)
     }).catch(e => {
       console.log(e)
     })
+    setIsFetching(false)
 
-
-  }, [])
-
+  }
 
   // Handler for redirecting to edit screen Activity
   const editActivityHandler = id => {
@@ -77,7 +68,7 @@ export default UserActivitiesScreen = props => {
   // TODO Here also PAGINATION MAYBE
   return (
     <View style={styles.background} >
-      <View style={{marginHorizontal:30, marginTop:20}}>
+      <View style={{ marginHorizontal: 30, marginTop: 20 }}>
         <Button style={{ width: "50%", justifyContent: "center", alignItems: "center" }} title="Create New Activity" onPress={() => props.navigation.navigate('ManageActivity')} />
       </View>
       {/* <Button color={Values.primaryColor} onPress={() => props.navigation.navigate('Home')} style={{margin:10}}>Create New Activity</Button> */}
@@ -85,6 +76,8 @@ export default UserActivitiesScreen = props => {
       <FlatList
         data={ownActivities}
         keyExtractor={item => item.id}
+        onRefresh={() => getActivityData()}
+        refreshing={isFetching}
         renderItem={itemData => (
           <ActivityItem
             image={"https://images.unsplash.com/photo-1562088287-bde35a1ea917?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80"}
