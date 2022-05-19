@@ -59,6 +59,7 @@ export const login = (email, password) => {
         if (response.status === 200) {
 
             const resData = response.data;
+            console.log("Logged in and got back the following info:")
             console.log(resData)
 
             dispatch({ type: LOGIN, token: resData.access_token, userId: resData.user_id })

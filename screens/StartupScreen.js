@@ -15,24 +15,22 @@ const StartupScreen = props => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-
         const tryLogin = async () => {
             const userData = await AsyncStorage.getItem('userData');
-            console.log(userData)
-            if (!userData) {
+            const parsedUserData = JSON.parse(userData)
+
+            if (!parsedUserData) {
                 dispatch(authActions.setDidTryAL());
                 return;
             }
             // const expirationDate = new Date(expiryDate);
-            if (!!userData.token || !!userData.userId) {
+            if (!parsedUserData.token || !parsedUserData.userId) {
                 dispatch(authActions.setDidTryAL());
                 return;
             }
             // const expirationTime = expirationDate.getTime() - new Date().getTime();
-            dispatch(authActions.authenticate(userData.userId, userData.token, userData.expiryDate));
-
+            dispatch(authActions.authenticate(parsedUserData.userId, parsedUserData.token, parsedUserData.expiryDate));
         };
-
         tryLogin();
     }, [dispatch]);
 

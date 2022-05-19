@@ -29,8 +29,9 @@ export default function AccountOverviewScreen(props) {
                 "Authorization": `Bearer ${auth.token}`
             }
         }).then(response => {
-            console.log(response.data)
-            setAccountDetails(response.data)
+                console.log("AMKKK")
+            console.log(response.data[0])
+            setAccountDetails(response.data[0])
         }).catch(e => {
             console.log(e)
         })
