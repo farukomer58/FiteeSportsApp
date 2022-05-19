@@ -92,7 +92,6 @@ const saveDataToStorage = (token, userId, expirationDate) => {
 };
 
 
-
 let timer;
 // Function for auto-logout when token expires / TODO needs further implemantation
 const clearLogoutTimer = () => {

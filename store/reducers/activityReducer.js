@@ -1,5 +1,6 @@
 import { ACTIVITIES } from '../../data/dummy-data';
 import {
+  SET_ACTIVITIES,
   DELETE_ACTIVITY,
   CREATE_ACTIVITY,
   UPDATE_ACTIVITY
@@ -7,12 +8,17 @@ import {
 import Activity from '../../models/activity';
 
 const initialState = {
-  availableActivities: ACTIVITIES,
-  userActivities: ACTIVITIES.filter(prod => prod.ownerId === 'u1')
+  availableActivities: [],
+  userActivities: []
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
+    case SET_ACTIVITIES:
+      return {
+        availableActivities: action.activities,
+        userActivities: action.activities
+      };
     case CREATE_ACTIVITY:
       const newActivity = new Activity(
         new Date().toString(),

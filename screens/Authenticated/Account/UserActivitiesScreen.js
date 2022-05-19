@@ -7,10 +7,11 @@ import axios from 'axios';
 // Custom
 import ActivityItem from '../../../components/activities/ActivityItem';
 import Values from '../../../constants/Values';
+import CustomText from '../../../components/native/CustomText';
 
 export default UserActivitiesScreen = props => {
   const dispatch = useDispatch();
-  const userActivities = useSelector(state => state.activities.userActivities); // Get User Activities of redux 
+  // const userActivities = useSelector(state => state.activities.userActivities); // Get User Activities of redux 
   const auth = useSelector(state => state.auth); // Get User Activities of redux 
 
   const [ownActivities, setOwnActivities] = useState([]);
@@ -21,20 +22,13 @@ export default UserActivitiesScreen = props => {
     getActivityData()
   }, [])
 
-  const getActivityData = () => {
+  const getActivityData = async () => {
     setIsFetching(true)
-    axios({
-      method: 'GET',
-      url: `${Values.apiUrl}/api/v1/activities/own`,
-      headers: { 'authorization': `Bearer ${auth.token}` }
-    }).then(response => {
-      console.log(response.data)
-      setOwnActivities(response.data)
-    }).catch(e => {
-      console.log(e)
-    })
+    const response = await dispatch(activityActions.fetchOwnActivities())
+    console.log("OWN ACTOVOTOES")
+    console.log(response.data)
+    setOwnActivities(response.data)
     setIsFetching(false)
-
   }
 
   // Handler for redirecting to edit screen Activity
@@ -57,10 +51,15 @@ export default UserActivitiesScreen = props => {
   };
 
 
-  if (userActivities.length === 0) {
+  if (ownActivities.length === 0) {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>No activities found, maybe start creating some?</Text>
+
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: "#313131" }}>
+
+        <View style={{ margin: 20 }}>
+          <Button style={{ width: "50%", justifyContent: "center", alignItems: "center" }} title="Create New Activity" onPress={() => props.navigation.navigate('ManageActivity')} />
+        </View>
+        <CustomText>No activities found, maybe start creating some?</CustomText>
       </View>
     );
   }

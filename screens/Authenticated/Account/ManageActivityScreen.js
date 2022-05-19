@@ -26,12 +26,25 @@ export default ManageActivityScreen = props => {
   const [description, setDescription] = useState(editedActivity ? editedActivity.description : '');
 
   // Handler when Submited save or edit Activity
-  const updateActivity = useCallback(() => {
+  const saveOrUpdateActivity = useCallback(async () => {
 
+    let body = {
+      title: title,
+      description: description,
+      prices: [
+        { lessons: 1, price: 10, discount: 0 },
+        { lessons: 5, price: 27, discount: 20 }
+      ],
+      categories: [],
+      activityDates: [
+        { date: "2022-05-26 18:00", maxParticipants: 15 },
+        { date: "2022-05-29 18:00", maxParticipants: 15 }
+      ]
+    }
+    const response = await dispatch(activityActions.createActivity(body))
+    console.log(response.status)
   }, []);
 
-
-  //TODO: SHould be able to render empty input fied when Creating a new activity
 
   return (
     <ScrollView style={styles.background}>
@@ -74,7 +87,7 @@ export default ManageActivityScreen = props => {
             onChangeText={text => setDescription(text)}
           />
         </View>
-        <Button colorScheme="green" style={styles.customButton} onPress={updateActivity} key={1}>Update Activity</Button>
+        <Button colorScheme="green" style={styles.customButton} onPress={saveOrUpdateActivity} key={1}>{activityId ? "Edit Activity" : "Add Activity"}</Button>
       </View>
     </ScrollView>
   );
@@ -83,7 +96,7 @@ export default ManageActivityScreen = props => {
 export const screenOptions = navData => {
   const routeParams = navData.route.params ? navData.route.params : {};
   return {
-    headerTitle: routeParams.productId ? 'Edit Activity' : 'Add Activity'
+    headerTitle: routeParams.activityId ? 'Edit Activity' : 'Add Activity'
   };
 };
 
