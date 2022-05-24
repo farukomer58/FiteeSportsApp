@@ -59,15 +59,11 @@
 
 |               | CODE |TEST | DEVOPS   |OVERALL   |
 |---------------|------|-----|----------|--------------------|
-| Omer Citik   |  -  | - |   -    | .......... |
+| Omer Citik   |  2  | 2 |   2    | 2 |
 
 #### What went well:
- - .........
+ - Continues Deployment gestart 
 
 #### (Even) better if:
-- Betere testen schrijven.
-- Nettere code schrijven: gebruik sonarlint hiervoor.
-- Gebruik een dev branche ipv alles op de master.
-- Kijk naar name test code conventions: https://medium.com/@stefanovskyi/unit-test-naming-conventions-dd9208eadbea
-
-
+- Code opschonen (gebruik sonarlint daarvoor)
+- Test kan verbeterd worden met @AutoConfigureMockMvc
