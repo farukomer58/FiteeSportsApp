@@ -34,7 +34,7 @@ export default function ActivityListItem(props) {
                         </View>
                     </View>
                     <View style={{ justifyContent: "space-between", alignItems:"flex-end" }}>
-                        <CustomText>Price?</CustomText>
+                        <CustomText>€{props.price}</CustomText>
                         <LinkText onPress={() => { props.navigation.navigate('Activities') }}>Read More</LinkText>
                     </View>
                 </View>

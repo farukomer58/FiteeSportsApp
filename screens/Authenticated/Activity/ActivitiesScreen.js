@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Constants } from 'expo'
 import {
     Container,
@@ -12,6 +12,7 @@ import {
     Spacer,
     Heading,
     HStack,
+    FlatList,
 } from 'native-base';
 
 import {
@@ -24,7 +25,10 @@ import {
 } from 'react-native'
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useSelector, useDispatch } from 'react-redux';
+import * as activityActions from '../../../store/actions/activityActions'
 
+import axios from 'axios';
 
 // Custom
 import PressableCard from '../../../components/PressableCard';
@@ -36,10 +40,40 @@ import CustomText from '../../../components/native/CustomText';
 import ActivityListItem from '../../../components/activities/ActivityListItem';
 import HorizontalLine from '../../../components/HorizontalLine';
 
-export default function ActivitiesScreen(props) {
+export default ActivitiesScreen = (props) => {
+
+    const dispatch = useDispatch();
+    const auth = useSelector(state => state.auth); // Get User Activities of redux 
+
+    const [activityDetails, setActivityDetails] = useState([])
+    const [isRefreshing, setIsRefreshing] = useState(true)
+
+    const renderActivityItem = (item) => {
+        return <>
+            <ActivityListItem
+                onPress={() => { props.navigation.navigate("ActivityDetail", { activityId: item.item.id, activityTitle:item.item.title }) }}
+                title={item.item.title}
+                price={item.item.activityPrices[0] ? item.item.activityPrices[0].price.toFixed(2) : "..."}
+                author={"Hans"}
+                location={"Amsterdam"}
+                tags={"Sport,fitness"}
+            />
+            <HorizontalLine />
+        </>
+    }
+    // Fetch All Activities
+    const fetchAllctivities = async () => {
+        const result = await dispatch(activityActions.fetchAllActivities())
+        setActivityDetails(result.data.content)
+        setIsRefreshing(false)
+    }
+
+    useEffect(() => {
+        fetchAllctivities()
+    }, [])
+
 
     return (
-        <ScrollView contentContainerStyle={{ flexGrow: 1 }} >
             <View style={styles.background}>
                 <HStack alignItems="center">
                     <Heading size="md" ml="-1" color="white" p={2}>
@@ -52,24 +86,15 @@ export default function ActivitiesScreen(props) {
                 {/* Possibly also sort options Right*/}
 
                 {/* Create Pagination list  */}
-                <ActivityListItem
-                    onPress={() => { props.navigation.navigate("ActivityDetail", {activityId: 1})}}
-                    title={"Dummy title"}
-                    author={"Hans"}
-                    location={"Amsterdam"}
-                    tags={"Sport,fitness"}
-                />
-                <HorizontalLine />
-                <ActivityListItem
-                    onPress={() => { }}
-                    title={"Dummy title"}
-                    author={"Hans"}
-                    location={"Amsterdam"}
-                    tags={"Sport,fitness"}
+                <FlatList
+                    data={activityDetails}
+                    renderItem={renderActivityItem}
+                    keyExtractor={item => item.id}
+                    refreshing={isRefreshing}
+                    onRefresh={fetchAllctivities}
                 />
 
             </View>
-        </ScrollView>
 
     )
 }
@@ -89,8 +114,6 @@ export const screenOptions = navData => {
 }
 
 const styles = StyleSheet.create({
-
-
     rowView: {
         flexDirection: "row",
         justifyContent: "space-between"

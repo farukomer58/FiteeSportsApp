@@ -26,7 +26,7 @@ export default (state = initialState, action) => {
       };
     case UPDATE_ACTIVITY:
       const activityIndex = state.userActivities.findIndex(
-        activity => activity.id === action.pid
+        activity => activity.id === action.activityId
       );
       const updatedActivity = new Activity(
         action.pid,

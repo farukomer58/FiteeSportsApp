@@ -103,7 +103,7 @@ export default function LoginScreen(props) {
     return (
         <ImageBackground style={styles.background} source={require("../../assets/images/loginBg.png")} resizeMode="cover">
             <ScrollView>
-                <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} keyboardVerticalOffset={-150} style={{ marginTop: 250 }}>
+                <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} keyboardVerticalOffset={-150} style={{ marginTop: 200 }}>
 
                     <Stack space={3} w="100%" alignItems="center">
 

@@ -8,9 +8,43 @@ export const DELETE_ACTIVITY = 'DELETE_ACTIVITY';
 export const CREATE_ACTIVITY = 'CREATE_ACTIVITY';
 export const UPDATE_ACTIVITY = 'UPDATE_ACTIVITY';
 
-export const fetchActivities = () => {
+export const fetchAllActivities = () => {
     return async (dispatch, getState) => {
-        const userId = getState().auth.userId;
+
+        const auth = getState().auth;
+        const response = await axios({
+            method: 'GET',
+            url: `${Values.apiUrl}/api/v1/activities`,
+            headers: {
+                'authorization': `Bearer ${auth.token}`,
+            }
+        })
+
+        // Retrieving Succesfully
+        if (response.status === 200) {
+            // dispatch({ type: SET_ACTIVITIES, activities: response.data })
+        }
+        return response
+    }
+}
+
+export const fetchActivityById = (activityId) => {
+    return async (dispatch, getState) => {
+
+        const auth = getState().auth;
+        const response = await axios({
+            method: 'GET',
+            url: `${Values.apiUrl}/api/v1/activities?id=${activityId}`,
+            headers: {
+                'authorization': `Bearer ${auth.token}`,
+            }
+        })
+
+        // Retrieving Succesfully
+        if (response.status === 200) {
+            // dispatch({ type: SET_ACTIVITIES, activities: response.data })
+        }
+        return response
     }
 }
 
@@ -29,7 +63,7 @@ export const fetchOwnActivities = () => {
 
         // Retrieving Succesfully
         if (response.status === 200) {
-            dispatch({ type: SET_ACTIVITIES, activities: response.data })
+            // dispatch({ type: SET_ACTIVITIES, activities: response.data })
         }
         return response
     }
@@ -56,7 +90,7 @@ export const createActivity = (body) => {
         console.log(response)
         // console.log(response.data)
         // Retrieving Succesfully
-        if (response.status === 200) {
+        if (response.status === 200 || response.status === 201 ) {
             dispatch({ type: CREATE_ACTIVITY, activityData: response.data })
         }
         return response
@@ -64,16 +98,27 @@ export const createActivity = (body) => {
 
 };
 
-export const updateActivity = (id, title, description, imageUrl) => {
-    return {
-        type: UPDATE_ACTIVITY,
-        pid: id,
-        activityData: {
-            title,
-            description,
-            imageUrl,
+export const updateActivity = (body, activityId) => {
+    return async (dispatch, getState) => {
+
+        // console.log(body)
+
+        const auth = getState().auth;
+        const response = await axios({
+            method: 'PUT',
+            url: `${Values.apiUrl}/api/v1/activities`,
+            data: body,
+            headers: {
+                'authorization': `Bearer ${auth.token}`,
+                'content-type': 'application/json'
+            }
+        })
+
+        if (response.status === 200 || response.status === 201) {
+            dispatch({ type: UPDATE_ACTIVITY, activityId:activityId, activityData: response.data })
         }
-    };
+        return response
+    }
 };
 
 export const deleteActivity = activityId => {

@@ -41,14 +41,12 @@ export default ManageActivityScreen = props => {
       ]
     }
     console.log(body)
-    const response = await dispatch(activityActions.createActivity(body))
+    const response = await dispatch(editedActivity? activityActions.updateActivity(body):activityActions.createActivity(body) )
 
     if (response.status === 201) {
       props.navigation.replace("UserActivities")
     }
-
   };
-
 
   return (
     <ScrollView style={styles.background}>
