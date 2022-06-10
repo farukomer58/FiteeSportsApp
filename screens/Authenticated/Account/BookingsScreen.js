@@ -6,22 +6,29 @@ import {
   TextInput,
   StyleSheet,
   Platform,
-  FlatList
+  FlatList,
+  ActivityIndicator
 } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import * as activityActions from '../../../store/actions/activityActions';
+import * as bookingActions from '../../../store/actions/bookingActions';
 
 // Custom
 import CustomText from '../../../components/native/CustomText';
 import OrderItem from '../../../components/bookings/OrderItem';
 
+import Values from '../../../constants/Values';
+
 export default BookingsSceen = props => {
   const dispatch = useDispatch();
+  const auth = useSelector(state => state.auth); // Get User Activities of redux 
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [bookings, setBookings] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
+
   // const orders = useSelector(state => state.orders.orders);
   const orders = [{
-    id:1,
+    id: 1,
     totalAmount: 5.00,
     readableDate: "date",
     items: [{
@@ -32,7 +39,7 @@ export default BookingsSceen = props => {
     }]
   },
   {
-    id:2,
+    id: 2,
     totalAmount: 8.00,
     readableDate: "date",
     items: [{
@@ -44,30 +51,43 @@ export default BookingsSceen = props => {
   },
   ]
 
-  // useEffect(() => {
-  //   setIsLoading(true);
-  //   dispatch(ordersActions.fetchOrders()).then(() => {
-  //     setIsLoading(false);
-  //   });
-  // }, [dispatch]);
+  const loadBookings = async () => {
+    
+    const results = await dispatch(bookingActions.getOwnBookings())
+    console.log("BOOKINGS")
+    console.log(results)
+
+    setBookings(results.data)
+    setIsLoading(false)
+  }
+
+  useEffect(() => {
+    setIsLoading(true);
+    loadBookings()
+  }, []);
+
+  const renderBooking = (itemData) => {
+    console.log("ITEMMM")
+    console.log(itemData)
+    return <OrderItem
+      amount={itemData.item.totalAmount}
+      date={itemData.item.createdDate}
+      items={[]} // Ordered Acitivty
+    //items={itemData.item.items} // Ordered Acitivty
+    />
+  }
 
   if (isLoading) {
     return (
       <View style={styles.centered}>
-        <ActivityIndicator size="large" color={Colors.primary} />
+        <ActivityIndicator size="large" color={Values.primaryColor} />
       </View>
     );
   }
-
-  if (orders.length === 0) {
+  if (bookings.length === 0) {
     return (
       <View style={{ ...styles.background, alignItems: 'center', justifyContent: 'center' }}>
         <CustomText style={{ textAlign: "center" }}>No orders found, maybe start participating to some activities?</CustomText>
-      {/* See activity title */}
-      {/* Total price */}
-        {/* How many Lessons purchased */}
-
-
       </View>
     );
   }
@@ -75,16 +95,15 @@ export default BookingsSceen = props => {
   return (
     <View style={styles.background}>
 
+      {/* See activity title */}
+      {/* Total price */}
+      {/* How many Lessons purchased */}
+
+
       <FlatList
-        data={orders}
+        data={bookings}
         keyExtractor={item => item.id}
-        renderItem={itemData => (
-          <OrderItem
-            amount={itemData.item.totalAmount}
-            date={itemData.item.readableDate}
-            items={itemData.item.items} // Ordered Acitivty
-          />
-        )}
+        renderItem={renderBooking}
       />
     </View>
   );
