@@ -17,6 +17,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import * as activityActions from '../../../store/actions/activityActions'
 import * as bookingActions from '../../../store/actions/bookingActions'
 
+import moment from "moment"
 
 import Header from '../../../components/Header';
 
@@ -26,6 +27,8 @@ import Card from '../../../components/Card';
 import Values from '../../../constants/Values';
 import CustomText from '../../../components/native/CustomText';
 
+import Styles from '../../../constants/Styles';
+import LinkText from '../../../components/native/LinkText';
 export default function ActivityDetailScreen(props) {
 
     const dispatch = useDispatch();
@@ -58,37 +61,6 @@ export default function ActivityDetailScreen(props) {
     }, [])
 
 
-    const renderPriceItem = (item) => {
-        return <Box alignItems="center" style={{ margin: 10 }}>
-            <TouchableOpacity activeOpacity={0.8} style={{ width: "100%" }} onPress={() => { props.navigation.navigate("ActivityDetail") }}>
-                <Box borderWidth="1" borderColor="coolGray.300" shadow="3" bg={"coolGray.100"} p="5" rounded="8" >
-
-                    <HStack alignItems="center">
-                        <Text color="coolGray.800" fontWeight="medium" fontSize="md">
-                            {item.item.lessons} Lesson Tickets
-                        </Text>
-                        <Spacer />
-                        <Text mt="2" fontsize="xl" color="red.500">
-                            €{item.item.price.toFixed(2)}
-                            €{item.item.discount.toFixed(2)}
-                        </Text>
-                    </HStack>
-
-
-                    <Flex>
-                        <HStack alignItems="center">
-
-                            <Spacer />
-                            <Text mt="2" fontSize={12} fontWeight="medium" fontSize={"lg"} color="darkBlue.600">
-                                Book Now
-                            </Text>
-                        </HStack>
-                    </Flex>
-                </Box>
-            </TouchableOpacity>
-        </Box>
-    }
-
     if (isLoading) {
         return <View style={styles.backgroundActivity}>
             <ActivityIndicator size="large" color="#fff" style={{ marginTop: 20 }} />
@@ -100,18 +72,24 @@ export default function ActivityDetailScreen(props) {
 
                 <Image style={styles.image} source={{ uri: "https://images.unsplash.com/photo-1562088287-bde35a1ea917?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80" }} />
 
-                <CustomText fontSize="xl">{activityDetail.title}</CustomText>
-                {/* <View style={styles.actions}>
-                <Button color={Values.primaryColor} title="Add to Cart" onPress={() => { }} />
-            </View> */}
-                {/* <Text style={styles.price}>${selectedProduct.price.toFixed(2)}</Text> */}
-                <CustomText style={styles.description}>
-                    Lorem Ipsum is simply dummy text of the printing t everpopularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
+                <View style={{...Styles.flexDirectionRowSpace, marginTop:10}}>
+                    <CustomText title style={{ marginHorizontal: 30 }}>{activityDetail.title}</CustomText>
+                    <LinkText style={{ marginHorizontal: 20 }} onPress={() => { props.navigation.navigate('Activities') }}>1000 reviews</LinkText>
+                    {/* <Text mt="1" style={{ marginHorizontal: 30 }} fontSize={12} fontWeight="medium" color="yellow.600">1000 Reviews</Text> */}
+                </View>
+
+                <CustomText style={styles.details}>
+                    {activityDetail.activityAddress}, {activityDetail.city} - By  {activityDetail.ownerName}
                 </CustomText>
+
                 <CustomText style={styles.description}>
+                    {activityDetail.description}
+                </CustomText>
+                {/* <CustomText style={styles.description}>
                     and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                </CustomText>
+                </CustomText> */}
                 {/* Location  */}
+
                 {/* Review  */}
                 {/* Save as Favorite Button or maybe in header instead of the bell icon */}
 
@@ -120,10 +98,9 @@ export default function ActivityDetailScreen(props) {
                     Planned Activities
                 </Heading>
                 <ScrollView horizontal={true} height={150}>
-                    {/* style={{ backgroundColor: 'blue' }} */}
                     <HStack>
-                        {["one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven"].map(val => (
-                            <DatesCard key={val} navigation={props.navigation} />
+                        {activityDetail.activityDates && activityDetail.activityDates.map(val => (
+                            <DatesCard key={val.date} navigation={props.navigation} date={val} />
                         )
                         )}
                     </HStack>
@@ -139,10 +116,11 @@ export default function ActivityDetailScreen(props) {
                     renderItem={renderPriceItem}
                     keyExtractor={item => item.id}
                 /> */}
+                {/* When clicked on reviews redirected to here, Bottom reviews */}
 
                 {activityDetail.activityPrices.map(activity =>
                     <Box key={activity.id} alignItems="center" style={{ margin: 10 }}>
-                        <TouchableOpacity activeOpacity={0.8} style={{ width: "100%" }} onPress={() => { makeBooking(activity.lessons)}}>
+                        <TouchableOpacity activeOpacity={0.8} style={{ width: "100%" }} onPress={() => { makeBooking(activity.lessons) }}>
                             <Box borderWidth="1" borderColor="coolGray.300" shadow="3" bg={"coolGray.100"} p="5" rounded="8" >
 
                                 <HStack alignItems="center">
@@ -163,7 +141,7 @@ export default function ActivityDetailScreen(props) {
                                     <HStack alignItems="center">
 
                                         <Spacer />
-                                        <Text mt="2" fontSize={12} fontWeight="medium" fontSize={"lg"} color="darkBlue.600">
+                                        <Text mt="2" fontWeight="medium" fontSize={"lg"} color="darkBlue.600">
                                             Book Now
                                         </Text>
                                     </HStack>
@@ -174,89 +152,6 @@ export default function ActivityDetailScreen(props) {
                 )}
 
 
-                {/* <Box alignItems="center" style={{ margin: 10 }}>
-                    <TouchableOpacity activeOpacity={0.8} style={{ width: "100%" }} onPress={() => { makeBooking(1) }}>
-                        <Box borderWidth="1" borderColor="coolGray.300" shadow="3" bg={"coolGray.100"} p="5" rounded="8" >
-
-                            <HStack alignItems="center">
-                                <Text color="coolGray.800" fontWeight="medium" fontSize="md">
-                                    1 Trial Lesson
-                                </Text>
-                                <Spacer />
-                                <Text mt="2" fontsize="xl" color="red.500">
-                                    €4.99
-                                </Text>
-                            </HStack>
-
-
-                            <Flex>
-                                <HStack alignItems="center">
-
-                                    <Spacer />
-                                    <Text mt="2" fontSize={12} fontWeight="medium" fontSize={"lg"} color="darkBlue.600">
-                                        Book Now
-                                    </Text>
-                                </HStack>
-                            </Flex>
-                        </Box>
-                    </TouchableOpacity>
-                </Box>
-                <Box alignItems="center" style={{ margin: 10 }}>
-                    <TouchableOpacity activeOpacity={0.8} style={{ width: "100%" }} onPress={() => { makeBooking(2) }}>
-                        <Box borderWidth="1" borderColor="coolGray.300" shadow="3" bg={"coolGray.100"} p="5" rounded="8" >
-
-                            <HStack alignItems="center">
-                                <Text color="coolGray.800" fontWeight="medium" fontSize="md">
-                                    2 Trial Lesson
-                                </Text>
-                                <Spacer />
-                                <Text mt="2" fontsize="xl" color="red.500">
-                                    €9.99
-                                </Text>
-                            </HStack>
-
-
-                            <Flex>
-                                <HStack alignItems="center">
-
-                                    <Spacer />
-                                    <Text mt="2" fontSize={12} fontWeight="medium" fontSize={"lg"} color="darkBlue.600">
-                                        Book Now
-                                    </Text>
-                                </HStack>
-                            </Flex>
-                        </Box>
-                    </TouchableOpacity>
-                </Box>
-                <Box alignItems="center" style={{ margin: 10 }}>
-                    <TouchableOpacity activeOpacity={0.8} style={{ width: "100%" }} onPress={() => { props.navigation.navigate("ActivityDetail") }}>
-                        <Box borderWidth="1" borderColor="coolGray.300" shadow="3" bg={"coolGray.100"} p="5" rounded="8" >
-
-                            <HStack alignItems="center">
-                                <Text color="coolGray.800" fontWeight="medium" fontSize="md">
-                                    7 Lesson Tickets
-                                </Text>
-                                <Spacer />
-                                <Text mt="2" fontsize="xl" color="red.500">
-                                    €25.99
-                                </Text>
-                            </HStack>
-
-
-                            <Flex>
-                                <HStack alignItems="center">
-
-                                    <Spacer />
-                                    <Text mt="2" fontSize={12} fontWeight="medium" fontSize={"lg"} color="darkBlue.600">
-                                        Book Now
-                                    </Text>
-                                </HStack>
-                            </Flex>
-                        </Box>
-                    </TouchableOpacity>
-                </Box> */}
-
-                {/* When clicked on reviews redirected to here, Bottom reviews */}
 
             </View>
         </ScrollView>
@@ -300,5 +195,13 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginHorizontal: 20,
         marginVertical: 10,
-    }
+    },
+
+    details: {
+        fontSize: 14,
+        textAlign: 'center',
+        marginHorizontal: 20,
+    },
+
+
 });
