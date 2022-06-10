@@ -40,6 +40,8 @@ import CustomText from '../../../components/native/CustomText';
 import ActivityListItem from '../../../components/activities/ActivityListItem';
 import HorizontalLine from '../../../components/HorizontalLine';
 
+import { shortenText } from '../../../functions/shortenText';
+
 export default ActivitiesScreen = (props) => {
 
     const dispatch = useDispatch();
@@ -49,14 +51,16 @@ export default ActivitiesScreen = (props) => {
     const [isRefreshing, setIsRefreshing] = useState(true)
 
     const renderActivityItem = (item) => {
+        console.log("ITEMMM")
+        console.log(item)
         return <>
             <ActivityListItem
                 onPress={() => { props.navigation.navigate("ActivityDetail", { activityId: item.item.id, activityTitle:item.item.title }) }}
-                title={item.item.title}
+                title={item.item.title ? shortenText(item.item.title,18): "Defaukt Tittlee"}
                 price={item.item.activityPrices[0] ? item.item.activityPrices[0].price.toFixed(2) : "..."}
-                author={"Hans"}
-                location={"Amsterdam"}
-                tags={"Sport,fitness"}
+                author={item.item.ownerName? item.item.ownerName :"hasnsss"}
+                location={item.item.activityAddress? item.item.activityAddress :"Amsterdam"}
+                tags={item.item.categoryString? item.item.categoryString :"......"}
             />
             <HorizontalLine />
         </>
