@@ -15,6 +15,7 @@ import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 
 import { useSelector, useDispatch } from 'react-redux';
 import * as activityActions from '../../../store/actions/activityActions'
+import * as bookingActions from '../../../store/actions/bookingActions'
 
 
 import Header from '../../../components/Header';
@@ -41,14 +42,56 @@ export default function ActivityDetailScreen(props) {
         setIsLoading(false)
     }
 
+
+    const makeBooking = (numberOfLessons) => {
+        const body = {
+            numberOfLessons: numberOfLessons,
+            activityId: activityId,
+            userId: auth.userId
+        }
+        dispatch(bookingActions.makeBooking(body))
+    }
+
+
     useEffect(() => {
         fetchActivityById()
     }, [])
 
-    
+
+    const renderPriceItem = (item) => {
+        return <Box alignItems="center" style={{ margin: 10 }}>
+            <TouchableOpacity activeOpacity={0.8} style={{ width: "100%" }} onPress={() => { props.navigation.navigate("ActivityDetail") }}>
+                <Box borderWidth="1" borderColor="coolGray.300" shadow="3" bg={"coolGray.100"} p="5" rounded="8" >
+
+                    <HStack alignItems="center">
+                        <Text color="coolGray.800" fontWeight="medium" fontSize="md">
+                            {item.item.lessons} Lesson Tickets
+                        </Text>
+                        <Spacer />
+                        <Text mt="2" fontsize="xl" color="red.500">
+                            €{item.item.price.toFixed(2)}
+                            €{item.item.discount.toFixed(2)}
+                        </Text>
+                    </HStack>
+
+
+                    <Flex>
+                        <HStack alignItems="center">
+
+                            <Spacer />
+                            <Text mt="2" fontSize={12} fontWeight="medium" fontSize={"lg"} color="darkBlue.600">
+                                Book Now
+                            </Text>
+                        </HStack>
+                    </Flex>
+                </Box>
+            </TouchableOpacity>
+        </Box>
+    }
+
     if (isLoading) {
         return <View style={styles.backgroundActivity}>
-            <ActivityIndicator size="large" color="#fff" style={{marginTop:20}}/>
+            <ActivityIndicator size="large" color="#fff" style={{ marginTop: 20 }} />
         </View>
     }
     return (
@@ -90,8 +133,49 @@ export default function ActivityDetailScreen(props) {
                 <Heading size="md" ml="-1" color="white" p={2}>
                     Price
                 </Heading>
-                <Box alignItems="center" style={{ margin: 10 }}>
-                    <TouchableOpacity activeOpacity={0.8} style={{ width: "100%" }} onPress={() => { props.navigation.navigate("ActivityDetail") }}>
+
+                {/* <FlatList
+                    data={activityDetail}
+                    renderItem={renderPriceItem}
+                    keyExtractor={item => item.id}
+                /> */}
+
+                {activityDetail.activityPrices.map(activity =>
+                    <Box key={activity.id} alignItems="center" style={{ margin: 10 }}>
+                        <TouchableOpacity activeOpacity={0.8} style={{ width: "100%" }} onPress={() => { makeBooking(activity.lessons)}}>
+                            <Box borderWidth="1" borderColor="coolGray.300" shadow="3" bg={"coolGray.100"} p="5" rounded="8" >
+
+                                <HStack alignItems="center">
+                                    <Text color="coolGray.800" fontWeight="medium" fontSize="md">
+                                        {activity.lessons} Lesson Tickets
+                                    </Text>
+                                    <Spacer />
+                                    <Text mt="2" fontsize="xl" color="red.500">
+                                        €{activity.price.toFixed(2)}
+                                    </Text>
+
+                                </HStack>
+                                {activity.discount > 0 && <Text mt="2" fontsize="xl" color="red.500">
+                                    -%{activity.discount.toFixed(2)}
+                                </Text>}
+
+                                <Flex>
+                                    <HStack alignItems="center">
+
+                                        <Spacer />
+                                        <Text mt="2" fontSize={12} fontWeight="medium" fontSize={"lg"} color="darkBlue.600">
+                                            Book Now
+                                        </Text>
+                                    </HStack>
+                                </Flex>
+                            </Box>
+                        </TouchableOpacity>
+                    </Box>
+                )}
+
+
+                {/* <Box alignItems="center" style={{ margin: 10 }}>
+                    <TouchableOpacity activeOpacity={0.8} style={{ width: "100%" }} onPress={() => { makeBooking(1) }}>
                         <Box borderWidth="1" borderColor="coolGray.300" shadow="3" bg={"coolGray.100"} p="5" rounded="8" >
 
                             <HStack alignItems="center">
@@ -118,7 +202,7 @@ export default function ActivityDetailScreen(props) {
                     </TouchableOpacity>
                 </Box>
                 <Box alignItems="center" style={{ margin: 10 }}>
-                    <TouchableOpacity activeOpacity={0.8} style={{ width: "100%" }} onPress={() => { props.navigation.navigate("ActivityDetail") }}>
+                    <TouchableOpacity activeOpacity={0.8} style={{ width: "100%" }} onPress={() => { makeBooking(2) }}>
                         <Box borderWidth="1" borderColor="coolGray.300" shadow="3" bg={"coolGray.100"} p="5" rounded="8" >
 
                             <HStack alignItems="center">
@@ -170,7 +254,7 @@ export default function ActivityDetailScreen(props) {
                             </Flex>
                         </Box>
                     </TouchableOpacity>
-                </Box>
+                </Box> */}
 
                 {/* When clicked on reviews redirected to here, Bottom reviews */}
 
@@ -192,7 +276,7 @@ const styles = StyleSheet.create({
         width: "100%",
         backgroundColor: "#313131"
     },
-    backgroundActivity:{
+    backgroundActivity: {
         flex: 1,
         width: "100%",
         backgroundColor: "#313131",
