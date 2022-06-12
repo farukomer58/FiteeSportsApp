@@ -42,6 +42,7 @@ export default UserActivitiesScreen = props => {
         style: 'destructive',
         onPress: () => {
           dispatch(activityActions.deleteActivity(id));
+          // TODO: cascade problem, so not working compeletly
         }
       }
     ]);

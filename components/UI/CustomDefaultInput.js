@@ -33,7 +33,6 @@ export default function CustomDefaultInput(props) {
     // const [inputSplitWidth, setInputSplitWidth] = useState("")
     let inputSplitWidth=0
 
-
     const [errorMessage, setErrorMessage] = useState(props.errorText)
 
     // Check Validity on every key strok and dispatch to reducer to update input values

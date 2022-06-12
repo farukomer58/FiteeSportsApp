@@ -46,8 +46,8 @@ export default ManageActivityScreen = props => {
   ])
 
   const [activityDates, setActivityDates] = useState(activity ? activity.activityDates : [
-    { date: "2022-05-26 18:00", maxParticipants: 15 },
-    { date: "2022-05-29 18:00", maxParticipants: 15 }
+    { date: "26-05-2022 18:00:00", maxParticipants: 15 },
+    { date: "28-05-2022 18:05:00", maxParticipants: 15 },
   ])
 
   const [formState, dispatchForm] = useReducer(formReducer, {

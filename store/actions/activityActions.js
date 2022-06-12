@@ -136,5 +136,21 @@ export const updateActivity = (body, activityId) => {
 };
 
 export const deleteActivity = activityId => {
-    return { type: DELETE_ACTIVITY, pid: activityId };
+    return async (dispatch, getState) => {
+
+        const auth = getState().auth;
+        const response = await axios({
+            method: 'DELETE',
+            url: `${Values.apiUrl}/api/v1/activities/${activityId}`,
+            headers: {
+                'authorization': `Bearer ${auth.token}`,
+                'content-type': 'application/json'
+            }
+        })
+
+        if (response.status === 200 || response.status === 201) {
+            // dispatch({ type: DELETE_ACTIVITY, pid: activityId })
+        }
+        return response
+    }
 };
