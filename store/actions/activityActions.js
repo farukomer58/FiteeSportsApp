@@ -75,13 +75,19 @@ export const createActivity = (body) => {
 
     return async (dispatch, getState) => {
 
-        // console.log(body)
+        console.log("Body to Send")
+        console.log("---------------------------")
+        console.log({...body})
+        console.log("---------------------------")
+
+        // console.log(JSON.parse({...body}))
+        // console.log("---------------------------")
 
         const auth = getState().auth;
         const response = await axios({
             method: 'POST',
             url: `${Values.apiUrl}/api/v1/activities`,
-            data: body,
+            data: {...body},
             headers: {
                 'authorization': `Bearer ${auth.token}`,
                 'content-type': 'application/json'
@@ -89,7 +95,7 @@ export const createActivity = (body) => {
         })
 
         console.log("Created Activity")
-        console.log(response)
+        console.log(response.data)
         // console.log(response.data)
         // Retrieving Succesfully
         if (response.status === 200 || response.status === 201 ) {

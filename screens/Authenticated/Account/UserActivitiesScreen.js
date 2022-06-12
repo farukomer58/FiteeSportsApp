@@ -18,22 +18,19 @@ export default UserActivitiesScreen = props => {
   const [isFetching, setIsFetching] = useState(false);
 
   useEffect(() => {
-    console.log(`Bearer ${auth.token}`)
     getActivityData()
   }, [])
 
   const getActivityData = async () => {
     setIsFetching(true)
     const response = await dispatch(activityActions.fetchOwnActivities())
-    console.log("OWN ACTOVOTOES")
-    console.log(response.data)
-    setOwnActivities(response.data)
+    setOwnActivities([...response.data])
     setIsFetching(false)
   }
 
   // Handler for redirecting to edit screen Activity
-  const editActivityHandler = id => {
-    props.navigation.navigate('ManageActivity', { activityId: id });
+  const editActivityHandler = (id, activity) => {
+    props.navigation.navigate('ManageActivity', { activityId: id, activity: activity });
   };
 
   // Handler for deleting activity
@@ -49,7 +46,6 @@ export default UserActivitiesScreen = props => {
       }
     ]);
   };
-
 
   if (ownActivities.length === 0) {
     return (
@@ -73,7 +69,7 @@ export default UserActivitiesScreen = props => {
       {/* <Button color={Values.primaryColor} onPress={() => props.navigation.navigate('Home')} style={{margin:10}}>Create New Activity</Button> */}
 
       <FlatList
-        data={userActivities}
+        data={ownActivities}
         keyExtractor={item => item.id}
         onRefresh={() => getActivityData()}
         refreshing={isFetching}
@@ -83,14 +79,14 @@ export default UserActivitiesScreen = props => {
             title={itemData.item.title}
             price={15}
             onSelect={() => {
-              editActivityHandler(itemData.item.id);
+              editActivityHandler(itemData.item.id, itemData.item);
             }}
           >
             <Button
               color={Values.primaryColorDark}
               title="Edit"
               onPress={() => {
-                editActivityHandler(itemData.item.id);
+                editActivityHandler(itemData.item.id, itemData.item);
               }}
             />
             <Button

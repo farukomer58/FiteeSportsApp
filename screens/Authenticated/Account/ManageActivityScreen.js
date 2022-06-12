@@ -38,31 +38,30 @@ export default ManageActivityScreen = props => {
   const dispatch = useDispatch();
 
   const activityId = props.route.params ? props.route.params.activityId : null;
-  const editedActivity = useSelector(state => state.activities.userActivities.find(activity => activity.id === activityId));
+  const activity = props.route.params ? props.route.params.activity : null;
+  console.log(activity)
+  // const editedActivity = useSelector(state => state.activities.userActivities.find(activity => activity.id === activityId));
 
-  const [prices, setPrices] = useState([
-    { lessons: 1, price: 10.00, discount: "10%" },
-    { lessons: 5, price: 10.00, discount: "10%" },
+  const [prices, setPrices] = useState(activity ? activity.activityPrices : [
+    { lessons: 1, price: 10.00, discount: "10" },
   ])
 
-  const [activityDates, setActivityDates] = useState([
-    { date: 1, maxParticipants: 10.00 },
-    { date: 2, maxParticipants: 10.00 },
+  const [activityDates, setActivityDates] = useState(activity ? activity.activityDates : [
+    { date: "2022-05-26 18:00", maxParticipants: 15 },
+    { date: "2022-05-29 18:00", maxParticipants: 15 }
   ])
 
   const [formState, dispatchForm] = useReducer(formReducer, {
     inputValues: {
-      title: editedActivity ? editedActivity.title : "",
-      imageUrl: editedActivity ? editedActivity.imageUrl : "",
-      price: "",
-      description: editedActivity ? editedActivity.description : "",
-      address: editedActivity ? editedActivity.activityAddress : "",
-      city: editedActivity ? editedActivity.city : "",
+      title: activity ? activity.title : "",
+      imageUrl: activity ? activity.coverImage : "",
+      description: activity ? activity.description : "",
+      address: activity ? activity.activityAddress : "",
+      city: activity ? activity.city : "",
     },
     inputValidities: {
       title: false,
       imageUrl: false,
-      price: false,
       description: false,
       address: false,
       city: false,
@@ -72,17 +71,22 @@ export default ManageActivityScreen = props => {
 
   const multipleFieldInputChangeHandler = useCallback((fieldName, priceIndex, value) => {
     console.log(fieldName + priceIndex)
-    console.log(prices[priceIndex].lessons)
     console.log("New Value:" + value)
 
     // 1. Make a shallow copy of the items
     let items = [...prices];
+
+    console.log(items)
+    console.log(items[priceIndex])
+
+
+    items[priceIndex][fieldName] = value
     // 2. Make a shallow copy of the item you want to mutate
-    let item = { ...prices[priceIndex] };
-    // 3. Replace the property you're intested in
-    item[fieldName] = value;
+    // let item = { ...prices[priceIndex], [fieldName]: value };
+
+    // item[fieldName] = value;
     // 4. Put it back into our array. N.B. we *are* mutating the array here, but that's why we made a copy first
-    items[priceIndex] = item;
+    // items[priceIndex] = item;
     // 5. Set the state to our new copy
     setPrices([...items])
 
@@ -95,11 +99,15 @@ export default ManageActivityScreen = props => {
     // 1. Make a shallow copy of the items
     let items = [...activityDates];
     // 2. Make a shallow copy of the item you want to mutate
-    let item = { ...activityDates[index] };
+
+    items[index][fieldName] = value
+
+
+    // let item = { ...activityDates[index] };
     // 3. Replace the property you're intested in
-    item[fieldName] = value;
+    // item[fieldName] = value;
     // 4. Put it back into our array. N.B. we *are* mutating the array here, but that's why we made a copy first
-    items[index] = item;
+    // items[index] = item;
     // 5. Set the state to our new copy
     setActivityDates([...items])
 
@@ -119,9 +127,9 @@ export default ManageActivityScreen = props => {
   }
 
   const addDate = () => { setActivityDates([...activityDates, { date: "", maxParticipants: "" }]) }
-  const removeDate = (dateIndex) => {
+  const removeDate = (index) => {
     const datesArray = [...activityDates]
-    const removedArray = datesArray.splice(priceIndex, 1)
+    const removedArray = datesArray.splice(index, 1)
     setActivityDates(datesArray)
   }
 
@@ -134,23 +142,24 @@ export default ManageActivityScreen = props => {
   const saveOrUpdateActivity = async () => {
 
     // Check Form validity
+    if (!formState.formIsValid) {
+      Alert.alert("Please Enter All Fields Correctly")
+      return
+    }
+
     let body = {
       title: formState.inputValues.title,
       description: formState.inputValues.description,
-      prices: [
-        { lessons: 1, price: 10, discount: 0 },
-        { lessons: 5, price: 27, discount: 20 }
-      ],
+      activityAddress: formState.inputValues.address,
+      city: formState.inputValues.city,
+      prices: prices,
       categories: [],
-      activityDates: [
-        { date: "2022-05-26 18:00", maxParticipants: 15 },
-        { date: "2022-05-29 18:00", maxParticipants: 15 }
-      ]
+      activityDates: activityDates
     }
-    console.log(body)
-    const response = await dispatch(editedActivity ? activityActions.updateActivity(body) : activityActions.createActivity(body))
 
-    if (response.status === 201) {
+    const response = await dispatch(activity ? activityActions.updateActivity(body) : activityActions.createActivity(body))
+
+    if (response.status === 201 || response.status === 200) {
       props.navigation.replace("UserActivities")
     }
   };
@@ -240,8 +249,6 @@ export default ManageActivityScreen = props => {
             required
             testId="descriptionInput"
           />
-
-          {/* TODO: Add the fields for Activity Date, Price and Categorie adding */}
         </View>
 
         <View style={styles.formControl}>
@@ -268,19 +275,16 @@ export default ManageActivityScreen = props => {
           />
 
         </View>
-        <View>
-          {/* TODO: Categories dropdown */}
-        </View>
-
+        {/* COULD: Categories dropdown */}
         <View style={styles.formControl}>
           <CustomText style={styles.label}>Activity Dates</CustomText>
 
-          {/* Map By Price Values */}
+          {/* Map By ActivityDates Values */}
           {activityDates.map((activity, index) => (
             <View key={activity.date} style={Styles.flexDirectionRowSpace}>
               <TextInput
                 placeholder="Date"
-                style={{...styles.input, width:"45%"}}
+                style={{ ...styles.input, width: "45%" }}
                 placeholderTextColor="#C6C6C6"
                 color="white"
                 value={activityDates[index].date ? activityDates[index].date.toString() : activityDates[index].date}
@@ -288,13 +292,12 @@ export default ManageActivityScreen = props => {
               />
               <TextInput
                 placeholder="Max Participants"
-                style={{...styles.input, width:"45%"}}
+                style={{ ...styles.input, width: "45%" }}
                 color="white"
                 placeholderTextColor="#C6C6C6"
                 value={activityDates[index].maxParticipants ? activityDates[index].maxParticipants.toString() : activityDates[index].maxParticipants}
                 onChangeText={(value) => { multipleFieldInputChangeHandlerDate("maxParticipants", index, value) }}
               />
-
 
               {/* Remove or Add Icon */}
               {index === 0 ? (<Icon
@@ -312,10 +315,6 @@ export default ManageActivityScreen = props => {
           ))}
 
         </View>
-
-        {/* TODO: activityDates same as prices, can add date and maxParticipants and a plus icon */}
-
-        {/* TODO: Add the fields for Activity Date, Price and Categorie adding */}
 
         <Button colorScheme="green" style={styles.customButton} onPress={saveOrUpdateActivity} key={1}>{activityId ? "Edit Activity" : "Add Activity"}</Button>
       </View>
