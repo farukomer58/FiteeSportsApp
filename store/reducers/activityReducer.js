@@ -30,14 +30,14 @@ export default (state = initialState, action) => {
       );
       const updatedActivity = new Activity(
         action.pid,
-        state.userActivities[productIndex].ownerId,
+        state.userActivities[activityIndex].ownerId,
         action.activityData.title,
         action.activityData.imageUrl,
         action.activityData.description,
         state.userActivities[activityIndex].price
       );
       const updatedUserActivities = [...state.userActivities];
-      updatedUserActivities[productIndex] = updatedActivity;
+      updatedUserActivities[activityIndex] = updatedActivity;
       const availableActivityIndex = state.availableActivities.findIndex(
         activity => activity.id === action.pid
       );

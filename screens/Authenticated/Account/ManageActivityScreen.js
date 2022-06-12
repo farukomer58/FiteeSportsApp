@@ -19,6 +19,7 @@ import CustomText from '../../../components/native/CustomText';
 import CustomDefaultInput from '../../../components/UI/CustomDefaultInput';
 import Styles from '../../../constants/Styles';
 import IconButton from '../../../components/IconButton/IconButton';
+import DatePicker from 'react-native-datepicker'
 
 const formReducer = (state, action) => {
   if (action.type === "UPDATE") {
@@ -38,9 +39,7 @@ export default ManageActivityScreen = props => {
   const dispatch = useDispatch();
 
   const activityId = props.route.params ? props.route.params.activityId : null;
-  const activity = props.route.params ? props.route.params.activity : null;
-  console.log(activity)
-  // const editedActivity = useSelector(state => state.activities.userActivities.find(activity => activity.id === activityId));
+  const [activity, setActivity] = useState(props.route.params ? props.route.params.activity : null);
 
   const [prices, setPrices] = useState(activity ? activity.activityPrices : [
     { lessons: 1, price: 10.00, discount: "10" },
@@ -60,26 +59,22 @@ export default ManageActivityScreen = props => {
       city: activity ? activity.city : "",
     },
     inputValidities: {
-      title: false,
-      imageUrl: false,
-      description: false,
-      address: false,
-      city: false,
+      title: activity ? activity.title : false,
+      imageUrl: activity ? activity.coverImage : false,
+      description: activity ? activity.description : false,
+      address: activity ? activity.activityAddress : false,
+      city: activity ? activity.city : false,
     },
-    formIsValid: false,
+    formIsValid: true,
   })
 
-  const multipleFieldInputChangeHandler = useCallback((fieldName, priceIndex, value) => {
+  const multipleFieldInputChangeHandler = (fieldName, priceIndex, value) => {
     console.log(fieldName + priceIndex)
     console.log("New Value:" + value)
 
     // 1. Make a shallow copy of the items
     let items = [...prices];
-
     console.log(items)
-    console.log(items[priceIndex])
-
-
     items[priceIndex][fieldName] = value
     // 2. Make a shallow copy of the item you want to mutate
     // let item = { ...prices[priceIndex], [fieldName]: value };
@@ -88,10 +83,26 @@ export default ManageActivityScreen = props => {
     // 4. Put it back into our array. N.B. we *are* mutating the array here, but that's why we made a copy first
     // items[priceIndex] = item;
     // 5. Set the state to our new copy
-    setPrices([...items])
+    setPrices(oldPrice => [...items])
+  }
 
-  }, [])
-  const multipleFieldInputChangeHandlerDate = useCallback((fieldName, index, value) => {
+  const addPrice = () => {
+    if (prices.length >= 5) {
+      Alert.alert("Can not add more then 5 Price items")
+      return
+    }
+
+    const lessonsAmount = prices[prices.length - 1].lessons + 1
+    let items = [...prices, { lessons: lessonsAmount, price: null, discount: null }];
+    console.log(items)
+    setPrices(oldArray => [...oldArray, { lessons: lessonsAmount, price: null, discount: null }])
+  }
+  const removePrice = (priceIndex) => {
+    const pricesArray = [...prices]
+    const removedArray = pricesArray.splice(priceIndex, 1)
+    setPrices(pricesArray)
+  }
+  const multipleFieldInputChangeHandlerDate = (fieldName, index, value) => {
     console.log(fieldName + index)
     console.log(activityDates[index].date)
     console.log("New Value:" + value)
@@ -109,24 +120,10 @@ export default ManageActivityScreen = props => {
     // 4. Put it back into our array. N.B. we *are* mutating the array here, but that's why we made a copy first
     // items[index] = item;
     // 5. Set the state to our new copy
-    setActivityDates([...items])
+    setActivityDates(oldDate => [...items])
 
-  }, [])
-  const addPrice = () => {
-    if (prices.length >= 5) {
-      Alert.alert("Can not add more then 5 Price items")
-      return
-    }
-    const lessonsAmount = prices[prices.length - 1].lessons + 1
-    setPrices([...prices, { lessons: lessonsAmount, price: "", discount: "" }])
   }
-  const removePrice = (priceIndex) => {
-    const pricesArray = [...prices]
-    const removedArray = pricesArray.splice(priceIndex, 1)
-    setPrices(pricesArray)
-  }
-
-  const addDate = () => { setActivityDates([...activityDates, { date: "", maxParticipants: "" }]) }
+  const addDate = () => { setActivityDates(oldDate => [...oldDate, { date: "", maxParticipants: "" }]) }
   const removeDate = (index) => {
     const datesArray = [...activityDates]
     const removedArray = datesArray.splice(index, 1)
@@ -142,10 +139,10 @@ export default ManageActivityScreen = props => {
   const saveOrUpdateActivity = async () => {
 
     // Check Form validity
-    if (!formState.formIsValid) {
-      Alert.alert("Please Enter All Fields Correctly")
-      return
-    }
+    // if (formState.formIsValid) {
+    //   Alert.alert("Please Enter All Fields Correctly")
+    //   return
+    // }
 
     let body = {
       title: formState.inputValues.title,
@@ -157,12 +154,17 @@ export default ManageActivityScreen = props => {
       activityDates: activityDates
     }
 
-    const response = await dispatch(activity ? activityActions.updateActivity(body) : activityActions.createActivity(body))
+    const response = await dispatch(activity ? activityActions.updateActivity(body, activityId) : activityActions.createActivity(body))
 
     if (response.status === 201 || response.status === 200) {
       props.navigation.replace("UserActivities")
     }
   };
+
+  useEffect(() => {
+    // const activityFetched = props.route.params ? props.route.params.activity : null;
+    // console.log(activityFetched)
+  }, [])
 
   return (
     <ScrollView style={styles.background}>
@@ -176,6 +178,8 @@ export default ManageActivityScreen = props => {
             onInputChange={inputChangeHandler.bind(this, "title")}
             required
             testId="titleInput"
+            initialValue={formState.inputValues.title}
+            intialValidity={formState.inputValidities.title}
           />
 
         </View>
@@ -183,6 +187,8 @@ export default ManageActivityScreen = props => {
           <CustomText style={styles.label}>Image URL</CustomText>
           <CustomDefaultInput
             // leftElement={<MaterialIcons name="account-circle" size={32} color="white" style={styles.inputIcon} />}
+            intialValidity={true}
+            initialValue={formState.inputValues.imageUrl}
             errorText="Please Enter a ImageUrl"
             onInputChange={inputChangeHandler.bind(this, "imageUrl")}
             color="white"
@@ -202,6 +208,7 @@ export default ManageActivityScreen = props => {
                 style={styles.input}
                 placeholderTextColor="#C6C6C6"
                 color="white"
+                keyboardType='numeric'
                 value={prices[index].lessons ? prices[index].lessons.toString() : prices[index].lessons}
                 onChangeText={(value) => { multipleFieldInputChangeHandler("lessons", index, value) }}
               />
@@ -209,6 +216,7 @@ export default ManageActivityScreen = props => {
                 placeholder="Price"
                 style={styles.input}
                 color="white"
+                keyboardType='numeric'
                 placeholderTextColor="#C6C6C6"
                 value={prices[index].price ? prices[index].price.toString() : prices[index].price}
                 onChangeText={(value) => { multipleFieldInputChangeHandler("price", index, value) }}
@@ -217,6 +225,7 @@ export default ManageActivityScreen = props => {
                 color="white"
                 placeholder="Discount"
                 style={styles.input}
+                keyboardType='numeric'
                 placeholderTextColor="#C6C6C6"
                 value={prices[index].discount ? prices[index].discount.toString() : prices[index].discount}
                 onChangeText={(value) => { multipleFieldInputChangeHandler("discount", index, value) }}
@@ -248,6 +257,8 @@ export default ManageActivityScreen = props => {
             onInputChange={inputChangeHandler.bind(this, "description")}
             required
             testId="descriptionInput"
+            intialValidity={formState.inputValidities.description}
+            initialValue={formState.inputValues.description}
           />
         </View>
 
@@ -260,6 +271,8 @@ export default ManageActivityScreen = props => {
             onInputChange={inputChangeHandler.bind(this, "address")}
             required
             testId="addressInput"
+            intialValidity={formState.inputValidities.address}
+            initialValue={formState.inputValues.address}
           />
 
         </View>
@@ -272,6 +285,8 @@ export default ManageActivityScreen = props => {
             onInputChange={inputChangeHandler.bind(this, "city")}
             required
             testId="cityInput"
+            intialValidity={formState.inputValidities.city}
+            initialValue={formState.inputValues.city}
           />
 
         </View>
@@ -290,10 +305,40 @@ export default ManageActivityScreen = props => {
                 value={activityDates[index].date ? activityDates[index].date.toString() : activityDates[index].date}
                 onChangeText={(value) => { multipleFieldInputChangeHandlerDate("date", index, value) }}
               />
+              {/* <DatePicker
+                style={{ width: "50%", borderTopWidth:0, borderBottomColor:"red", borderBottomWidth:2 }}
+                date={activityDates[index].date}
+                mode="date"
+                placeholder="Select date"
+                format="YYYY-MM-DD"
+                minDate="2016-05-01"
+                maxDate="2023-01-01"
+                confirmBtnText="Confirm"
+                cancelBtnText="Cancel"
+                hideText={false}
+                customStyles={{
+                  dateIcon: {
+                    position: 'absolute',
+                    left: 0,
+                    top: 4,
+                    marginLeft: 0
+                  },
+                  dateInput: {
+                    marginLeft: 36
+                  }
+                  // ... You can check the source to find the other keys.
+                }}
+                onDateChange={(date) => { this.setState({ date: date }) }}
+              /> */}
+
+
+
+
               <TextInput
                 placeholder="Max Participants"
                 style={{ ...styles.input, width: "45%" }}
                 color="white"
+                keyboardType='numeric'
                 placeholderTextColor="#C6C6C6"
                 value={activityDates[index].maxParticipants ? activityDates[index].maxParticipants.toString() : activityDates[index].maxParticipants}
                 onChangeText={(value) => { multipleFieldInputChangeHandlerDate("maxParticipants", index, value) }}
@@ -328,7 +373,6 @@ export const screenOptions = navData => {
     headerTitle: routeParams.activityId ? 'Edit Activity' : 'Add Activity'
   };
 };
-
 const styles = StyleSheet.create({
   background: {
     flex: 1,

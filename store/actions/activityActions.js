@@ -99,7 +99,7 @@ export const createActivity = (body) => {
         // console.log(response.data)
         // Retrieving Succesfully
         if (response.status === 200 || response.status === 201 ) {
-            dispatch({ type: CREATE_ACTIVITY, activityData: response.data })
+            // dispatch({ type: CREATE_ACTIVITY, activityData: response.data })
         }
         return response
     }
@@ -111,11 +111,17 @@ export const updateActivity = (body, activityId) => {
 
         // console.log(body)
 
+        console.log("Body to Send")
+        console.log("---------------------------")
+        console.log({...body})
+        console.log("---------------------------")
+
+
         const auth = getState().auth;
         const response = await axios({
             method: 'PUT',
-            url: `${Values.apiUrl}/api/v1/activities`,
-            data: body,
+            url: `${Values.apiUrl}/api/v1/activities/${activityId}`,
+            data: {...body},
             headers: {
                 'authorization': `Bearer ${auth.token}`,
                 'content-type': 'application/json'
@@ -123,7 +129,7 @@ export const updateActivity = (body, activityId) => {
         })
 
         if (response.status === 200 || response.status === 201) {
-            dispatch({ type: UPDATE_ACTIVITY, activityId:activityId, activityData: response.data })
+            // dispatch({ type: UPDATE_ACTIVITY, activityId:activityId, activityData: response.data })
         }
         return response
     }
