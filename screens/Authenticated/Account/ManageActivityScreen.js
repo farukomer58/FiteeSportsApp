@@ -5,7 +5,8 @@ import {
   Text,
   TextInput,
   StyleSheet,
-  Platform
+  Platform,
+  Alert
 } from 'react-native';
 import { Button } from 'native-base';
 import { useSelector, useDispatch } from 'react-redux';
@@ -44,6 +45,11 @@ export default ManageActivityScreen = props => {
     { lessons: 5, price: 10.00, discount: "10%" },
   ])
 
+  const [activityDates, setActivityDates] = useState([
+    { date: 1, maxParticipants: 10.00 },
+    { date: 2, maxParticipants: 10.00 },
+  ])
+
   const [formState, dispatchForm] = useReducer(formReducer, {
     inputValues: {
       title: editedActivity ? editedActivity.title : "",
@@ -64,7 +70,7 @@ export default ManageActivityScreen = props => {
     formIsValid: false,
   })
 
-  const priceInputChangeHandler = useCallback((fieldName, priceIndex, value) => {
+  const multipleFieldInputChangeHandler = useCallback((fieldName, priceIndex, value) => {
     console.log(fieldName + priceIndex)
     console.log(prices[priceIndex].lessons)
     console.log("New Value:" + value)
@@ -81,26 +87,42 @@ export default ManageActivityScreen = props => {
     setPrices([...items])
 
   }, [])
+  const multipleFieldInputChangeHandlerDate = useCallback((fieldName, index, value) => {
+    console.log(fieldName + index)
+    console.log(activityDates[index].date)
+    console.log("New Value:" + value)
+
+    // 1. Make a shallow copy of the items
+    let items = [...activityDates];
+    // 2. Make a shallow copy of the item you want to mutate
+    let item = { ...activityDates[index] };
+    // 3. Replace the property you're intested in
+    item[fieldName] = value;
+    // 4. Put it back into our array. N.B. we *are* mutating the array here, but that's why we made a copy first
+    items[index] = item;
+    // 5. Set the state to our new copy
+    setActivityDates([...items])
+
+  }, [])
   const addPrice = () => {
+    if (prices.length >= 5) {
+      Alert.alert("Can not add more then 5 Price items")
+      return
+    }
     const lessonsAmount = prices[prices.length - 1].lessons + 1
-    const priceArray = [...prices]
-    priceArray.push({ lessons: lessonsAmount, price: "", discount: "" })
-    console.log(priceArray)
-    setPrices(priceArray)
+    setPrices([...prices, { lessons: lessonsAmount, price: "", discount: "" }])
   }
   const removePrice = (priceIndex) => {
-    console.log("remove item with index: " + priceIndex)
-
-    console.log("Array before: ")
-    console.log(prices)
-
     const pricesArray = [...prices]
     const removedArray = pricesArray.splice(priceIndex, 1)
-
-    console.log("Array After: ")
-    console.log(pricesArray)
-
     setPrices(pricesArray)
+  }
+
+  const addDate = () => { setActivityDates([...activityDates, { date: "", maxParticipants: "" }]) }
+  const removeDate = (dateIndex) => {
+    const datesArray = [...activityDates]
+    const removedArray = datesArray.splice(priceIndex, 1)
+    setActivityDates(datesArray)
   }
 
   const inputChangeHandler = useCallback((inputIdentifier, inputValue, inputIsValid) => {
@@ -160,65 +182,54 @@ export default ManageActivityScreen = props => {
           />
 
         </View>
-        {editedActivity ? null : (
-          <View style={styles.formControl}>
-            <CustomText style={styles.label}>Price</CustomText>
+        <View style={styles.formControl}>
+          <CustomText style={styles.label}>Price</CustomText>
 
+          {/* Map By Price Values */}
+          {prices.map((price, index) => (
+            <View key={price.lessons} style={Styles.flexDirectionRowSpace}>
+              <TextInput
+                placeholder="Lessons"
+                style={styles.input}
+                placeholderTextColor="#C6C6C6"
+                color="white"
+                value={prices[index].lessons ? prices[index].lessons.toString() : prices[index].lessons}
+                onChangeText={(value) => { multipleFieldInputChangeHandler("lessons", index, value) }}
+              />
+              <TextInput
+                placeholder="Price"
+                style={styles.input}
+                color="white"
+                placeholderTextColor="#C6C6C6"
+                value={prices[index].price ? prices[index].price.toString() : prices[index].price}
+                onChangeText={(value) => { multipleFieldInputChangeHandler("price", index, value) }}
+              />
+              <TextInput
+                color="white"
+                placeholder="Discount"
+                style={styles.input}
+                placeholderTextColor="#C6C6C6"
+                value={prices[index].discount ? prices[index].discount.toString() : prices[index].discount}
+                onChangeText={(value) => { multipleFieldInputChangeHandler("discount", index, value) }}
+              />
 
-            {/* Map By Price Values */}
-            {prices.map((price, index) => (
-              <View key={price.lessons} style={Styles.flexDirectionRowSpace}>
-                <TextInput
-                  placeholder="Lessons"
-                  style={styles.input}
-                  placeholderTextColor="#C6C6C6"
-                  color="white"
-                  value={prices[index].lessons ? prices[index].lessons.toString() : prices[index].lessons}
-                  onChangeText={(value) => { priceInputChangeHandler("lessons", index, value) }}
-                />
-                <TextInput
-                  placeholder="Price"
-                  style={styles.input}
-                  color="white"
-                  placeholderTextColor="#C6C6C6"
-                  value={prices[index].price ? prices[index].price.toString() : prices[index].price}
-                  onChangeText={(value) => { priceInputChangeHandler("price", index, value) }}
-                />
-                <TextInput
-                  color="white"
-                  placeholder="Discount"
-                  style={styles.input}
-                  placeholderTextColor="#C6C6C6"
-                  value={prices[index].discount ? prices[index].discount.toString() : prices[index].discount}
-                  onChangeText={(value) => { priceInputChangeHandler("discount", index, value) }}
-                />
-                {/* Remove Icon */}
-                {/* <IconButton icon={<Icon size="sm" as={MaterialIcons} name="menu" color="white" />} /> */}
-
-                {index === 0 ? (<Icon
-                  size={20}
-                  name='plus'
+              {/* Remove or Add Icon */}
+              {index === 0 ? (<Icon
+                size={23}
+                name='plus'
+                type='font-awesome'
+                color='green'
+                onPress={() => addPrice()} />) : (<Icon
+                  size={23}
+                  name='eraser'
                   type='font-awesome'
-                  color='green'
-                  onPress={() => addPrice()} />) : (<Icon
-                    size={20}
-                    name='eraser'
-                    type='font-awesome'
-                    color='red'
-                    onPress={() => removePrice(index)} />)}
+                  color='red'
+                  onPress={() => removePrice(index)} />)}
+            </View>
+          ))}
 
+        </View>
 
-              </View>
-            ))}
-            {/* TODO: 3 fields next to each other, price, lessons, discount and a plus Icon */}
-
-
-
-          </View>
-
-
-
-        )}
         <View style={styles.formControl}>
           <CustomText style={styles.label}>Description</CustomText>
           <CustomDefaultInput
@@ -259,6 +270,47 @@ export default ManageActivityScreen = props => {
         </View>
         <View>
           {/* TODO: Categories dropdown */}
+        </View>
+
+        <View style={styles.formControl}>
+          <CustomText style={styles.label}>Activity Dates</CustomText>
+
+          {/* Map By Price Values */}
+          {activityDates.map((activity, index) => (
+            <View key={activity.date} style={Styles.flexDirectionRowSpace}>
+              <TextInput
+                placeholder="Date"
+                style={{...styles.input, width:"45%"}}
+                placeholderTextColor="#C6C6C6"
+                color="white"
+                value={activityDates[index].date ? activityDates[index].date.toString() : activityDates[index].date}
+                onChangeText={(value) => { multipleFieldInputChangeHandlerDate("date", index, value) }}
+              />
+              <TextInput
+                placeholder="Max Participants"
+                style={{...styles.input, width:"45%"}}
+                color="white"
+                placeholderTextColor="#C6C6C6"
+                value={activityDates[index].maxParticipants ? activityDates[index].maxParticipants.toString() : activityDates[index].maxParticipants}
+                onChangeText={(value) => { multipleFieldInputChangeHandlerDate("maxParticipants", index, value) }}
+              />
+
+
+              {/* Remove or Add Icon */}
+              {index === 0 ? (<Icon
+                size={23}
+                name='plus'
+                type='font-awesome'
+                color='green'
+                onPress={() => addDate()} />) : (<Icon
+                  size={23}
+                  name='eraser'
+                  type='font-awesome'
+                  color='red'
+                  onPress={() => removeDate(index)} />)}
+            </View>
+          ))}
+
         </View>
 
         {/* TODO: activityDates same as prices, can add date and maxParticipants and a plus icon */}
