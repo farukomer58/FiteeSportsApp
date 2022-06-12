@@ -53,6 +53,7 @@ export default function ActivityDetailScreen(props) {
             userId: auth.userId
         }
         dispatch(bookingActions.makeBooking(body))
+        // TODO: Put in State and dont require to fetch from api when still on this screen
     }
 
 
@@ -72,7 +73,7 @@ export default function ActivityDetailScreen(props) {
 
                 <Image style={styles.image} source={{ uri: "https://images.unsplash.com/photo-1562088287-bde35a1ea917?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80" }} />
 
-                <View style={{...Styles.flexDirectionRowSpace, marginTop:10}}>
+                <View style={{ ...Styles.flexDirectionRowSpace, marginTop: 10 }}>
                     <CustomText title style={{ marginHorizontal: 30 }}>{activityDetail.title}</CustomText>
                     <LinkText style={{ marginHorizontal: 20 }} onPress={() => { props.navigation.navigate('Activities') }}>1000 reviews</LinkText>
                     {/* <Text mt="1" style={{ marginHorizontal: 30 }} fontSize={12} fontWeight="medium" color="yellow.600">1000 Reviews</Text> */}
@@ -83,41 +84,27 @@ export default function ActivityDetailScreen(props) {
                 </CustomText>
 
                 <CustomText style={styles.description}>
-                    {activityDetail.description}
+                    {activityDetail.description} 
                 </CustomText>
                 {/* <CustomText style={styles.description}>
                     and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
                 </CustomText> */}
                 {/* Location  */}
-
                 {/* Review  */}
                 {/* Save as Favorite Button or maybe in header instead of the bell icon */}
 
 
-                <Heading size="md" ml="-1" color="white" p={2}>
-                    Planned Activities
-                </Heading>
+                {/* Show all Available Dates */}
+                <Heading size="md" ml="-1" color="white" p={2}> Planned Activities </Heading>
                 <ScrollView horizontal={true} height={150}>
-                    <HStack>
-                        {activityDetail.activityDates && activityDetail.activityDates.map(val => (
-                            <DatesCard key={val.date} navigation={props.navigation} date={val} />
-                        )
-                        )}
-                    </HStack>
+                    {activityDetail.activityDates && activityDetail.activityDates.map(val => (
+                        <DatesCard key={val.date} navigation={props.navigation} date={val} activityId={activityDetail.id}/>
+                    )
+                    )}
                 </ScrollView>
 
-                {/* Booking Options  */}
-                <Heading size="md" ml="-1" color="white" p={2}>
-                    Price
-                </Heading>
-
-                {/* <FlatList
-                    data={activityDetail}
-                    renderItem={renderPriceItem}
-                    keyExtractor={item => item.id}
-                /> */}
-                {/* When clicked on reviews redirected to here, Bottom reviews */}
-
+                {/* Booking Options / Show All Prices, and give the User option to purchase Lessons */}
+                <Heading size="md" ml="-1" color="white" p={2}> Price </Heading>
                 {activityDetail.activityPrices.map(activity =>
                     <Box key={activity.id} alignItems="center" style={{ margin: 10 }}>
                         <TouchableOpacity activeOpacity={0.8} style={{ width: "100%" }} onPress={() => { makeBooking(activity.lessons) }}>
@@ -151,7 +138,8 @@ export default function ActivityDetailScreen(props) {
                     </Box>
                 )}
 
-
+                {/* When clicked on reviews redirected to here, Bottom reviews */}
+                {/* TODO: Build Reviews here  */}
 
             </View>
         </ScrollView>

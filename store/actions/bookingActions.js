@@ -2,6 +2,8 @@ import axios from 'axios';
 
 import Values from '../../constants/Values';
 
+
+
 export const getOwnBookings = (body) => {
     return async (dispatch, getState) => {
 
@@ -21,8 +23,6 @@ export const getOwnBookings = (body) => {
         return response
     }
 }
-
-
 
 export const makeBooking = (body) => {
     return async (dispatch, getState) => {
@@ -44,3 +44,25 @@ export const makeBooking = (body) => {
         return response
     }
 }
+
+// Get if there is an booking for a given activity
+export const fetchBookingDetail = (activityId) => {
+    return async (dispatch, getState) => {
+
+        const auth = getState().auth;
+        const response = await axios({
+            method: 'GET',
+            url: `${Values.apiUrl}/api/v1/bookings/validate/${activityId}`,
+            headers: {
+                'authorization': `Bearer ${auth.token}`,
+            }
+        })
+
+        // Retrieving Succesfully
+        if (response.status === 200) {
+            // dispatch({ type: SET_ACTIVITIES, activities: response.data })
+        }
+        return response
+    }
+}
+

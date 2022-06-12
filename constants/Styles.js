@@ -12,5 +12,10 @@ export default {
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems:"center",
-    }
+    },
+
+    flexDirectionRow: {
+        flexDirection: "row",
+        // justifyContent: "space-between",
+    },
 }

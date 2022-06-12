@@ -54,6 +54,7 @@ export default function AccountOverviewScreen(props) {
                     listItem="Profile Settings"
                     listItemIcon={<MaterialIcons name="settings" size={40} color="white" style={styles.inputIcon} />}
                 />
+                {/* TODO: Give user option to delete profile enteryly, in screen above*/}
                 <ListItem
                     onPress={() => { props.navigation.navigate("Bookings") }}
                     listItem="Bookings"
@@ -65,17 +66,21 @@ export default function AccountOverviewScreen(props) {
                     listItemIcon={<MaterialIcons name="payment" size={40} color="white" style={styles.inputIcon} />}
                 />
                 <View style={{ backgroundColor: "black", height: 1, margin: 5 }} />
+                
+                {/* TODO: Show only if logged in as Freelancer, seperate screens */}
                 <ListItem
                     onPress={() => { props.navigation.navigate("UserActivities") }}
                     listItem="Own Activities"
                     listItemIcon={<MaterialIcons name="list" size={40} color="white" style={styles.inputIcon} />}
                 />
 
+                {/* TODO: add new Page WITH PARTCIPATING activites */}
                 <ListItem
                     onPress={() => { dispatch(authActions.logout())}}
                     listItem="Logout"
                     listItemIcon={<MaterialIcons name="logout" size={40} color="white" style={styles.inputIcon} />}
                 />
+                {/* TODO: Do something about auto-logout when token expired */}
             </View>
         </ScrollView>
     )

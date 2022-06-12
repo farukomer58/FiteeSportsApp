@@ -40,6 +40,8 @@ export const fetchActivityById = (activityId) => {
             }
         })
 
+
+
         // Retrieving Succesfully
         if (response.status === 200) {
             // dispatch({ type: SET_ACTIVITIES, activities: response.data })
