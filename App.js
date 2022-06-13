@@ -31,7 +31,6 @@ import authReducer from "./store/reducers/authReducer";
 import activityReducer from './store/reducers/activityReducer';
 import userReducer from './store/reducers/userReducer'
 
-
 // Config Redux with reducers
 const rootReducer = combineReducers({
   main: mainContext,

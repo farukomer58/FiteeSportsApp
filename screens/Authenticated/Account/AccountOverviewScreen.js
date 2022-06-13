@@ -22,13 +22,13 @@ export default function AccountOverviewScreen(props) {
     const [accountDetails, setAccountDetails] = useState({})
 
     useEffect(() => {
-        axios.get(`${Values.apiUrl}/api/v1/users/?id=${auth.userId}`, {
+        axios.get(`${Values.apiUrl}/api/v1/users/get?id=${auth.userId}`, {
             header: {
                 "Authorization": `Bearer ${auth.token}`
             }
         }).then(response => {
-            console.log(response.data[0])
-            setAccountDetails(response.data[0])
+            console.log(response.data)
+            setAccountDetails(response.data)
         }).catch(e => {
             console.log(e)
         })

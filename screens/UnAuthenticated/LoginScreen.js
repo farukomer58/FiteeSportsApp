@@ -58,7 +58,6 @@ export default function LoginScreen(props) {
     const handleClick = () => setShow(oldState => !oldState);
 
     const [isLoading, setIsLoading] = useState(false)
-    const [error, setError] = useState(null)
 
     const [formState, dispatchForm] = useReducer(formReducer, {
         inputValues: {
@@ -81,7 +80,6 @@ export default function LoginScreen(props) {
             setIsLoading(true)
             try {
                 const response = await dispatch(authActions.login(formState.inputValues.email, formState.inputValues.password))
-                console.log(response.data)
             } catch (err) {
                 Alert.alert("Login Failed", "Could not login with the provided email and password", [{ text: "Okay" }])
                 setIsLoading(false)

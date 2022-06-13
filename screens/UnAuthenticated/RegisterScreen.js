@@ -51,20 +51,23 @@ const defaultForm = {
         fullName: "",
         email: "",
         birthDate: "",
-        phone: "",
         password: "",
     },
     inputValidities: {
         fullName: false,
         email: false,
         birthDate: false,
-        phone: false,
         password: false,
     },
     formIsValid: false,
 }
+const defaultProfessions = [
+    { name: "Yoga", pressed: false }, { name: "Fitness", pressed: false },
+    { name: "Combat Sports", pressed: false }, { name: "Athletics", pressed: false },
+    { name: "Gymnastics", pressed: false }, { name: "Other", pressed: false }
+]
 export default function RegisterScreen(props) {
-    
+
     const dispatch = useDispatch();                                         // Redux dispatch
 
     const [show, setShow] = useState(false);                                // Show password or not
@@ -79,6 +82,19 @@ export default function RegisterScreen(props) {
 
     const [agreed, setAgreed] = useState(false);                            // Agreed to the Terms of Condition or not
     const [formState, dispatchForm] = useReducer(formReducer, defaultForm)  // Form Reducer with all values and validatity values
+
+
+    const [freelancerProfessions, setFreelancerProfessions] = useState(     // Professions type to choose from for Freelancer
+        defaultProfessions
+    )
+    const updateOpacity = (index, value) => {
+
+        const professions = [...defaultProfessions]
+        professions[index]["pressed"] = true
+
+        setFreelancerProfessions(old => [...professions])
+    }
+
     // Handler when user input changes, updates reducer state 
     const inputChangeHandler = useCallback((inputIdentifier, inputValue, inputIsValid) => {
         dispatchForm({ type: "UPDATE", value: inputValue, isValid: inputIsValid, input: inputIdentifier })
@@ -105,7 +121,7 @@ export default function RegisterScreen(props) {
             // Dispacth to redux and send request backend
             // show succes or failure alert
         } else {
-            Alert.alert("Something went wrong", "Could you please make sure that you have entered all fields correctly", [{ text: "Okay"}])
+            Alert.alert("Something went wrong", "Could you please make sure that you have entered all fields correctly", [{ text: "Okay" }])
             console.log('Validation Failed');
             // props.navigation.navigate("RegisterSuccesfull")
             // console.log(agreed)
@@ -117,8 +133,8 @@ export default function RegisterScreen(props) {
         if (formState.formIsValid && agreed) {
             setIsNextStep(true)
         } else {
-            setIsNextStep(true)
-            // Alert.alert("Please Enter the required fields correctly In order to Continue")
+            // setIsNextStep(true)
+            Alert.alert("Please Enter the required fields correctly In order to Continue")
         }
     }
 
@@ -130,65 +146,19 @@ export default function RegisterScreen(props) {
                 {
                     /* <Heading>HStack</Heading> */
                 }
-                <HStack space={3} justifyContent="center">
-                    <TouchableOpacity activeOpacity={0.8}><Center h="20" w="40" bg="green.500" rounded="md" shadow={3} _text={{
-                        color: "white"
-                    }}>
-                        Yoga
-                    </Center>
-                    </TouchableOpacity>
-                    <TouchableOpacity activeOpacity={0.8}><Center h="20" w="40" bg="primary.500" rounded="md" _text={{
-                        color: "white"
-                    }} shadow={3}>
-                        Fitness
-                    </Center>
-                    </TouchableOpacity>
-                </HStack>
 
-                <HStack space={3} justifyContent="center">
-                    <TouchableOpacity activeOpacity={0.8}><Center h="20" w="40" bg="secondary.500" rounded="md" shadow={3} _text={{
-                        color: "white"
-                    }}>
-                        Calisthenics
-                    </Center>
-                    </TouchableOpacity>
-                    <TouchableOpacity activeOpacity={0.8}>
-                        <Center h="20" w="40" bg="emerald.700" rounded="md" _text={{
-                            color: "white"
-                        }} shadow={3}>
-                            Fitness
-                        </Center>
-                    </TouchableOpacity>
-                </HStack>
-                <HStack space={3} justifyContent="center">
-                    <TouchableOpacity activeOpacity={0.8}>
-                        <Center h="20" w="40" bg="green.500" rounded="md" shadow={3} _text={{
+                {freelancerProfessions.map((profession, index) => (
+                    <HStack key={profession.name} space={3} justifyContent="center">
+                        <TouchableOpacity onPress={() => { updateOpacity(index, true) }} activeOpacity={profession.opacity}><Center h="20" w="40" bg={profession.pressed ? "green.700" : "green.500"} rounded="md" shadow={3} _text={{
                             color: "white"
                         }}>
-                            Yoga
+                            {profession.name}
                         </Center>
-                    </TouchableOpacity>
-                    <TouchableOpacity activeOpacity={0.8}>
+                        </TouchableOpacity>
 
-                        <Center h="20" w="40" bg="primary.700" rounded="md" _text={{
-                            color: "white"
-                        }} shadow={3}>
-                            Other
-                        </Center>
-                    </TouchableOpacity>
-
-
-                </HStack>
-
-
-                {/* <Checkbox value="one" my={2}>
-                        <Text color={"white"}>
-                            Yes, I understand and agree to the Fitee
-                            Terms of Service
-
-                        </Text>
-                    </Checkbox> */}
-                <Button colorScheme="green" onPress={() => props.navigation.navigate('Home')}>Register</Button>
+                    </HStack>
+                ))}
+                <Button colorScheme="green" onPress={() => registerUser()}>Register</Button>
 
             </Stack>
         )
@@ -228,13 +198,6 @@ export default function RegisterScreen(props) {
                     onInputChange={inputChangeHandler.bind(this, "birthDate")}
                 />
                 <CustomInput
-                    leftElement={<AntDesign name="phone" size={32} color="white" style={styles.inputIcon} />}
-                    errorText="Please Enter a valid Phone Number"
-                    placeholder="(+44) 999 999 999"
-                    onInputChange={inputChangeHandler.bind(this, "phone")}
-                    required
-                />
-                <CustomInput
                     leftElement={<Ionicons name="key-outline" size={32} color="white" style={styles.inputIcon} />}
                     placeholder="Password"
                     errorText="Please Enter a valid Password"
@@ -260,8 +223,6 @@ export default function RegisterScreen(props) {
                     {(selectedUserType === "CUSTOMER") ? <Button colorScheme="green" style={styles.customButton} onPress={registerUser} key={1}>Register</Button> : <Button key={2} style={styles.customButton} onPress={() => goNextStep()}>Next</Button>}
                 </>
                 }
-                {/* <Button onPress={() => setIsNextStep(true)}>Next</Button> */}
-                {/* (selectedUserType === "customer") */}
 
                 {/* <Text color="#b3b3ff" underline style={{ textAlign: "left" }}>Already an account? Login now</Text> */}
                 <Link onPress={() => { returnToLoginScreen() }} isUnderlined={true} _text={{ color: Values.textColor }} style={{ paddingBottom: 20 }}>
