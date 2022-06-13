@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useReducer, useCallback } from 'react';
 import { Constants } from 'expo'
 import {
     Item as FormItem,
@@ -10,7 +10,7 @@ import {
     Spacer
 } from 'native-base';
 
-import { View, Image, StyleSheet, ImageBackground, ScrollView, Button, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native'
+import { View, TextInput, Image, StyleSheet, ImageBackground, ScrollView, Button, FlatList, TouchableOpacity, ActivityIndicator, Modal, Pressable, Alert } from 'react-native'
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 
 import { useSelector, useDispatch } from 'react-redux';
@@ -29,6 +29,23 @@ import CustomText from '../../../components/native/CustomText';
 
 import Styles from '../../../constants/Styles';
 import LinkText from '../../../components/native/LinkText';
+import { backgroundColor } from 'react-native/Libraries/Components/View/ReactNativeStyleAttributes';
+import CustomDefaultInput from '../../../components/UI/CustomDefaultInput';
+
+const formReducer = (state, action) => {
+    if (action.type === "UPDATE") {
+        const updatedValues = { ...state.inputValues, [action.input]: action.value }
+        const updatedValidities = { ...state.inputValidities, [action.input]: action.isValid }
+
+        let formIsValid = true
+        for (const key in updatedValidities) {
+            formIsValid = formIsValid && updatedValidities[key]
+        }
+
+        return { ...state, inputValues: updatedValues, inputValidities: updatedValidities, formIsValid: formIsValid }
+    }
+    return state;
+}
 export default function ActivityDetailScreen(props) {
 
     const dispatch = useDispatch();
@@ -38,6 +55,21 @@ export default function ActivityDetailScreen(props) {
     const [activityDetail, setActivityDetail] = useState({})
     const [isLoading, setIsLoading] = useState(true)
 
+    const [modalVisible, setModalVisible] = useState(false);
+    const [selectedPrice, setSelectedPrice] = useState();
+
+    // Input values needed for making a Booking
+    const [threeInput, setThreeInput] = useState({
+        name: activityDetail.ownerName ? activityDetail.ownerName : "",
+        cardNumber: "",
+        cvc: "",
+        expireMonth: "",
+        expireYear: ""
+    });
+    const threeInputChange = (fieldName, value) => {
+        setThreeInput({ ...threeInput, [fieldName]: value })
+    }
+
     // activityId
     const fetchActivityById = async () => {
         const result = await dispatch(activityActions.fetchActivityById(activityId))
@@ -45,22 +77,33 @@ export default function ActivityDetailScreen(props) {
         setIsLoading(false)
     }
 
+    const makeBooking = (priceObj) => {
+        setModalVisible(true)
+        setSelectedPrice(oldPrice => priceObj)
+    }
+    const makeBookingFinal = () => {
 
-    const makeBooking = (numberOfLessons) => {
+        // console.log("I made Bookings")
+        // console.log("Filled in details")
+        // console.log(threeInput)
+
         const body = {
-            numberOfLessons: numberOfLessons,
+            numberOfLessons: selectedPrice.lessons,
             activityId: activityId,
             userId: auth.userId
         }
-        dispatch(bookingActions.makeBooking(body))
+        console.log(body)
+        // dispatch(bookingActions.makeBooking(body))
         // TODO: Put in State and dont require to fetch from api when still on this screen
-    }
 
+        Alert.alert("Booking Made Succesfully")
+        // Alert succes and hide modal
+        setModalVisible(modalVisiblty => !modalVisiblty)
+    }
 
     useEffect(() => {
         fetchActivityById()
     }, [])
-
 
     if (isLoading) {
         return <View style={styles.backgroundActivity}>
@@ -84,7 +127,7 @@ export default function ActivityDetailScreen(props) {
                 </CustomText>
 
                 <CustomText style={styles.description}>
-                    {activityDetail.description} 
+                    {activityDetail.description}
                 </CustomText>
                 {/* <CustomText style={styles.description}>
                     and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
@@ -98,30 +141,30 @@ export default function ActivityDetailScreen(props) {
                 <Heading size="md" ml="-1" color="white" p={2}> Planned Activities </Heading>
                 <ScrollView horizontal={true} height={150}>
                     {activityDetail.activityDates && activityDetail.activityDates.map(val => (
-                        <DatesCard key={val.date} navigation={props.navigation} date={val} activityId={activityDetail.id}/>
+                        <DatesCard key={val.date} navigation={props.navigation} date={val} activityId={activityDetail.id} />
                     )
                     )}
                 </ScrollView>
 
                 {/* Booking Options / Show All Prices, and give the User option to purchase Lessons */}
                 <Heading size="md" ml="-1" color="white" p={2}> Price </Heading>
-                {activityDetail.activityPrices.map(activity =>
-                    <Box key={activity.id} alignItems="center" style={{ margin: 10 }}>
-                        <TouchableOpacity activeOpacity={0.8} style={{ width: "100%" }} onPress={() => { makeBooking(activity.lessons) }}>
+                {activityDetail.activityPrices.map(activityPrice =>
+                    <Box key={activityPrice.id} alignItems="center" style={{ margin: 10 }}>
+                        <TouchableOpacity activeOpacity={0.8} style={{ width: "100%" }} onPress={() => { makeBooking(activityPrice) }}>
                             <Box borderWidth="1" borderColor="coolGray.300" shadow="3" bg={"coolGray.100"} p="5" rounded="8" >
 
                                 <HStack alignItems="center">
                                     <Text color="coolGray.800" fontWeight="medium" fontSize="md">
-                                        {activity.lessons} Lesson Tickets
+                                        {activityPrice.lessons} Lesson Tickets
                                     </Text>
                                     <Spacer />
                                     <Text mt="2" fontsize="xl" color="red.500">
-                                        €{activity.price.toFixed(2)}
+                                        €{activityPrice.price.toFixed(2)}
                                     </Text>
 
                                 </HStack>
-                                {activity.discount > 0 && <Text mt="2" fontsize="xl" color="red.500">
-                                    -%{activity.discount.toFixed(2)}
+                                {activityPrice.discount > 0 && <Text mt="2" fontsize="xl" color="red.500">
+                                    -%{activityPrice.discount.toFixed(2)}
                                 </Text>}
 
                                 <Flex>
@@ -142,6 +185,114 @@ export default function ActivityDetailScreen(props) {
                 {/* TODO: Build Reviews here  */}
 
             </View>
+
+
+
+            <View style={styles.centeredView}>
+                <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={modalVisible}
+                    onRequestClose={() => {
+                        Alert.alert("Modal has been closed.");
+                        setModalVisible(!modalVisible);
+                    }}
+                >
+                    <View style={{ ...styles.centeredView }}>
+                        <View style={{ ...styles.modalView, justifyContent: "space-between" }}>
+
+                            <View>
+                                <CustomText style={styles.modalText}>Total: €{selectedPrice ? Math.round(selectedPrice.price.toFixed(2) * 100) / 100 : 1}</CustomText>
+                                <CustomText style={styles.modalText}>Lessons: {selectedPrice ? selectedPrice.lessons : 1}</CustomText>
+
+                                <View style={styles.form}>
+                                    <View style={styles.formControl}>
+                                        <TextInput
+                                            placeholder="Name"
+                                            style={styles.input}
+                                            placeholderTextColor="#C6C6C6"
+                                            color="white"
+                                            keyboardType='numeric'
+                                            value={threeInput.name}
+                                            onChangeText={(value) => { threeInputChange("name", value) }}
+                                        />
+                                    </View>
+                                    <View style={styles.formControl}>
+                                        <TextInput
+                                            placeholder="Card Number"
+                                            style={styles.input}
+                                            placeholderTextColor="#C6C6C6"
+                                            color="white"
+                                            keyboardType='numeric'
+                                            value={threeInput.cardNumber}
+                                            onChangeText={(value) => { threeInputChange("cardNumber", value) }}
+                                        />
+                                    </View>
+                                    <View style={Styles.flexDirectionRowSpace}>
+                                        <TextInput
+                                            placeholder="cvc"
+                                            style={styles.input}
+                                            placeholderTextColor="#C6C6C6"
+                                            color="white"
+                                            keyboardType='numeric'
+                                            value={threeInput.cvc}
+                                            onChangeText={(value) => { threeInputChange("cvc", value) }}
+                                        />
+                                        <TextInput
+                                            placeholder="expireMonth"
+                                            style={styles.input}
+                                            placeholderTextColor="#C6C6C6"
+                                            color="white"
+                                            keyboardType='numeric'
+                                            value={threeInput.expireMonth}
+                                            onChangeText={(value) => { threeInputChange("expireMonth", value) }}
+                                        />
+                                        <TextInput
+                                            placeholder="expireYear"
+                                            style={styles.input}
+                                            placeholderTextColor="#C6C6C6"
+                                            color="white"
+                                            keyboardType='numeric'
+                                            value={threeInput.expireYear}
+                                            onChangeText={(value) => { threeInputChange("expireYear", value) }}
+                                        />
+                                    </View>
+
+                                    {/* <Button colorScheme="green" style={styles.customButton} onPress={updateProfile} key={1}>Update Bank Details</Button> */}
+
+                                </View>
+
+                            </View>
+
+
+                            {/* Modal Control Buttons */}
+                            <View style={Styles.flexDirectionRowSpace}>
+                                <Pressable
+                                    style={[styles.button, styles.buttonOpen]}
+                                    onPress={() => makeBookingFinal()}
+                                >
+                                    <Text style={styles.textStyle}>Make Booking</Text>
+                                </Pressable>
+                                <Pressable
+                                    style={[styles.button, styles.buttonClose]}
+                                    onPress={() => setModalVisible(!modalVisible)}
+                                >
+                                    <Text style={styles.textStyle}>Cancel</Text>
+                                </Pressable>
+                            </View>
+                        </View>
+                    </View>
+                </Modal>
+                {/* <Pressable
+        style={[styles.button, styles.buttonOpen]}
+        onPress={() => setModalVisible(true)}
+      >
+        <Text style={styles.textStyle}>Show Modal</Text>
+      </Pressable> */}
+            </View>
+
+
+
         </ScrollView>
     )
 }
@@ -189,6 +340,66 @@ const styles = StyleSheet.create({
         fontSize: 14,
         textAlign: 'center',
         marginHorizontal: 20,
+    },
+
+    centeredView: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    modalView: {
+        margin: 20,
+        backgroundColor: 'rgba(52, 52, 52, 0.99)',
+        borderRadius: 20,
+        padding: 35,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5,
+        width: "90%",
+    },
+    button: {
+        borderRadius: 20,
+        padding: 10,
+        margin: 10,
+        elevation: 2
+    },
+    buttonOpen: {
+        backgroundColor: Values.primaryColorDark,
+    },
+    buttonClose: {
+        backgroundColor: "#2196F3",
+    },
+    textStyle: {
+        color: "white",
+        fontWeight: "bold",
+        textAlign: "center"
+    },
+    modalText: {
+        marginBottom: 15,
+        textAlign: "center"
+    },
+
+
+    form: {
+        margin: 20
+    },
+    formControl: {
+        width: '100%'
+    },
+    label: {
+        fontFamily: 'nunito-regular-bold',
+        marginVertical: 8
+    },
+    input: {
+        paddingHorizontal: 2,
+        paddingVertical: 5,
+        borderBottomColor: '#ccc',
+        borderBottomWidth: 1
     },
 
 

@@ -22,14 +22,11 @@ export default function AccountOverviewScreen(props) {
     const [accountDetails, setAccountDetails] = useState({})
 
     useEffect(() => {
-        console.log("Helllow Fetch user data")
-        console.log(auth)
         axios.get(`${Values.apiUrl}/api/v1/users/?id=${auth.userId}`, {
             header: {
                 "Authorization": `Bearer ${auth.token}`
             }
         }).then(response => {
-                console.log("AMKKK")
             console.log(response.data[0])
             setAccountDetails(response.data[0])
         }).catch(e => {

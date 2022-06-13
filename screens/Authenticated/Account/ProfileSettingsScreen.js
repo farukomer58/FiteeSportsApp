@@ -6,11 +6,12 @@ import {
     TextInput,
     StyleSheet,
     Platform,
+    Alert,
 } from 'react-native';
 
 import { Button } from 'native-base';
 import { useSelector, useDispatch } from 'react-redux';
-import * as activityActions from '../../../store/actions/activityActions';
+import * as userActions from '../../../store/actions/userActions';
 
 // Custom
 import CustomText from '../../../components/native/CustomText';
@@ -24,8 +25,15 @@ export default ProfileSettingsScreen = props => {
     const [lastName, setLastName] = useState(user ? user.lastName : '');
     const [birthDate, setBirthDate] = useState(user ? user.birthDate : '');
 
-    const updateProfile = () => {
-
+    const updateProfile = async () => {
+        const userBody = {
+            firstName:firstName,
+            lastName:lastName
+        }
+        const response = await dispatch(userActions.updateUser(user.id,userBody))
+        if (response.status) {
+            Alert.alert("User Updated")
+        }
     }
 
     return (
@@ -49,7 +57,7 @@ export default ProfileSettingsScreen = props => {
                         onChangeText={text => setLastName(text)}
                     />
                 </View>
-                <View style={styles.formControl}>
+                {/* <View style={styles.formControl}>
                     <CustomText style={styles.label}>BirthDate</CustomText>
                     <TextInput
                         style={styles.input}
@@ -57,7 +65,7 @@ export default ProfileSettingsScreen = props => {
                         color="white"
                         onChangeText={text => setBirthDate(text)}
                     />
-                </View>
+                </View> */}
 
                 <Button colorScheme="green" style={styles.customButton} onPress={updateProfile} key={1}>Update Profile</Button>
 
