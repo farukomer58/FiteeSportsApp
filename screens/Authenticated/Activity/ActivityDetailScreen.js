@@ -23,6 +23,7 @@ import Header from '../../../components/Header';
 
 import PressableCard from '../../../components/PressableCard';
 import DatesCard from '../../../components/DatesCard';
+import DatesCardSmall from '../../../components/DatesCardSmall';
 import Card from '../../../components/Card';
 import Values from '../../../constants/Values';
 import CustomText from '../../../components/native/CustomText';
@@ -31,6 +32,7 @@ import Styles from '../../../constants/Styles';
 import LinkText from '../../../components/native/LinkText';
 import { backgroundColor } from 'react-native/Libraries/Components/View/ReactNativeStyleAttributes';
 import CustomDefaultInput from '../../../components/UI/CustomDefaultInput';
+import ListItem from '../../../components/UI/ListItem';
 
 const formReducer = (state, action) => {
     if (action.type === "UPDATE") {
@@ -88,17 +90,22 @@ export default function ActivityDetailScreen(props) {
         // console.log(threeInput)
 
         const body = {
+            totalAmount: selectedPrice.price,
             numberOfLessons: selectedPrice.lessons,
             activityId: activityId,
             userId: auth.userId
         }
         console.log(body)
-        // dispatch(bookingActions.makeBooking(body))
+        dispatch(bookingActions.makeBooking(body))
         // TODO: Put in State and dont require to fetch from api when still on this screen
 
         Alert.alert("Booking Made Succesfully")
         // Alert succes and hide modal
         setModalVisible(modalVisiblty => !modalVisiblty)
+    }
+
+    const addDateItem = () => {
+
     }
 
     useEffect(() => {
@@ -258,9 +265,18 @@ export default function ActivityDetailScreen(props) {
                                         />
                                     </View>
 
-                                    {/* <Button colorScheme="green" style={styles.customButton} onPress={updateProfile} key={1}>Update Bank Details</Button> */}
-
                                 </View>
+
+                                <CustomText style={styles.label}>Dates</CustomText>
+
+                                <View style={Styles.flexDirectionRow}>
+                                    {activityDetail.activityDates && activityDetail.activityDates.map(val => (
+                                        <DatesCardSmall key={val.date} navigation={props.navigation} date={val} activityId={activityDetail.id} onPress={()=>addDateItem()}/>
+                                    )
+                                    )}
+                                </View>
+
+
 
                             </View>
 
