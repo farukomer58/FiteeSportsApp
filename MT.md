@@ -67,3 +67,29 @@
 #### (Even) better if:
 - Code opschonen (gebruik sonarlint daarvoor)
 - Test kan verbeterd worden met @AutoConfigureMockMvc
+
+# Sprint 4 | Week 20
+
+### Self Evaluation
+
+|               | CODE    |TEST   |DEVOPS  | User stories worked on                           |
+|---------------|---------|-------|--------|---------------------------------------------------|
+| Omer Citik  |  2  |  2   |   1     |- [As a freelancer I want to be able to add a activity on the panel so I can promote it and make it available for people to join]     [link-to-relevant-commit](https://gitlab.fdmci.hva.nl/project-se/2122/ivse1/IVSE1-FITEE/fiteesportsapp/-/commit/b772b2fe2e64d634147c91d8041128ffb0da4c20) <br> - [As a freelancer, I want to manage my activities so customer can see that a activity is changed or deleted][link-to-relevant-commit](https://gitlab.fdmci.hva.nl/project-se/2122/ivse1/IVSE1-FITEE/fiteesportsapp/-/commit/b61055b0645e8bb9367fd8aa2eb5b63645a07a35) <br> - [As a customer I want to have a page where I can view all activities so I can choose one to join][link-to-relevant-commit](https://gitlab.fdmci.hva.nl/project-se/2122/ivse1/IVSE1-FITEE/fiteesportsapp/-/commit/b61055b0645e8bb9367fd8aa2eb5b63645a07a35) | 
+
+
+### MT-Coach Feedback
+
+|               | CODE |TEST | DEVOPS   |OVERALL   |
+|---------------|------|-----|----------|--------------------|
+| Omer Citik   |  -  | - |   -    | - |
+
+#### What went well:
+ - Continues Deployment gestart 
+
+#### (Even) better if:
+- Code opschonen (gebruik sonarlint daarvoor)
+- Test kan verbeterd worden met @AutoConfigureMockMvc
+
+
+
+
