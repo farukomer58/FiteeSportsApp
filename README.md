@@ -93,8 +93,8 @@ Run Jest Tests
 ### Accessing Application
 Component         | URL                                      | Credentials
 ---               | ---                                      | ---
-Frontend          |  ..... | SUPPLIER ACCOUNT: <br/> email: myUsername2@gmail.com <br/> password: myPassword1! <br/><br/> CUSTOMER ACCOUNT: <br/> email: myUsername4@gmail.com <br/> password: myPassword1!
-**Live Demo:** |  ....   | 
+Frontend          |  https://expo.dev/@devfaruk/FiteeSportsApp?serviceType=classic&distribution=expo-go | FREELANCER ACCOUNT: <br/> email: freelancer@freelancer.com <br/> password: password <br/><br/> CUSTOMER ACCOUNT: <br/> email: customer@customer.com <br/> password: password
+**Live Demo:** |  https://expo.dev/@devfaruk/FiteeSportsApp?serviceType=classic&distribution=expo-go   | 
 
 
 ## Classes
