@@ -1,8 +1,13 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { View, Image, StyleSheet, ImageBackground, ScrollView, TouchableOpacity } from 'react-native'
 import { Ionicons, MaterialIcons, AntDesign, Fontisto } from '@expo/vector-icons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
+import * as authActions from '../../../store/actions/authActions'
+import { useSelector, useDispatch } from 'react-redux';
+
+import axios from 'axios';
 
 //Custom
 import CustomText from '../../../components/native/CustomText'
@@ -11,6 +16,24 @@ import ListItem from '../../../components/UI/ListItem';
 
 export default function AccountOverviewScreen(props) {
 
+    const dispatch = useDispatch();
+
+    const auth = useSelector(state => state.auth); // Get User Activities of redux 
+    const [accountDetails, setAccountDetails] = useState({})
+
+    useEffect(() => {
+        axios.get(`${Values.apiUrl}/api/v1/users/get?id=${auth.userId}`, {
+            header: {
+                "Authorization": `Bearer ${auth.token}`
+            }
+        }).then(response => {
+            console.log(response.data)
+            setAccountDetails(response.data)
+        }).catch(e => {
+            console.log(e)
+        })
+    }, [])
+
     return (
         <ScrollView contentContainerStyle={{ flexGrow: 1 }} >
             <View style={styles.background}>
@@ -18,32 +41,47 @@ export default function AccountOverviewScreen(props) {
                 <View style={styles.head}>
                     <View style={{ alignItems: "center" }}>
                         <MaterialIcons name="account-circle" size={75} color="white" style={styles.inputIcon} />
-                        <CustomText title style={styles.userName}>User Full Name</CustomText>
+                        <CustomText title style={styles.userName}>{accountDetails.firstName} {accountDetails.lastName}</CustomText>
                     </View>
 
                 </View>
 
+                {/* TODO: Give user option to delete profile enteryly, in screen below*/}
                 <ListItem
-                    onPress={() => { props.navigation.navigate("Activities") }}
+                    onPress={() => { props.navigation.navigate("ProfileSettings", { user: accountDetails }) }}
                     listItem="Profile Settings"
                     listItemIcon={<MaterialIcons name="settings" size={40} color="white" style={styles.inputIcon} />}
                 />
+                {accountDetails.userRole === "CUSTOMER" &&
+                    <ListItem
+                        onPress={() => { props.navigation.navigate("Bookings") }}
+                        listItem="Bookings"
+                        listItemIcon={<MaterialIcons name="history" size={40} color="white" style={styles.inputIcon} />}
+                    />
+                }
                 <ListItem
-                    onPress={() => { props.navigation.navigate("Activities") }}
-                    listItem="Bookings"
-                    listItemIcon={<MaterialIcons name="history" size={40} color="white" style={styles.inputIcon} />}
-                />
-                <ListItem
-                    onPress={() => { props.navigation.navigate("Activities") }}
+                    onPress={() => { props.navigation.navigate("BankDetail") }}
                     listItem="Bank Detail"
                     listItemIcon={<MaterialIcons name="payment" size={40} color="white" style={styles.inputIcon} />}
                 />
                 <View style={{ backgroundColor: "black", height: 1, margin: 5 }} />
+
+                {/* TODO: Show only if logged in as Freelancer, seperate screens */}
+                {accountDetails.userRole === "FREELANCER" &&
+                    <ListItem
+                        onPress={() => { props.navigation.navigate("UserActivities") }}
+                        listItem="Own Activities"
+                        listItemIcon={<MaterialIcons name="list" size={40} color="white" style={styles.inputIcon} />}
+                    />
+                }
+
+                {/* TODO: add new Page WITH PARTCIPATING activites */}
                 <ListItem
-                    onPress={() => { props.navigation.navigate("UserActivities") }}
-                    listItem="Own Activities"
-                    listItemIcon={<MaterialIcons name="list" size={40} color="white" style={styles.inputIcon} />}
+                    onPress={() => { dispatch(authActions.logout()) }}
+                    listItem="Logout"
+                    listItemIcon={<MaterialIcons name="logout" size={40} color="white" style={styles.inputIcon} />}
                 />
+                {/* TODO: Do something about auto-logout when token expired */}
             </View>
         </ScrollView>
     )
@@ -57,9 +95,7 @@ export const screenOptions = navData => {
         tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="account" color={color} size={26} />
         ),
-        // headerLeft: (props) => (
-        //     <Text>Hello</Text>
-        // )
+
     }
 }
 

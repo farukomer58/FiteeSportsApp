@@ -29,12 +29,14 @@ import ReduxThunk from 'redux-thunk'
 import mainContext from "./store/reducers/mainContext";
 import authReducer from "./store/reducers/authReducer";
 import activityReducer from './store/reducers/activityReducer';
+import userReducer from './store/reducers/userReducer'
 
 // Config Redux with reducers
 const rootReducer = combineReducers({
   main: mainContext,
   auth: authReducer,
   activities: activityReducer,
+  user: userReducer
 });
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk)); // ReduxThunk:Enable to send request in redux actions
 

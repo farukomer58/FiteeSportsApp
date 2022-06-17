@@ -1,37 +1,23 @@
 import React, { useState } from 'react';
-import { Platform } from 'react-native'
 import { useSelector } from 'react-redux';
 
 // Navigation
 import { NavigationContainer } from '@react-navigation/native';
 import { AuthNavigator } from './AuthNavigator';
 import { MainNavigator } from './MainNavigator';
-
+import StartupScreen from '../screens/StartupScreen';
 
 export default AppNavigator = () => {
 
     const isAuth = useSelector(state => state.auth.isAuthenticated);
-    // const [isAuthenticated, setIsAuthenticated] = useState(true)
+    const didTryAutoLogin = useSelector(state => state.auth.didTryAutoLogin);
 
+    // Try Auto-Login First
     return (
         <NavigationContainer>
-            {!isAuth && <AuthNavigator />}
+            {!isAuth && !didTryAutoLogin && <StartupScreen />}
+            {!isAuth && didTryAutoLogin && <AuthNavigator />}
             {isAuth && <MainNavigator />}
         </NavigationContainer>
     )
 }
-// createStackNavigator({
-//     Categories: {
-//         screen: CategoriesScreen,
-//         // navigationOptions: options
-//     },
-//     CategoryMeals: CategoryMealsScreen,
-//     MealDetail: MealDetailScreen,
-// }, {
-//     // initialRouteName:"Categoies", Inital Screen, takes first by default
-//     mode: "modal", //has efect on IOS
-//     defaultNavigationOptions: options
-// })
-
-
-// export default createAppContainer(MealsNavigator)

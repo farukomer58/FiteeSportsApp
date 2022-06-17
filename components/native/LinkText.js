@@ -8,9 +8,9 @@ export default LinkText = props => {
         <Pressable onPress={props.onPress}>
             {({ pressed }) =>
                 <Text style={{
-                    ...props.style,
                     textDecorationLine: 'underline',
-                    color: pressed ? Values.successColor : Values.secondaryColor
+                    color: props.pressedColor? (pressed ? props.pressedColor : props.releaseColor):(pressed ? Values.successColor : Values.secondaryColor),
+                    ...props.style,
                 }}>{props.children}</Text>
             }
         </Pressable>

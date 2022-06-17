@@ -4,6 +4,7 @@ import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import Values from '../../constants/Values';
 import Styles from '../../constants/Styles';
 import CustomText from '../native/CustomText';
+import { shortenText } from '../../functions/shortenText';
 
 export default ActivityCarouselCard = props => {
     return (
@@ -16,10 +17,10 @@ export default ActivityCarouselCard = props => {
                 />
                 {/* </View> */}
                 <View style={styles.detail}>
-                    <CustomText title style={{ color: "black" }}>{props.title.substring(0, Values.numbersOfCharactersShown) + "..."}</CustomText>
+                    <CustomText title style={{ color: "black" }}>{shortenText(props.title,22)}</CustomText>
                     <View style={Styles.flexDirectionRowSpace}>
-                        <CustomText style={{ color: "black" }}>{props.location.substring(0, Values.numbersOfCharactersShown) + "..."}</CustomText>
-                        <CustomText style={{ color: Values.primaryColorDark, fontSize: 10, marginTop: 10 }}>Read More</CustomText>
+                        <CustomText style={{ color: "black" }}>{shortenText(props.location,22)}</CustomText>
+                        <CustomText style={{ color: Values.primaryColorDark, fontSize: 10, marginTop: 10 }}>{props.rightCornerText}</CustomText>
                     </View>
                 </View>
 

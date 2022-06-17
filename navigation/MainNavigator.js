@@ -10,10 +10,14 @@ import ActivityDetailScreen, { screenOptions as activityDetailScreenOptions } fr
 import ActivitiesScreen, { screenOptions as activitiesScreenOptions } from '../screens/Authenticated/Activity/ActivitiesScreen';
 
 import ChatRoomScreen, { screenOptions as chatRoomScreenOptions } from '../screens/Authenticated/Chat/ChatRoomScreen';
-import ChatScreen from '../screens/Authenticated/Chat/ChatScreen';
+import ChatScreen, { screenOptions as chatScreenOptions } from '../screens/Authenticated/Chat/ChatScreen';
 
 import CalendarScreen, { screenOptions as calendarScreenOptions } from '../screens/Authenticated/CalendarScreen';
+// Account Screens
 import AccountOverviewScreen, { screenOptions as accountOverviewScreenOptions } from '../screens/Authenticated/Account/AccountOverviewScreen'
+import ProfileSettingsScreen, { screenOptions as profileSettingsScreenOptions} from '../screens/Authenticated/Account/ProfileSettingsScreen';
+import BookingsScreen, { screenOptions as bookingsScreenOptions} from '../screens/Authenticated/Account/BookingsScreen';
+import BankDetail, { screenOptions as bankDetailScreenOptions} from '../screens/Authenticated/Account/BankDetail';
 import UserActivitiesScreen, { screenOptions as userActivitiesScreenOptions } from '../screens/Authenticated/Account/UserActivitiesScreen';
 import ManageActivityScreen, { screenOptions as manageActivityScreenOptions } from '../screens/Authenticated/Account/ManageActivityScreen';
 
@@ -26,6 +30,10 @@ export const AccountNavigator = () => {
     return (
         <AccountStackNavigator.Navigator screenOptions={defaultNavOptions}>
             <AccountStackNavigator.Screen name="AccountOverviewList" component={AccountOverviewScreen} options={{ headerTitle: "Account" }} />
+            <AccountStackNavigator.Screen name="ProfileSettings" component={ProfileSettingsScreen} options={profileSettingsScreenOptions} />
+            <AccountStackNavigator.Screen name="Bookings" component={BookingsScreen} options={bookingsScreenOptions} />
+            <AccountStackNavigator.Screen name="BankDetail" component={BankDetail} options={bankDetailScreenOptions} />
+
             <AccountStackNavigator.Screen name="UserActivities" component={UserActivitiesScreen} options={userActivitiesScreenOptions} />
             <AccountStackNavigator.Screen name="ManageActivity" component={ManageActivityScreen} options={manageActivityScreenOptions} />
         </AccountStackNavigator.Navigator>
@@ -49,7 +57,7 @@ export const ChatNavigator = () => {
     return (
         <ChatStackNavigator.Navigator screenOptions={defaultNavOptions}>
             <ChatStackNavigator.Screen name="ChatRooms" component={ChatRoomScreen} options={{ headerTitle: "Chat" }} />
-            <ChatStackNavigator.Screen name="ChatConversation" component={ChatScreen} options={{ headerShown: false }} />
+            <ChatStackNavigator.Screen name="ChatConversation" component={ChatScreen} options={chatScreenOptions} />
         </ChatStackNavigator.Navigator>
     );
 };

@@ -15,7 +15,7 @@ import * as bookingActions from '../store/actions/bookingActions'
 import CustomText from './native/CustomText';
 import Values from '../constants/Values';
 
-export default function DatesCard(props) {
+export default function DatesCardSmall(props) {
     const dispatch = useDispatch();
     const [bookingDetail, setBookingDetail] = useState({})
     const [isLoading, setIsLoading] = useState(true)
@@ -59,28 +59,19 @@ export default function DatesCard(props) {
 
         // send reqwuest with both activityDate and Booking to update them in one request
 
-
         // Show user success and refresh page
-
     }
 
     return (
         <>
-            <Card style={{ margin: 20, width: 250, height: "100%", }}>
+            <Card style={{ margin: 20, width: 115, height: 80, }}>
                 <TouchableOpacity activeOpacity={0.8} style={{ width: "100%", height: "100%" }} onPress={() => { reservePlaceAndUseTicket(props.date) }}>
-
                     <View style={{ justifyContent: "space-between", height: "80%" }}>
                         <View>
-                            <CustomText style={{ color: "black", fontSize: 16, textAlign: "center" }}> {momentDate}</CustomText>
-                            <CustomText style={{ color: "black", fontSize: 13, textAlign: "center" }}> 1 hour regular session </CustomText>
+                            <CustomText style={{ color: "black", fontSize: 13, textAlign: "center" }}> {momentDate}</CustomText>
+                            <CustomText style={{ color: "black", fontSize: 10, textAlign: "center" }}> 1 hour regular session </CustomText>
                         </View>
-
-                        <LinkText onPress={() => { reservePlaceAndUseTicket() }} pressedColor="#f34" releaseColor="black" disabled={bookingDetail.remainingAmount<=0} style={{ fontSize: 16, textAlign: "center" }}>
-                            Reserve place on this date
-                        </LinkText>
                     </View>
-
-
                 </TouchableOpacity>
             </Card>
         </>

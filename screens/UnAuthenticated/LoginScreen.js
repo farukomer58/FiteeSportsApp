@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer, useCallback } from 'react';
+import React, { useState, useEffect, useReducer, useCallback, AsyncStorage } from 'react';
 import {
     Container,
     Header,
@@ -22,7 +22,7 @@ import {
 } from 'react-native'
 import { Ionicons, MaterialIcons, AntDesign } from '@expo/vector-icons';
 
-import axios from "axios";
+import Axios from "axios";
 import { useDispatch } from 'react-redux';
 import * as authActions from '../../store/actions/authActions'
 
@@ -32,6 +32,9 @@ import CustomInput from '../../components/UI/CustomInput';
 import IconButton from '../../components/IconButton/IconButton';
 
 import Values from '../../constants/Values';
+import axios from 'axios';
+const CancelToken = axios.CancelToken;
+const source = CancelToken.source();
 
 const formReducer = (state, action) => {
     if (action.type === "UPDATE") {
@@ -52,10 +55,9 @@ export default function LoginScreen(props) {
     const dispatch = useDispatch();
     // Show password or not
     const [show, setShow] = useState(false);
-    const handleClick = () => setShow(!show);
+    const handleClick = () => setShow(oldState => !oldState);
 
     const [isLoading, setIsLoading] = useState(false)
-    const [error, setError] = useState(null)
 
     const [formState, dispatchForm] = useReducer(formReducer, {
         inputValues: {
@@ -68,51 +70,38 @@ export default function LoginScreen(props) {
         },
         formIsValid: false,
     })
-
     const inputChangeHandler = useCallback((inputIdentifier, inputValue, inputIsValid) => {
         dispatchForm({ type: "UPDATE", value: inputValue, isValid: inputIsValid, input: inputIdentifier })
     }, [dispatchForm])
 
     // Login user func, first validate
-    const loginUser = () => {
-        
-        setIsLoading(true)
-        dispatch(authActions.loginQuick())
-
+    const loginUser = async () => {
         if (formState.formIsValid) {
-            // await Axios.post(`http://localhost:8081/api/v1/user/login`)
-            //     .then(async (response) => {
-            //         if (response.status === 201) {
-            //             // props.navigation.navigate('Home')
-            //             // console.log('Submitted')
-
-            //         } else {
-            //             console.log('Falsee')
-            //         }
-            //     })
-            // props.navigation.navigate('Home')
-            console.log('Submitted')
-            console.log(formState)
-            // dispatch(authActions.signUp(formState.inputValues.email,formState.inputValues.password))
-            setError(null)
             setIsLoading(true)
             try {
-                // const response = await dispatch(authActions.login(formState.inputValues.email, formState.inputValues.password))
-                // props.navigation.navigate('Home')
+                const response = await dispatch(authActions.login(formState.inputValues.email, formState.inputValues.password))
             } catch (err) {
-                Alert.alert("An error occured", err.message, [{ text: "Okay" }])
-                setError(err.message)
+                Alert.alert("Login Failed", "Could not login with the provided email and password", [{ text: "Okay" }])
+                setIsLoading(false)
             }
-            setIsLoading(false)
         } else {
-            console.log('Validation Failed');
+            // console.log('Validation Failed');
+            Alert.alert("Something went wrong", "Please make sure that all fields are entered correctly", [{ text: "Okay" }])
         }
     }
+
+    useEffect(() => {
+        const abortController = new AbortController();
+        // MyFunction()
+        return () => {
+            abortController.abort();
+        };
+    }, []);
 
     return (
         <ImageBackground style={styles.background} source={require("../../assets/images/loginBg.png")} resizeMode="cover">
             <ScrollView>
-                <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} keyboardVerticalOffset={-150} style={{ marginTop: 275 }}>
+                <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} keyboardVerticalOffset={-150} style={{ marginTop: 200 }}>
 
                     <Stack space={3} w="100%" alignItems="center">
 
@@ -163,13 +152,6 @@ export default function LoginScreen(props) {
 export const screenOptions = navData => {
     return {
         headerTitle: "Login",
-        // title: 'Home',
-        // tabBarIcon: ({ color }) => (
-        //     <MaterialCommunityIcons name="home" color={color} size={26} />
-        // ),
-        // headerLeft: (props) => (
-        //     <Text>Hello</Text>
-        // )
     }
 }
 

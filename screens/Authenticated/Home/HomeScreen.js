@@ -31,12 +31,24 @@ export default function HomeScreen(props) {
     const [carouselItems, setCarouselItems] = useState(RECENT_ACTIVITIES);
     const ref = useRef(null);
 
+    // The Activity Pressable Card component to render for the Carousel
     const renderRecentActivitiesCarousel = useCallback(({ item, index }) => (
         <ActivityCarouselCard
             onPress={() => console.log("Go to Activity with title", item.title)}
             imageUrl={item.imageUrl}
             title={item.title}
             location={item.description}
+            rightCornerText={"Read More"}
+        />
+    ), []);
+
+    const renderNearbyActivitiesCarousel = useCallback(({ item, index }) => (
+        <ActivityCarouselCard
+            onPress={() => console.log("Go to Activity with title", item.title)}
+            imageUrl={item.imageUrl}
+            title={item.title}
+            location={item.description}
+            rightCornerText={"1 km"}
         />
     ), []);
 
@@ -45,7 +57,6 @@ export default function HomeScreen(props) {
 
             <View style={styles.background}>
 
-
                 <View style={Styles.flexDirectionRowSpace}>
                     <CustomText title style={{ ...Styles.paddingText, fontSize: 20 }}>
                         Recent Activities
@@ -53,14 +64,12 @@ export default function HomeScreen(props) {
                     <LinkText onPress={() => { props.navigation.navigate('Activities') }} style={{ paddingTop: 20, paddingRight: 10, }}>View All</LinkText>
                 </View>
 
-                {/* <ActivityCarousel /> */}
-
-                <SafeAreaView style={{ flex: 1, paddingTop: 20 }}>
+                <SafeAreaView style={{  paddingTop: 20 }}>
                     <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center' }}>
                         <Carousel
                             layout="default"
                             ref={ref}
-                            data={RECENT_ACTIVITIES}
+                            data={carouselItems}
                             sliderWidth={250}
                             itemWidth={275}
                             renderItem={renderRecentActivitiesCarousel}
@@ -69,15 +78,28 @@ export default function HomeScreen(props) {
                     </View>
                 </SafeAreaView>
 
-                <ScrollView horizontal={true} height={280} >
-                    {/* style={{ backgroundColor: 'blue' }} */}
-                    <HStack>
-                        {["one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven"].map(val => (
-                            <PressableCard key={val} navigation={props.navigation} />
-                        )
-                        )}
-                    </HStack>
-                </ScrollView>
+
+                <View style={Styles.flexDirectionRowSpace}>
+                    <CustomText title style={{ ...Styles.paddingText, fontSize: 20 }}>
+                        Activities Nearby
+                    </CustomText>
+                    <LinkText onPress={() => { props.navigation.navigate('Activities') }} style={{ paddingTop: 20, paddingRight: 10, }}>View All</LinkText>
+                </View>
+
+                {/* TODO: Show Map with Points  */}
+                <SafeAreaView style={{ flex: 1, paddingTop: 20 }}>
+                    <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center' }}>
+                        <Carousel
+                            layout="default"
+                            ref={ref}
+                            data={carouselItems}
+                            sliderWidth={250}
+                            itemWidth={275}
+                            renderItem={renderNearbyActivitiesCarousel}
+                            onSnapToItem={(index) => setActiveIndex(index)}
+                        />
+                    </View>
+                </SafeAreaView>
 
 
             </View>

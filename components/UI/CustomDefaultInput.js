@@ -22,7 +22,7 @@ const inputReducer = (state, action) => {
     }
 }
 
-export default function CustomInput(props) {
+export default function CustomDefaultInput(props) {
 
     const [inputState, dispatchInput] = useReducer(inputReducer, {
         value: props.initialValue ? props.initialValue : '',
@@ -30,6 +30,8 @@ export default function CustomInput(props) {
         focus: false,
     })
     const [isTouched, setIsTouched] = useState(false) // Check validity after input is pressed once
+    // const [inputSplitWidth, setInputSplitWidth] = useState("")
+    let inputSplitWidth=0
 
     const [errorMessage, setErrorMessage] = useState(props.errorText)
 
@@ -38,14 +40,15 @@ export default function CustomInput(props) {
         const regexEmail = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
 
         // const otherRegex = /"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z";
-        
+
         let isValid = true;
 
         if (props.required && value.trim().length === 0) { isValid = false }
         if (props.email && !regexEmail.test(value.trim())) { isValid = false }
         if (props.min != null && +value < props.min) { isValid = false }
         if (props.max != null && +value > props.max) { isValid = false }
-        if (props.minLength != null && value.length < props.minLength) { isValid = false 
+        if (props.minLength != null && value.length < props.minLength) {
+            isValid = false
             // setErrorMessage(props.errorText2 ? props.errorText2 : props.errorText) 
         }
 
@@ -71,7 +74,14 @@ export default function CustomInput(props) {
                 return styles.inputRounded
             case "filled":
                 return styles.inputFilled
+            case "split":
+                const splitByWidth = 100 / props.splitBy
+                console.log(splitByWidth)
+                inputSplitWidth = splitByWidth
+                return { width: `${splitByWidth}%` }
+
             default:
+                
             // return styles.input
         }
     };
@@ -82,7 +92,7 @@ export default function CustomInput(props) {
                 {props.leftElement && props.leftElement}
                 <TextInput
                     {...props}
-                    style={styles.input}
+                    style={inputSplitWidth ? { ...styles.input, width: `${100}%` } : styles.input}
                     placeholderTextColor="#C6C6C6"
                     onBlur={handleInputBlur}
                     onFocus={handleInputFocus}
@@ -106,20 +116,19 @@ const styles = StyleSheet.create({
 
     inputContainer: {
         flexDirection: "row",
-        borderWidth: 1,
-        borderColor: "white",
-        borderRadius: 50,
-        width: 300,
         // backgroundColor:"red",
         marginBottom: 5,
     },
 
     input: {
-        width: "73%",
-        color: "#fff",
-        padding: 15,
+        width: "100%",
+        // color: "#fff",
+        // padding: 15,
         // backgroundColor:"blue",
-
+        paddingHorizontal: 2,
+        paddingVertical: 5,
+        borderBottomColor: '#ccc',
+        borderBottomWidth: 1
     },
     inputRounded: {
         borderWidth: 2,
