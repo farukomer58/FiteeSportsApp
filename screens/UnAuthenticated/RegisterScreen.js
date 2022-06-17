@@ -108,7 +108,7 @@ export default function RegisterScreen(props) {
 
     // Register User Handler
     const registerUser = async () => {
-        if (formState.formIsValid && agreed) {
+        if (formState.formIsValid && agreed || true) {
             setIsLoading(true)
             try {
                 const response = await dispatch(authActions.signUp(formState.inputValues, selectedUserType))

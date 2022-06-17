@@ -19,8 +19,10 @@ export default {
     textColorBlack: "1F292E",
 
     // Server Config
-    // apiUrl: Platform.OS === 'android' ? 'https://034f-2a02-a454-fca1-1-c97b-125f-a774-d9b7.eu.ngrok.io' : "http://localhost:8080/api/v1",
-    apiUrl: Platform.OS === 'android' ? 'http://172.23.12.235:8080' : "http://localhost:8081/api/v1",
+    
+    apiUrl: "https://fitee-backend-maven.herokuapp.com",
+    // apiUrl: Platform.OS === 'android' ? 'https://c20f-86-89-50-62.eu.ngrok.io' : "http://localhost:8080/api/v1",
+    // apiUrl: Platform.OS === 'android' ? 'http://172.23.12.235:8080' : "http://localhost:8081/api/v1",
 
     numbersOfCharactersShown: 22,
 }
